@@ -261,7 +261,7 @@ export async function getServerSideProps(context) {
 
   const isConnected = cluster !== undefined;
 
-  const bucket = cluster.bucket("couchmusic2");
+  const bucket = cluster.bucket("travel-sample");
   const collection = bucket.defaultCollection();
 
   let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
