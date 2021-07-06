@@ -8,6 +8,8 @@ If you want to learn more about Couchbase, visit the following pages:
 - [Couchbase Developer Portal](https://developer.couchbase.com/)
 - [Couchbase Cloud](https://cloud.couchbase.com/sign-up)
 
+_NOTE:_ Some parts of this README have been commented out as they apply to Vercel deployment features or create-next-app features that have not yet been configured for Couchbase.
+
 ## Deploy your own
 
 Once you have access to the environment variables you'll need, deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
@@ -20,6 +22,7 @@ Once you have access to the environment variables you'll need, deploy the exampl
 - `create-next-app` support with built in example is pending
 
 [comment]: <> (Note: the bootstrapping instructions below require the `with-couchbase` example to exist &#40;it does not currently&#41;)
+
 [comment]: <> (Execute [`create-next-app`]&#40;https://github.com/vercel/next.js/tree/canary/packages/create-next-app&#41; with [npm]&#40;https://docs.npmjs.com/cli/init&#41; or [Yarn]&#40;https://yarnpkg.com/lang/en/docs/cli/create/&#41; to bootstrap the example:)
 
 [comment]: <> (```bash)
@@ -40,7 +43,7 @@ Set up a Couchbase database either locally or with [Couchbase Cloud](https://clo
 
 Local installation can be accomplished through a variety of methods, but [Docker](https://docs.couchbase.com/server/current/install/getting-started-docker.html) is the simplest.
 
-After Couchbase is installed, set up a cluster using [this tutorial](https://docs.couchbase.com/server/current/manage/manage-nodes/create-cluster.html). _Note:_ the **eventing** and **analytics** services can be unchecked if memory is a constraint (this is often the case with docker and other local installations).
+After Couchbase is installed, set up a cluster using [this tutorial](https://docs.couchbase.com/server/current/manage/manage-nodes/create-cluster.html). _NOTE:_ the **eventing** and **analytics** services can be unchecked if memory is a constraint (this is often the case with docker and other local installations).
 
 A variety of sample buckets can be installed to get up and running with a data model quickly. We've built an example query based on the `travel-sample`. 
 ### Set up environment variables
