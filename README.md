@@ -36,9 +36,13 @@ Once you have access to the environment variables you'll need, deploy the exampl
 
 ### Set up a Couchbase instance
 
-Set up a Couchbase database either locally or with [Couchbase Cloud](https://cloud.couchbase.com/sign-up)
-Local installation can be accomplished through a variety of methods, but [Docker](https://docs.couchbase.com/server/current/install/getting-started-docker.html) is the simplest. 
+Set up a Couchbase database either locally or with [Couchbase Cloud](https://cloud.couchbase.com/sign-up).
 
+Local installation can be accomplished through a variety of methods, but [Docker](https://docs.couchbase.com/server/current/install/getting-started-docker.html) is the simplest.
+
+After Couchbase is installed, set up a cluster using [this tutorial](https://docs.couchbase.com/server/current/manage/manage-nodes/create-cluster.html). _Note:_ the eventing and analytics services can be unchecked if memory is a constraint (this is often the case with docker and other local installations).
+
+A variety of sample buckets can be installed to get up and running with a data model quickly. We've built an example query based on the `travel-sample`. 
 ### Set up environment variables
 
 Copy the `env.local.example` file in this directory to `.env.local` (which will be ignored by Git):
@@ -70,7 +74,7 @@ You will either see a message stating "You are connected to Couchbase" or "You a
 
 When you are successfully connected, you can refer to the [Couchbase Node.js SDK docs](https://docs.couchbase.com/nodejs-sdk/current/hello-world/start-using-sdk.html) for further instructions on how to query your database.
 
-Note: this project is pre-populated with a test query. If have loaded the `travel-sample` data (which happens by default when using Docker), the query will run successfully, and you should see list of data on the index page. 
+Note: this project is pre-populated with a test query. If you have loaded the `travel-sample` bucket, the query will run successfully, and you should see list of airlines on the index page. 
 
 ## Deploy on Vercel
 
@@ -90,4 +94,4 @@ To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [
 
 
 
-Comes after getting started w/ docker -> Create Cluster: https://docs.couchbase.com/server/current/manage/manage-nodes/create-cluster.html
+
