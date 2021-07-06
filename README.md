@@ -1,33 +1,43 @@
-## Example app using MongoDB
+## Example app using Couchbase
 
-[MongoDB](https://www.mongodb.com/) is a general purpose, document-based, distributed database built for modern application developers and for the cloud era. This example will show you how to connect to and use MongoDB as your backend for your Next.js app.
+[Couchbase](https://www.couchbase.com/) is The Modern Database for Enterprise Applications. This example will show you how to connect to and use Couchbase for your Next.js app.
 
-If you want to learn more about MongoDB, visit the following pages:
+If you want to learn more about Couchbase, visit the following pages:
 
-- [MongoDB Atlas](https://mongodb.com/atlas)
-- [MongoDB Documentation](https://docs.mongodb.com/)
+- [Couchbase Docs](https://docs.couchbase.com/)
+- [Couchbase Developer Portal](https://developer.couchbase.com/)
+- [Couchbase Cloud](https://cloud.couchbase.com/sign-up)
 
 ## Deploy your own
 
 Once you have access to the environment variables you'll need, deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI,MONGODB_DB&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB)
+[comment]: <> (Todo: update this with a new deploy button)
+[comment]: <> ([![Deploy with Vercel]&#40;https://vercel.com/button&#41;]&#40;https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI,MONGODB_DB&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB&#41;)
 
 ## How to use
+- Clone this repo and follow configuration steps below
+- `create-next-app` support with example is pending
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+[comment]: <> (Note: the bootstrapping instructions below require the `with-couchbase` example to exist &#40;it does not currently&#41;)
+[comment]: <> (Execute [`create-next-app`]&#40;https://github.com/vercel/next.js/tree/canary/packages/create-next-app&#41; with [npm]&#40;https://docs.npmjs.com/cli/init&#41; or [Yarn]&#40;https://yarnpkg.com/lang/en/docs/cli/create/&#41; to bootstrap the example:)
 
-```bash
-npx create-next-app --example with-mongodb with-mongodb-app
-# or
-yarn create next-app --example with-mongodb with-mongodb-app
-```
+[comment]: <> (```bash)
+
+[comment]: <> (npx create-next-app --example with-couchbase with-couchbase-app)
+
+[comment]: <> (# or)
+
+[comment]: <> (yarn create next-app --example with-couchbase with-couchbase-app)
+
+[comment]: <> (```)
 
 ## Configuration
 
-### Set up a MongoDB database
+### Set up a Couchbase instance
 
-Set up a MongoDB database either locally or with [MongoDB Atlas for free](https://mongodb.com/atlas).
+Set up a Couchbase database either locally or with [Couchbase Cloud](https://cloud.couchbase.com/sign-up)
+Local installation can be accomplished through a variety of methods, but [Docker](https://docs.couchbase.com/server/current/install/getting-started-docker.html) is the simplest. 
 
 ### Set up environment variables
 
@@ -39,8 +49,8 @@ cp .env.local.example .env.local
 
 Set each variable on `.env.local`:
 
-- `MONGODB_URI` - Your MongoDB connection string. If you are using [MongoDB Atlas](https://mongodb.com/atlas) you can find this by clicking the "Connect" button for your cluster.
-- `MONGODB_DB` - The name of the MongoDB database you want to use.
+- `COUCHBASE_USERNAME` - The username of an authorized user on your Couchbase instance
+- `COUCHBASE_PASSWORD` - The corresponding password for the user specified above
 
 ### Run Next.js in development mode
 
@@ -56,9 +66,11 @@ yarn dev
 
 Your app should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
 
-You will either see a message stating "You are connected to MongoDB" or "You are NOT connected to MongoDB". Ensure that you have provided the correct `MONGODB_URI` and `MONGODB_DB` environment variables.
+You will either see a message stating "You are connected to Couchbase" or "You are NOT connected to Couchbase". Ensure that you have provided the correct `COUCHBASE_USERNAME` and `COUCHBASE_PASSWORD` environment variables.
 
-When you are successfully connected, you can refer to the [MongoDB Node.js Driver docs](https://mongodb.github.io/node-mongodb-native/3.4/tutorials/collections/) for further instructions on how to query your database.
+When you are successfully connected, you can refer to the [Couchbase Node.js SDK docs](https://docs.couchbase.com/nodejs-sdk/current/hello-world/start-using-sdk.html) for further instructions on how to query your database.
+
+Note: this project is pre-populated with a test query. If have loaded the `travel-sample` data (which happens by default when using Docker), the query will run successfully, and you should see list of data on the index page. 
 
 ## Deploy on Vercel
 
@@ -70,8 +82,12 @@ To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [
 
 **Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
 
-#### Deploy from Our Template
+[comment]: <> (#### Deploy from Our Template)
 
-Alternatively, you can deploy using our template by clicking on the Deploy button below.
+[comment]: <> (Alternatively, you can deploy using our template by clicking on the Deploy button below.)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI,MONGODB_DB&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB)
+[comment]: <> ([![Deploy with Vercel]&#40;https://vercel.com/button&#41;]&#40;https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI,MONGODB_DB&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB&#41;)
+
+
+
+Comes after getting started w/ docker -> Create Cluster: https://docs.couchbase.com/server/current/manage/manage-nodes/create-cluster.html

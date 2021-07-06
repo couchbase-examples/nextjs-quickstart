@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import { connectToDatabase } from '../util/mongodb'
+import { connectToDatabase } from '../util/couchbase'
 
-export default function Home({ isConnected }) {
+export default function Home({ isConnected, rows }) {
   return (
     <div className="container">
       <Head>
@@ -11,14 +11,14 @@ export default function Home({ isConnected }) {
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js with MongoDB!</a>
+          Welcome to <a href="https://nextjs.org">Next.js with Couchbase!</a>
         </h1>
 
         {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
+          <h2 className="subtitle">You are connected to Couchbase</h2>
         ) : (
           <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
+            You are NOT connected to Couchbase. Check the <code>README.md</code>{' '}
             for instructions.
           </h2>
         )}
@@ -27,35 +27,60 @@ export default function Home({ isConnected }) {
           Get started by editing <code>pages/index.js</code>
         </p>
 
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        <h2>Queried for travel-sample rows to test connection:</h2>
+        <table style={{textAlign: "left", marginTop: "20px"}}>
+          <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Callsign</th>
+            <th>ICAO</th>
+            <th>ID</th>
+            <th>Type</th>
+          </tr>
+          {rows.map((item) => {
+            return (
+                <tr key={item['travel-sample'].id}>
+                  <td>{item['travel-sample'].name}</td>
+                  <td>{item['travel-sample'].country}</td>
+                  <td>{item['travel-sample'].callsign}</td>
+                  <td>{item['travel-sample'].icao}</td>
+                  <td>{item['travel-sample'].id}</td>
+                  <td>{item['travel-sample'].type}</td>
+                </tr>
+            )
+          })}
+        </table>
 
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+        {/*<div className="grid">*/}
+        {/*  <a href="https://nextjs.org/docs" className="card">*/}
+        {/*    <h3>Documentation &rarr;</h3>*/}
+        {/*    <p>Find in-depth information about Next.js features and API.</p>*/}
+        {/*  </a>*/}
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        {/*  <a href="https://nextjs.org/learn" className="card">*/}
+        {/*    <h3>Learn &rarr;</h3>*/}
+        {/*    <p>Learn about Next.js in an interactive course with quizzes!</p>*/}
+        {/*  </a>*/}
+
+        {/*  <a*/}
+        {/*    href="https://github.com/vercel/next.js/tree/master/examples"*/}
+        {/*    className="card"*/}
+        {/*  >*/}
+        {/*    <h3>Examples &rarr;</h3>*/}
+        {/*    <p>Discover and deploy boilerplate example Next.js projects.</p>*/}
+        {/*  </a>*/}
+
+        {/*  <a*/}
+        {/*    href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"*/}
+        {/*    className="card"*/}
+        {/*  >*/}
+        {/*    <h3>Deploy &rarr;</h3>*/}
+        {/*    <p>*/}
+        {/*      Instantly deploy your Next.js site to a public URL with Vercel.*/}
+        {/*    </p>*/}
+        {/*  </a>*/}
+        {/*</div>*/}
       </main>
 
       <footer>
@@ -70,6 +95,14 @@ export default function Home({ isConnected }) {
       </footer>
 
       <style jsx>{`
+        td, th {
+          padding: 2px 30px;
+        }
+        
+        table, th, td {
+          border: 1px solid #aaa;
+        }
+  
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -223,11 +256,24 @@ export default function Home({ isConnected }) {
 }
 
 export async function getServerSideProps(context) {
-  const { client } = await connectToDatabase()
 
-  const isConnected = await client.isConnected()
+  const cluster = await connectToDatabase()
+
+  const isConnected = cluster !== undefined;
+
+  const bucket = cluster.bucket("couchmusic2");
+  const collection = bucket.defaultCollection();
+
+  let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
+  let result, rows;
+  try {
+    result = await cluster.query(qs);
+    rows = result.rows;
+  } catch(e) {
+    console.log('Error Querying: \n', e);
+  }
 
   return {
-    props: { isConnected },
+    props: { isConnected, rows },
   }
 }
