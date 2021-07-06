@@ -13,6 +13,7 @@ _NOTE:_ Some parts of this README have been commented out as they apply to Verce
 ## Deploy your own
 
 Once you have access to the environment variables you'll need, deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+_NOTE:_ direct deployment button is currently unavailable. To deploy a NextJS site to Vercel, clone the project and follow the deployment instructions at the bottom of this README
 
 [comment]: <> (Todo: update this with a new deploy button)
 [comment]: <> ([![Deploy with Vercel]&#40;https://vercel.com/button&#41;]&#40;https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-mongodb&project-name=with-mongodb&repository-name=with-mongodb&env=MONGODB_URI,MONGODB_DB&envDescription=Required%20to%20connect%20the%20app%20with%20MongoDB&#41;)
@@ -77,7 +78,7 @@ You will either see a message stating "You are connected to Couchbase" or "You a
 
 When you are successfully connected, you can refer to the [Couchbase Node.js SDK docs](https://docs.couchbase.com/nodejs-sdk/current/hello-world/start-using-sdk.html) for further instructions on how to query your database.
 
-Note: this project is pre-populated with a test query. If you have loaded the `travel-sample` bucket, the query will run successfully, and you should see list of airlines on the index page. 
+_NOTE_: this project is pre-populated with a test query. If you have loaded the `travel-sample` bucket, the query will run successfully, and you should see list of airlines on the index page. 
 
 ## Deploy on Vercel
 
