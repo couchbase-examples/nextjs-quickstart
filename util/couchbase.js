@@ -2,6 +2,7 @@ const couchbase = require('couchbase');
 
 const COUCHBASE_USER = process.env.COUCHBASE_USER
 const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
+let TEST_BUCKET_NAME = process.env.TEST_BUCKET_NAME
 
 if (!COUCHBASE_USER) {
   throw new Error(
@@ -15,6 +16,10 @@ if (!COUCHBASE_PASSWORD) {
   )
 }
 
+if (!TEST_BUCKET_NAME) {
+  TEST_BUCKET_NAME = 'travel-sample'
+}
+
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially
@@ -26,15 +31,15 @@ if (!cached) {
   cached = global.couchbase = { conn: null }
 }
 
-export async function connectToDatabase() {
+async function createCouchbaseCluster() {
   if (cached.conn) {
     return cached.conn
   }
 
-  const opts = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
+  // const opts = {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  // }
 
   cached.conn = new couchbase.Cluster('couchbase://localhost', {
     username: COUCHBASE_USER,
@@ -42,4 +47,24 @@ export async function connectToDatabase() {
   });
 
   return cached.conn
+}
+
+export async function connectToDatabase() {
+  const cluster = await createCouchbaseCluster()
+
+  const bucket = cluster.bucket(TEST_BUCKET_NAME);
+  const collection = bucket.defaultCollection();
+
+  // get the key for the first bucket in the connection to determine isConnected status
+  let bucketKey = Object.keys(cluster._conns)[0];
+  const isConnected = (cluster._conns[`${bucketKey}`] !== undefined &&
+      !cluster._conns[`${bucketKey}`]._closed &&
+      cluster._conns[`${bucketKey}`]._connected);
+
+  let dbConnection = {
+    isConnected,
+    cluster
+  }
+
+  return dbConnection;
 }

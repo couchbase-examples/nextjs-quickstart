@@ -15,19 +15,22 @@ export default function Home({ isConnected, rows }) {
         </h1>
 
         {isConnected ? (
-          <h2 className="subtitle">You are connected to Couchbase</h2>
+          <h2 className="subtitle green">You are connected to Couchbase</h2>
         ) : (
-          <h2 className="subtitle">
-            You are NOT connected to Couchbase. Check the <code>README.md</code>{' '}
-            for instructions.
-          </h2>
+          <>
+            <h2 className="subtitle red">
+              You are NOT connected to Couchbase. Try refreshing the page,
+              and if this error persists check the <code>README.md</code>{' '}for instructions.
+            </h2>
+            <em className="center">Note: you might have to re-start the app if the database was recently started (if using dev mode) for changes to take effect.</em>
+          </>
         )}
 
         <p className="description">
           Get started by editing <code>pages/index.js</code>
         </p>
 
-        <h2>Queried for travel-sample rows to test connection:</h2>
+        <h2>Querying travel-sample to test connection:</h2>
         <table style={{textAlign: "left", marginTop: "20px"}}>
           <tr>
             <th>Name</th>
@@ -37,7 +40,7 @@ export default function Home({ isConnected, rows }) {
             <th>ID</th>
             <th>Type</th>
           </tr>
-          {rows.map((item) => {
+          {!!rows && rows.map((item) => {
             return (
                 <tr key={item['travel-sample'].id}>
                   <td>{item['travel-sample'].name}</td>
@@ -50,37 +53,6 @@ export default function Home({ isConnected, rows }) {
             )
           })}
         </table>
-
-
-        {/*<div className="grid">*/}
-        {/*  <a href="https://nextjs.org/docs" className="card">*/}
-        {/*    <h3>Documentation &rarr;</h3>*/}
-        {/*    <p>Find in-depth information about Next.js features and API.</p>*/}
-        {/*  </a>*/}
-
-        {/*  <a href="https://nextjs.org/learn" className="card">*/}
-        {/*    <h3>Learn &rarr;</h3>*/}
-        {/*    <p>Learn about Next.js in an interactive course with quizzes!</p>*/}
-        {/*  </a>*/}
-
-        {/*  <a*/}
-        {/*    href="https://github.com/vercel/next.js/tree/master/examples"*/}
-        {/*    className="card"*/}
-        {/*  >*/}
-        {/*    <h3>Examples &rarr;</h3>*/}
-        {/*    <p>Discover and deploy boilerplate example Next.js projects.</p>*/}
-        {/*  </a>*/}
-
-        {/*  <a*/}
-        {/*    href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"*/}
-        {/*    className="card"*/}
-        {/*  >*/}
-        {/*    <h3>Deploy &rarr;</h3>*/}
-        {/*    <p>*/}
-        {/*      Instantly deploy your Next.js site to a public URL with Vercel.*/}
-        {/*    </p>*/}
-        {/*  </a>*/}
-        {/*</div>*/}
       </main>
 
       <footer>
@@ -98,11 +70,19 @@ export default function Home({ isConnected, rows }) {
         td, th {
           padding: 2px 30px;
         }
-        
+
         table, th, td {
           border: 1px solid #aaa;
         }
-  
+
+        .red, .error {
+          color: indianred;
+        }
+
+        .green, .success {
+          color: lightseagreen;
+        }
+
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -169,6 +149,7 @@ export default function Home({ isConnected, rows }) {
 
         .subtitle {
           font-size: 2rem;
+          text-align: center;
         }
 
         .description {
@@ -255,22 +236,23 @@ export default function Home({ isConnected, rows }) {
   )
 }
 
+
 export async function getServerSideProps(context) {
+  let connection = await connectToDatabase();
 
-  const cluster = await connectToDatabase()
+  const { isConnected, cluster } = connection;
 
-  const isConnected = cluster !== undefined;
-
-  const bucket = cluster.bucket("travel-sample");
-  const collection = bucket.defaultCollection();
-
-  let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
-  let result, rows;
-  try {
-    result = await cluster.query(qs);
-    rows = result.rows;
-  } catch(e) {
-    console.log('Error Querying: \n', e);
+  let result, rows = null;
+  if (isConnected) { //  && bucketKey === 'travel-sample'
+    let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
+    try {
+      result = await cluster.query(qs);
+      rows = result.rows;
+    } catch(e) {
+      console.log('Error Querying: \n', e);
+    }
+  } else {
+    rows = null;
   }
 
   return {
