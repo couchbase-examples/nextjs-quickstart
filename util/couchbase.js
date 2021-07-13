@@ -2,7 +2,9 @@ const couchbase = require('couchbase');
 
 const COUCHBASE_USER = process.env.COUCHBASE_USER
 const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
+const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
 let TEST_BUCKET_NAME = process.env.TEST_BUCKET_NAME
+let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
 
 if (!COUCHBASE_USER) {
   throw new Error(
@@ -32,16 +34,14 @@ if (!cached) {
 }
 
 async function createCouchbaseCluster() {
+  // TODO: investigate this on change/requiring restart w/ cached
   if (cached.conn) {
+    console.log("CACHED**************************************");
     return cached.conn
   }
-
-  // const opts = {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // }
-
-  cached.conn = new couchbase.Cluster('couchbase://localhost', {
+  console.log(IS_CLOUD_INSTANCE);
+  // TODO: add TLS support
+  cached.conn = new couchbase.Cluster('couchbase://'+ COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), { // ?ssl=no_verify&console_log_level=5
     username: COUCHBASE_USER,
     password: COUCHBASE_PASSWORD
   });
@@ -52,6 +52,7 @@ async function createCouchbaseCluster() {
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
 
+  // TODO: try moving this 'bucket' and 'collection' into createCouchbaseCluster()
   const bucket = cluster.bucket(TEST_BUCKET_NAME);
   const collection = bucket.defaultCollection();
 
@@ -61,10 +62,13 @@ export async function connectToDatabase() {
       !cluster._conns[`${bucketKey}`]._closed &&
       cluster._conns[`${bucketKey}`]._connected);
 
+  console.log(cluster._conns);
   let dbConnection = {
     isConnected,
     cluster
   }
+
+  console.log(dbConnection);
 
   return dbConnection;
 }
