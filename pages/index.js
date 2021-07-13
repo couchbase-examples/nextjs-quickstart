@@ -241,7 +241,8 @@ export async function getServerSideProps(context) {
   let connection = await connectToDatabase();
 
   const { isConnected, cluster } = connection;
-
+  console.log("Get serverside props");
+  console.log(cluster);
   let result, rows = null;
   if (isConnected) { //  && bucketKey === 'travel-sample'
     let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
