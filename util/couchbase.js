@@ -72,3 +72,11 @@ export async function connectToDatabase() {
 
   return dbConnection;
 }
+
+export const db = new couchbase.Cluster('couchbase://'+ COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), { // ?ssl=no_verify&console_log_level=5
+  username: COUCHBASE_USER,
+  password: COUCHBASE_PASSWORD
+});
+
+const bucket = db.bucket(TEST_BUCKET_NAME);
+const collection = bucket.defaultCollection();
