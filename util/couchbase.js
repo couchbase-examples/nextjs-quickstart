@@ -33,13 +33,10 @@ if (!cached) {
   cached = global.couchbase = { conn: null }
 }
 
-let numTimesCalled = 0;
 
 async function createCouchbaseCluster() {
   // TODO: investigate this on change/requiring restart w/ cached
   if (cached.conn) {
-    console.log("CACHED**************************************");
-    console.log(numTimesCalled);
     return cached.conn
   }
   console.log(IS_CLOUD_INSTANCE);
@@ -48,7 +45,7 @@ async function createCouchbaseCluster() {
     username: COUCHBASE_USER,
     password: COUCHBASE_PASSWORD
   })
-  numTimesCalled++;
+
   const bucket = cached.conn.bucket(TEST_BUCKET_NAME);
   const collection = bucket.defaultCollection();
 
@@ -58,14 +55,7 @@ async function createCouchbaseCluster() {
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
 
-  // TODO: try moving this 'bucket' and 'collection' into createCouchbaseCluster()
-
-
-  // get the key for the first bucket in the connection to determine isConnected status
-  let bucketKey = Object.keys(cluster._conns)[0];
-  let isConnected = (cluster._conns[`${bucketKey}`] !== undefined &&
-      !cluster._conns[`${bucketKey}`]._closed &&
-      cluster._conns[`${bucketKey}`]._connected);
+  let isConnected = true;
 
   console.log(cluster._conns);
   let dbConnection = {

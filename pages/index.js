@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { connectToDatabase } from '../util/couchbase'
-// let DbConnection = require('../util/couchbase_singleton');
 
 export default function Home({ isConnected, rows }) {
   return (
@@ -242,8 +241,7 @@ export async function getServerSideProps(context) {
   let connection = await connectToDatabase();
 
   const { isConnected, cluster } = connection;
-  console.log("Get serverside props");
-  console.log(cluster);
+
   let result, rows = null;
   if (isConnected) { //  && bucketKey === 'travel-sample'
     let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
@@ -261,36 +259,3 @@ export async function getServerSideProps(context) {
     props: { isConnected, rows },
   }
 }
-
-// export async function getServerSideProps(context) {
-//
-//
-//
-//
-//
-//
-//
-//   let isConnected = true;
-//
-//   let result, rows = null;
-//   if (isConnected) { //  && bucketKey === 'travel-sample'
-//     let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
-//     try {
-//       let db = await DbConnection.Get();
-//   // const bucket = db.bucket('travel-sample');
-//   // const collection = bucket.defaultCollection();
-//       console.log(db);
-//
-//       result = await db.query(qs);
-//       rows = result.rows;
-//     } catch(e) {
-//       console.log('Error Querying: \n', e);
-//     }
-//   } else {
-//     rows = null;
-//   }
-//
-//   return {
-//     props: { isConnected, rows },
-//   }
-// }
