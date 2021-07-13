@@ -45,6 +45,8 @@ async function createCouchbaseCluster() {
     username: COUCHBASE_USER,
     password: COUCHBASE_PASSWORD
   });
+  const bucket = cached.conn.bucket(TEST_BUCKET_NAME);
+  const collection = bucket.defaultCollection();
 
   return cached.conn
 }
@@ -53,8 +55,7 @@ export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
 
   // TODO: try moving this 'bucket' and 'collection' into createCouchbaseCluster()
-  const bucket = cluster.bucket(TEST_BUCKET_NAME);
-  const collection = bucket.defaultCollection();
+
 
   // get the key for the first bucket in the connection to determine isConnected status
   let bucketKey = Object.keys(cluster._conns)[0];
@@ -72,11 +73,3 @@ export async function connectToDatabase() {
 
   return dbConnection;
 }
-
-export const db = new couchbase.Cluster('couchbase://'+ COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), { // ?ssl=no_verify&console_log_level=5
-  username: COUCHBASE_USER,
-  password: COUCHBASE_PASSWORD
-});
-
-const bucket = db.bucket(TEST_BUCKET_NAME);
-const collection = bucket.defaultCollection();

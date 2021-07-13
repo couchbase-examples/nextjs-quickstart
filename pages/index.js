@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { connectToDatabase, db } from '../util/couchbase'
+import { connectToDatabase } from '../util/couchbase'
 
 export default function Home({ isConnected, rows }) {
   return (
@@ -240,9 +240,8 @@ export default function Home({ isConnected, rows }) {
 export async function getServerSideProps(context) {
   let connection = await connectToDatabase();
 
-  // const { isConnected, cluster } = connection;
-let isConnected = true;
-let cluster = db;
+  const { isConnected, cluster } = connection;
+
   let result, rows = null;
   if (isConnected) { //  && bucketKey === 'travel-sample'
     let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
