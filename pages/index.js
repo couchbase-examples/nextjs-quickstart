@@ -244,6 +244,9 @@ export async function getServerSideProps(context) {
 
   let result, rows = null;
   if (isConnected) { //  TODO: this? && bucketKey === 'travel-sample'
+    // TODO: add a flag for when bucketKey !== travel-sample and put a prop/message accordingly;
+    //  we can prob replace the isConnected with something about the bucketKey
+
     let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
     try {
       result = await cluster.query(qs);

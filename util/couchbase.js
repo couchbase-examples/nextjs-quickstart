@@ -43,7 +43,7 @@ async function createCouchbaseCluster() {
     username: COUCHBASE_USER,
     password: COUCHBASE_PASSWORD
   })
-
+  // TODO: look into doing something like this with promises: https://docs.couchbase.com/cloud/get-started/connect-to-cluster.html
   const bucket = cached.conn.bucket(TEST_BUCKET_NAME);
   const collection = bucket.defaultCollection();
 
@@ -58,19 +58,6 @@ export async function connectToDatabase() {
   let dbConnection = {
     isConnected,
     cluster
-  }
-
-  let result, rows = null;
-  if (isConnected) { //  && bucketKey === 'travel-sample'
-    let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
-    try {
-      result = await cluster.query(qs);
-      rows = result.rows;
-    } catch(e) {
-      console.log('Error Querying: \n', e);
-    }
-  } else {
-    rows = null;
   }
 
   return dbConnection;
