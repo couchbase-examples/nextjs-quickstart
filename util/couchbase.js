@@ -38,14 +38,10 @@ async function createCouchbaseCluster() {
     return cached.conn
   }
 
-  // TODO: add TLS support
   cached.conn = new couchbase.Cluster('couchbase://'+ COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), { // ?ssl=no_verify&console_log_level=5
     username: COUCHBASE_USER,
     password: COUCHBASE_PASSWORD
   })
-  // TODO: look into doing something like this with promises: https://docs.couchbase.com/cloud/get-started/connect-to-cluster.html
-  const bucket = cached.conn.bucket(TEST_BUCKET_NAME);
-  const collection = bucket.defaultCollection();
 
   return cached.conn
 }
@@ -53,11 +49,13 @@ async function createCouchbaseCluster() {
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
 
-  let isConnected = true;
+  const bucket = cluster.bucket(TEST_BUCKET_NAME);
+  const collection = bucket.defaultCollection();
 
   let dbConnection = {
-    isConnected,
-    cluster
+    cluster,
+    bucket,
+    collection
   }
 
   return dbConnection;
