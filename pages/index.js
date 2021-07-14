@@ -243,7 +243,7 @@ export async function getServerSideProps(context) {
   const { isConnected, cluster } = connection;
 
   let result, rows = null;
-  if (isConnected) { //  && bucketKey === 'travel-sample'
+  if (isConnected) { //  TODO: this? && bucketKey === 'travel-sample'
     let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
     try {
       result = await cluster.query(qs);

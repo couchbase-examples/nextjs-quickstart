@@ -33,13 +33,11 @@ if (!cached) {
   cached = global.couchbase = { conn: null }
 }
 
-
 async function createCouchbaseCluster() {
-  // TODO: investigate this on change/requiring restart w/ cached
   if (cached.conn) {
     return cached.conn
   }
-  console.log(IS_CLOUD_INSTANCE);
+
   // TODO: add TLS support
   cached.conn = new couchbase.Cluster('couchbase://'+ COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), { // ?ssl=no_verify&console_log_level=5
     username: COUCHBASE_USER,
@@ -57,7 +55,6 @@ export async function connectToDatabase() {
 
   let isConnected = true;
 
-  console.log(cluster._conns);
   let dbConnection = {
     isConnected,
     cluster
@@ -75,10 +72,6 @@ export async function connectToDatabase() {
   } else {
     rows = null;
   }
-
-  console.log(rows);
-
-  console.log(dbConnection);
 
   return dbConnection;
 }
