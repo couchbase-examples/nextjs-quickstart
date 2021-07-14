@@ -22,8 +22,8 @@ export default function Home({isConnected, rows}) {
                   You are NOT connected to Couchbase. Try refreshing the page,
                   and if this error persists check the <code>README.md</code>{' '}for instructions.
                 </h2>
-                <em className="center">Note: you might have to re-start the app if the database was recently started (if
-                  using dev mode) for changes to take effect.</em>
+                <em className="center">Note: if the database was recently started, you might have to re-start the app (if
+                  using dev mode) or re-deploy to your serverless environment for changes to take effect.</em>
               </>
           )}
 
@@ -73,6 +73,10 @@ export default function Home({isConnected, rows}) {
         <style jsx>{`
           .small {
             font-size: 10px;
+          }
+          
+          .center {
+            text-align: center;
           }
           
           td, th {
