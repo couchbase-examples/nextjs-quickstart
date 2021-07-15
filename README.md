@@ -20,10 +20,8 @@ _NOTE:_ Testing this thing below!
 
 ## How to use
 - Clone this repo and follow configuration steps below
-- `create-next-app` support with built in example is pending
 
-[comment]: <> (Note: the bootstrapping instructions below require the `with-couchbase` example to exist &#40;it does not currently&#41;)
-
+- Soon you'll be able to use `create-next-app`, but for now cloning this repo is the best way
 Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
 ```bash
@@ -37,7 +35,7 @@ yarn create next-app --example with-couchbase with-couchbase-app
 
 ## Configuration
 
-### Set up a Couchbase instance
+### Set up a Couchbase database
 
 Set up a Couchbase database either locally or with [Couchbase Cloud](https://cloud.couchbase.com/sign-up).
 
