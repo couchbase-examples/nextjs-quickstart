@@ -48,15 +48,33 @@ async function createCouchbaseCluster() {
 
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
-
+  await ensureIndexes(cluster)
+  // TODO: scopes?
   const bucket = cluster.bucket(TEST_BUCKET_NAME);
-  const collection = bucket.defaultCollection();
+  const collection = bucket.collection('profile');
 
   let dbConnection = {
     cluster,
     bucket,
-    collection
+    profileCollection: collection
   }
 
   return dbConnection;
+}
+
+const ensureIndexes = async(cluster) => {
+  console.log('ensuring indexes');
+  try {
+    const bucketIndex = `CREATE PRIMARY INDEX ON ${TEST_BUCKET_NAME}`
+    const collectionIndex = `CREATE PRIMARY INDEX ON default:${TEST_BUCKET_NAME}._default.profile;`
+    await cluster.query(bucketIndex)
+    await cluster.query(collectionIndex)
+    console.log(`Index Creation: SUCCESS`)
+  } catch (err) {
+    if (err instanceof couchbase.IndexExistsError) {
+      console.info('Index Creation: Indexes Already Exists')
+    } else {
+      console.error(err)
+    }
+  }
 }

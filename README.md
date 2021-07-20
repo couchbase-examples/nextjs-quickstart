@@ -1,4 +1,4 @@
-## Example app using Couchbase
+## TUTORIAL: Example app using Couchbase
 
 [Couchbase](https://www.couchbase.com/) is The Modern Database for Enterprise Applications. This example will show you how to connect to and use Couchbase for your Next.js app.
 

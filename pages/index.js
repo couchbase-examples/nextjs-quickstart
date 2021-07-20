@@ -1,7 +1,51 @@
 import Head from 'next/head'
 import {connectToDatabase} from '../util/couchbase'
+import {UserCard} from "../components/UserCard";
+import {useState} from "react";
 
-export default function Home({isConnected, rows}) {
+export default function Home({isConnected, profile}) {
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleProfilePost = async (event) => {
+    event.preventDefault();
+
+    await fetch("http://localhost:3000/api/user", {
+      method: 'POST',
+      body: JSON.stringify({
+        firstName: event.target.firstName.value,
+        lastName: event.target.lastName.value,
+        email: event.target.email.value,
+        pass: event.target.password.value,
+      })
+    })
+  }
+
+  const handleProfileSearch = async (event) => {
+    event.preventDefault();
+
+    await fetch(`http://localhost:3000/api/user?search=${event.target.searchString.value}`, {
+      method: 'GET',
+    }).then(async (data) => {
+      setSearchResults(await data.json());
+    })
+  }
+
+  const handleProfilePut = async (event) => {
+
+
+    await fetch(`http://localhost:3000/api/user?pid=${event.target.pid.value}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        firstName: event.target.firstName.value,
+        lastName: event.target.lastName.value,
+        email: event.target.email.value,
+        pass: event.target.password.value,
+      })
+    })
+  }
+
+
+
   return (
       <div className="container">
         <Head>
@@ -10,53 +54,44 @@ export default function Home({isConnected, rows}) {
         </Head>
 
         <main>
-          <h1 className="title">
-            Welcome to <a href="https://nextjs.org">Next.js with Couchbase!</a>
-          </h1>
+          {/*<UserCard firstName={profile.firstName} lastName={profile.lastName} email={profile.email} pid={profile.pid} allowDelete={false}/>*/}
 
-          {isConnected ? (
-              <h2 className="subtitle green">You are connected to Couchbase</h2>
-          ) : (
-              <>
-                <h2 className="subtitle red">
-                  You are NOT connected to Couchbase. Try refreshing the page,
-                  and if this error persists check the <code>README.md</code>{' '}for instructions.
-                </h2>
-                <em className="center">Note: if the database was recently started, you might have to re-start the app (if
-                  using dev mode) or re-deploy to your serverless environment for changes to take effect.</em>
-              </>
-          )}
+          <br/>
+          <br/>
+          <form onSubmit={handleProfilePost}>
+            <input type="text" placeholder="First Name" name="firstName"/>
+            <input type="text" placeholder="Last Name" name="lastName"/>
+            <input type="email" placeholder="Email" name="email"/>
+            <input type="password" placeholder="Password" name="password"/>
+            <button type="submit">Post Profile</button>
+          </form>
+          <br/>
 
-          <p className="description">
-            Get started by editing <code>pages/index.js</code>
-          </p>
+          <form onSubmit={handleProfilePut}>
+            <input type="text" placeholder="PID to Update" name="pid"/>
+            <input type="text" placeholder="New First Name" name="firstName"/>
+            <input type="text" placeholder="New Last Name" name="lastName"/>
+            <input type="email" placeholder="New Email" name="email"/>
+            <input type="password" placeholder="New Password" name="password"/>
+            <button type="submit">Update Profile</button>
+          </form>
+          <br/>
 
-          <h2>Querying travel-sample to test connection:</h2>
-          {rows === null ? (
-              <em className="small center">Note: you must have travel-sample data imported to your couchbase instance and set the TEST_BUCKET_NAME properly for this to populate</em>
-          ) : (<></>)}
-          <table style={{textAlign: "left", marginTop: "20px"}}>
-            <tr>
-              <th>Name</th>
-              <th>Country</th>
-              <th>Callsign</th>
-              <th>ICAO</th>
-              <th>ID</th>
-              <th>Type</th>
-            </tr>
-            {rows !== null && rows.map((item) => {
+          <form onSubmit={handleProfileSearch}>
+            <input type="text" placeholder="Search String" name="searchString"/>
+            <button type="submit">Search</button>
+          </form>
+
+          <h4>Profile Search Results:</h4>
+          <div style={{ display: "flex"}}>
+            {searchResults !== null && searchResults.map((userProfile) => {
+              console.log(userProfile);
               return (
-                  <tr key={item['travel-sample'].id}>
-                    <td>{item['travel-sample'].name}</td>
-                    <td>{item['travel-sample'].country}</td>
-                    <td>{item['travel-sample'].callsign}</td>
-                    <td>{item['travel-sample'].icao}</td>
-                    <td>{item['travel-sample'].id}</td>
-                    <td>{item['travel-sample'].type}</td>
-                  </tr>
+                  <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName} email={userProfile.email} pid={userProfile.pid} allowDelete={true}/>
               )
-            })}
-          </table>
+            })
+            }
+          </div>
         </main>
 
         <footer>
@@ -71,6 +106,9 @@ export default function Home({isConnected, rows}) {
         </footer>
 
         <style jsx>{`
+          .flex-wrapper {
+            display: flex;
+          }
           .small {
             font-size: 10px;
           }
@@ -248,16 +286,17 @@ export default function Home({isConnected, rows}) {
   )
 }
 
-
+// TODO: how does getServersideProps link in w/ front-end interaction? This happens before the page loads..?
+// TODO: when does this actually run?
 export async function getServerSideProps(context) {
   let connection = await connectToDatabase();
 
-  const {cluster, bucket, collection} = connection;
+  const {cluster, bucket, profileCollection} = connection;
 
   // Check connection with a KV GET operation for a key that doesnt exist
   let isConnected = false;
   try {
-    await collection.get('testingConnectionKey');
+    await profileCollection.get('testingConnectionKey');
   } catch (err) {
     // error message will return 'document not found' if and only if we are connected
     // (but this document is not present, we're only trying to test the connection here)
@@ -267,18 +306,26 @@ export async function getServerSideProps(context) {
     // if the error message is anything OTHER THAN 'document not found', the connection is broken
   }
 
-  let result, rows = null;
-  if (isConnected && bucket._name === 'travel-sample') {
-    let qs = `SELECT * FROM \`travel-sample\` WHERE type = "airline" LIMIT 5;`
-    try {
-      result = await cluster.query(qs);
-      rows = result.rows;
-    } catch (e) {
-      console.log('Error Querying: \n', e);
-    }
-  }
+  // let profile = JSON.parse(JSON.stringify(await getProfileByKey(profileCollection, '1cfaaa82-e63e-4207-addf-f023763d0374')));
 
   return {
-    props: {isConnected, rows},
+    props: {isConnected, /* profile */ },
   }
 }
+
+
+// TODO: ensure indexes
+
+async function getProfileByKey(collection, key) {
+  try {
+    let res = await collection.get(key);
+    console.log(res.content);
+    return res.content;
+  } catch (err) {
+    // TODO: better error handling
+    console.log("fetch error2");
+    console.log(err);
+  }
+}
+
+
