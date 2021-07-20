@@ -96,7 +96,7 @@ Set each variable on `.env.local`:
 In order to interact with your Couchbase instance, you'll need to set up and configure the database.
 
 
-If everything is set up properly, you should be able to navigate to localhost:3000 to see a message confirming succesful connection to Couchbase. For troubleshooting and additional setup instructions please refer to the `README.md` included in the with-couchbase starter.
+If everything is set up properly, you should be able to navigate to localhost:3000 to see a message confirming succesful connection to Couchbase. For troubleshooting and additional setup instructions please refer to the `NextJS_Example_README.md` included in the with-couchbase starter.
 
 
 == Document Structure
