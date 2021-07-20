@@ -10,8 +10,8 @@
 
 [.title]
 {page-title}
-// TODO: fix this link
-image::https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nodejs-quickstart-repo&source=devPortal[link="https://gitpod.io/#https://github.com/couchbase-examples/nodejs-quickstart", width=150]
+
+image::https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nodejs-quickstart-repo&source=devPortal[link="https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs", width=150]
 
 [.desc]
 {page-desc}
@@ -42,10 +42,9 @@ Bootstrapping a new Next.js app using the 'with-couchbase' example, building out
 We'll also build out a basic front-end application with Next.js to interact with the endpoints mentioned above.
 
 == Source Code
-// TODO: change this clone url
 The completed source code from this tutorial can be cloned with the following command:
 ```sh
-git clone https://github.com/couchbase-examples/nodejs-quickstart
+git clone https://github.com/couchbase-examples/tutorial-nextjs
 ```
 
 == Set up and Run The Application
@@ -70,12 +69,16 @@ yarn install
 yarn dev
 ```
 
-// TODO: add init-db
-*After installation of Couchbase 7, and if it is running on localhost (http://127.0.0.1:8091) we can create a bucket named `user_profile` and a collection named `profile`, by running the following commands:
 
-```sh
-npm run init-db
-```
+*After installation of Couchbase 7, and if it is running on localhost (http://127.0.0.1:8091) we can create a bucket named `user_profile` and a collection named `profile`. You can do this manually by accessing the Couchbase console.
+
+
+// or if you've cloned the completed project running the following command will handle this step:
+
+// TODO: add init-db for testing
+//```sh
+//npm run init-db
+//```
 To set environment variables, copy the `env.local.example` file in this directory to `.env.local`:
 
 ```bash
@@ -249,7 +252,7 @@ Next, lets add a simple front-end form to create user profiles. On the `index.js
 </form>
 ```
 
-We'll handle this request in a function within the same home function:
+We'll handle this request in a function on `index.js` inside `Home()`:
 ```js
 const handleProfilePost = async (event) => {
     event.preventDefault();
