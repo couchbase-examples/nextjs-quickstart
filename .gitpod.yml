@@ -1,0 +1,25 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+- name: Start Couchbase
+  command:  cd /opt/couchbase/ && ./start-cb.sh
+- name: Log use
+  command: curl -s 'https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=gitpod' > /dev/null
+- name: Start app
+  init: npm install && npm run init-db
+  command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; done && npm start
+
+ports:
+- port: 3000
+  onOpen: open-preview
+- port: 8091
+  onOpen: open-browser
+- port: 8092-10000
+  onOpen: ignore
+- port: 4369
+  onOpen: ignore
+
+github:
+  prebuilds:
+    master: true

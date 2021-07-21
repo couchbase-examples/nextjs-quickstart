@@ -11,7 +11,7 @@
 [.title]
 {page-title}
 
-image::https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nodejs-quickstart-repo&source=devPortal[link="https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs", width=150]
+image::https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=devPortal[link="https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs", width=150]
 
 [.desc]
 {page-desc}
@@ -506,4 +506,4 @@ Let's add yet another form with a search field, and a flexbox to display results
 == Conclusion
 Next.js offers powerful tooling to create custom pages, components, and API endpoints. We've learned how to fetch data from within a page as well as add POST, PUT, GET, and DELETE routes to handle more complex backend logic from a single file (`user.js`). We also briefly touched on creating custom components that don't render as pages but rather function as elements to build your pages effortlessly.
 
-Although this example is by no means a production ready webapp, it should provide the necessary knowledge, and a great jumping off point for more complex applications. 
+Although this example is by no means a production ready webapp, it should provide the necessary knowledge, and a great jumping off point for more complex applications.
