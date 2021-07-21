@@ -3,17 +3,15 @@ import {connectToDatabase} from '../util/couchbase'
 import {UserCard} from "../components/UserCard";
 import React from 'react';
 import {useState} from "react";
+import absoluteUrl from 'next-absolute-url'
 
-export default function Home({isConnected, profile}) {
+export default function Home({isConnected, origin, profile}) {
   const [searchResults, setSearchResults] = useState([]);
-
-  console.log('window.location');
-  console.log(window.location);
 
   const handleProfilePost = async (event) => {
     event.preventDefault();
 
-    await fetch("http://localhost:3000/api/user", {
+    await fetch(`${origin}/api/user`, {
       method: 'POST',
       body: JSON.stringify({
         firstName: event.target.firstName.value,
@@ -27,7 +25,7 @@ export default function Home({isConnected, profile}) {
   const handleProfileSearch = async (event) => {
     event.preventDefault();
 
-    await fetch(`http://localhost:3000/api/user?search=${event.target.searchString.value}`, {
+    await fetch(`${origin}/api/user?search=${event.target.searchString.value}`, {
       method: 'GET',
     }).then(async (data) => {
       setSearchResults(await data.json());
@@ -37,7 +35,7 @@ export default function Home({isConnected, profile}) {
   const handleProfilePut = async (event) => {
 
 
-    await fetch(`http://localhost:3000/api/user?pid=${event.target.pid.value}`, {
+    await fetch(`${origin}/api/user?pid=${event.target.pid.value}`, {
       method: 'PUT',
       body: JSON.stringify({
         firstName: event.target.firstName.value,
@@ -293,6 +291,9 @@ export default function Home({isConnected, profile}) {
 // TODO: how does getServersideProps link in w/ front-end interaction? This happens before the page loads..?
 // TODO: when does this actually run?
 export async function getServerSideProps(context) {
+  const {req} = context;
+  const { origin } = absoluteUrl(req);
+
   let connection = await connectToDatabase();
 
   const {cluster, bucket, profileCollection} = connection;
@@ -313,7 +314,7 @@ export async function getServerSideProps(context) {
   // let profile = JSON.parse(JSON.stringify(await getProfileByKey(profileCollection, '1cfaaa82-e63e-4207-addf-f023763d0374')));
 
   return {
-    props: {isConnected, /* profile */ },
+    props: {isConnected, origin, /* profile */ },
   }
 }
 
