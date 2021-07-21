@@ -5,15 +5,18 @@ import { delay } from './delay.js'
 
 var username = process.env.COUCHBASE_USER
 var password = process.env.COUCHBASE_PASSWORD
+console.log(process.env.COUCHBASE_USER);
+console.log(process.env.COUCHBASE_PASSWORD);
 var auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 
-// TODO: integrate endpoint?
-const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
+// // TODO: integrate endpoint?
+// const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
 let TEST_BUCKET_NAME = process.env.TEST_BUCKET_NAME
-let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
+// let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
 
 const restCreateBucket = async() => {
-  const data = { name: process.env.CB_BUCKET, ramQuotaMB: 150 }
+  // TODO: fix these bucket names
+  const data = { name: TEST_BUCKET_NAME, ramQuotaMB: 150 }
   await axios({
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },

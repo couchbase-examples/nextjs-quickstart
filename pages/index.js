@@ -88,7 +88,7 @@ export default function Home({isConnected, profile}) {
             {searchResults !== null && searchResults.map((userProfile) => {
               console.log(userProfile);
               return (
-                  <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName} email={userProfile.email} pid={userProfile.pid} allowDelete={true}/>
+                  <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName} email={userProfile.email} pid={userProfile.pid} />
               )
             })
             }

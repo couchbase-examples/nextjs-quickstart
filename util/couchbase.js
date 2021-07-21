@@ -5,7 +5,8 @@ const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
 const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
 let TEST_BUCKET_NAME = process.env.TEST_BUCKET_NAME
 let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
-
+console.log('user: ' + COUCHBASE_USER);
+console.log('pass: ' + COUCHBASE_PASSWORD);
 if (!COUCHBASE_USER) {
   throw new Error(
     'Please define the COUCHBASE_USER environment variable inside .env.local'
