@@ -31,7 +31,7 @@ const restCreateCollection = async() => {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
     data: qs.stringify(data),
-    url: `http://127.0.0.1:8091/pools/default/buckets/${TEST_BUCKET_NAME}/collections/_default`,
+    url: `http://127.0.0.1:8091/pools/default/buckets/${TEST_BUCKET_NAME}/scopes/_default/collections`,
   })
       .catch(error => console.log(`Collection may already exist: ${error.message}`))
 }
