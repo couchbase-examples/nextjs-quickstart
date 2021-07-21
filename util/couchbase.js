@@ -48,7 +48,7 @@ async function createCouchbaseCluster() {
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
   await ensureIndexes(cluster)
-  // TODO: scopes?
+
   const bucket = cluster.bucket(TEST_BUCKET_NAME);
   const collection = bucket.collection('profile');
 
@@ -73,6 +73,7 @@ const ensureIndexes = async(cluster) => {
     if (err instanceof couchbase.IndexExistsError) {
       console.info('Index Creation: Indexes Already Exists')
     } else {
+      console.log("errrrrrrrrrrrrr");
       console.error(err)
     }
   }
