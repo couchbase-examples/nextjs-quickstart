@@ -5,8 +5,6 @@ import { delay } from './delay.js'
 
 var username = process.env.COUCHBASE_USER
 var password = process.env.COUCHBASE_PASSWORD
-console.log(process.env.COUCHBASE_USER);
-console.log(process.env.COUCHBASE_PASSWORD);
 var auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 
 // // TODO: integrate endpoint?

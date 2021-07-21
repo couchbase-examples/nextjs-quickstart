@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
+    "dev:default": "env-cmd .env.default next dev",
     "build": "next build",
     "start": "next start",
     "init-db:default": "env-cmd .env.default npx babel-node ./util/initializeCbServer.js",
