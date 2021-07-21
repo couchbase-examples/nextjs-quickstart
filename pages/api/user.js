@@ -39,6 +39,7 @@ export default async function handler(req, res) {
         })
         .catch((e) => {
           console.log("broke");
+          console.log(e);
           res.status(500).send({
             "message": `Profile Insert Failed: ${e.message}`
           })
@@ -118,9 +119,3 @@ export default async function handler(req, res) {
 
 }
 
-
-// TODO; should we pass the collection? see node.js quickstart example and RENAME the collection var? Maybe do diff than default
-async function insertProfile(collection, data) {
-
-
-}
