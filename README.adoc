@@ -73,13 +73,13 @@ yarn dev
 *After installation of Couchbase 7, and if it is running on localhost (http://127.0.0.1:8091) we can create a bucket named `user_profile` and a collection named `profile`. You can do this manually by accessing the Couchbase console.
 
 
-// or if you've cloned the completed project running the following command will handle this step:
+If you've cloned the completed project running the following command will handle bucket and collection creation:
 
-// TODO: add init-db for testing
-//```sh
-//npm run init-db
-//```
-To set environment variables, copy the `env.local.example` file in this directory to `.env.local`:
+```sh
+npm run init-db:local
+```
+
+To set local environment variables, copy the `env.local.example` file in this directory to `.env.local`:
 
 ```bash
 cp .env.local.example .env.local
@@ -98,6 +98,7 @@ In order to interact with your Couchbase instance, you'll need to set up and con
 
 If everything is set up properly, you should be able to navigate to localhost:3000 to see a message confirming succesful connection to Couchbase. For troubleshooting and additional setup instructions please refer to the `NextJS_Example_README.md` included in the with-couchbase starter.
 
+Note: Gitpod and testing environments use the .env.default file to automatically set up a Couchbase instance with default credentials.
 
 == Document Structure
 

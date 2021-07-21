@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "init-db": "env-cmd .env.local npx babel-node ./util/initializeCbServer.js"
+    "init-db:default": "env-cmd .env.default npx babel-node ./util/initializeCbServer.js",
+    "init-db:local": "env-cmd .env.local npx babel-node ./util/initializeCbServer.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
