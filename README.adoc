@@ -270,6 +270,8 @@ const handleProfilePost = async (event) => {
 }
 ```
 
+Note: in the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments.
+
 [[getbykey-profile]]
 == GET a Profile by Key
 Although the API framework baked into Next.js is highly powerful, Next is ALSO capable of fetching data from the database using the `getServerSideProps()` function in `index.js`. We'll fetch a profile by key using this method to demonstrate the versatility of Next.js.
@@ -503,6 +505,11 @@ Let's add yet another form with a search field, and a flexbox to display results
     }
 </div>
 ```
+
+== Notes About the Quickstart Code
+- We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
+
+- In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments. We use link:https://www.npmjs.com/package/next-absolute-url[next-absolute-url] for this.
 
 == Conclusion
 Next.js offers powerful tooling to create custom pages, components, and API endpoints. We've learned how to fetch data from within a page as well as add POST, PUT, GET, and DELETE routes to handle more complex backend logic from a single file (`user.js`). We also briefly touched on creating custom components that don't render as pages but rather function as elements to build your pages effortlessly.
