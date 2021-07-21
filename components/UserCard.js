@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const UserCard = (props) => {
   const handleDeletion = async (event) => {
     await fetch(`http://localhost:3000/api/user?pid=${props.pid}`, {

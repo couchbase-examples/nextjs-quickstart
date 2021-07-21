@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import {connectToDatabase} from '../util/couchbase'
 import {UserCard} from "../components/UserCard";
+import React from 'react';
 import {useState} from "react";
 
 export default function Home({isConnected, profile}) {
