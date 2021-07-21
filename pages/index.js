@@ -7,6 +7,9 @@ import {useState} from "react";
 export default function Home({isConnected, profile}) {
   const [searchResults, setSearchResults] = useState([]);
 
+  console.log('window.location');
+  console.log(window.location);
+
   const handleProfilePost = async (event) => {
     event.preventDefault();
 
