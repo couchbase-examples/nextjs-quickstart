@@ -34,9 +34,11 @@ export default async function handler(req, res) {
 
     await profileCollection.insert(profile.pid, profile)
         .then((result) => {
+          console.log("sent");
           res.send(result);
         })
         .catch((e) => {
+          console.log("broke");
           res.status(500).send({
             "message": `Profile Insert Failed: ${e.message}`
           })

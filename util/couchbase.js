@@ -47,10 +47,9 @@ async function createCouchbaseCluster() {
 
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
-  await ensureIndexes(cluster)
-
   const bucket = cluster.bucket(TEST_BUCKET_NAME);
   const collection = bucket.collection('profile');
+  await ensureIndexes(cluster)
 
   let dbConnection = {
     cluster,

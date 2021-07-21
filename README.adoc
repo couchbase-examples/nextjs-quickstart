@@ -160,7 +160,7 @@ The logic for checking the connection and running a simple query can be viewed i
 
 The first time the app is run, we create two primary indexes, one for our user_profile bucket and another for our `profile` collection. The collection index is used by the `"/profile"` GET endpoint that utilizes a N1QL query to search the database for profile documents where `firstName` or `lastName` match the search value. The bucket index can be used in the case that any documents are added to the bucket's default collection or manually from the Couchbase Web UI.
 
-Add this function to `couchbase.js` and call it right after you call `createCouchbaseCluster()` (passing it the cluster you just created):
+Add this function to `couchbase.js` and call it right after you call `bucket.collection()` (passing it the cluster you created a few lines above):
 
 ```js
 const ensureIndexes = async(cluster) => {
