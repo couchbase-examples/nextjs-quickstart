@@ -2,7 +2,7 @@
 
 [![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs)
 
-This is a companion repository for: "[Quickstart for using Couchbase with Next.js](https://developer.couchbase.com/tutorial-quickstart-nodejs/)" at [developer.couchbase.com](https://developer.couchbase.com), which aims to get you up and running with Couchbase on [NextJS](https://nextjs.org/), connect to a Couchbase cluster, create, read, update, and delete documents, and how to write simple parameterized N1QL queries. It also covers creating a basic front-end using Next.js.
+This is a companion repository to the tutorial: "[Quickstart for using Couchbase with Next.js](https://developer.couchbase.com/tutorial-quickstart-nodejs/)" at [developer.couchbase.com](https://developer.couchbase.com), which aims to get you up and running with Couchbase on [NextJS](https://nextjs.org/), connect to a Couchbase cluster, create, read, update, and delete documents, and how to write simple parameterized N1QL queries. It also covers creating a basic front-end using Next.js.
 
 We will be using the latest version of Couchbase (version 7) that enables scopes and collections.
 
@@ -71,7 +71,7 @@ Note: Gitpod and testing environments use the .env.default file to automatically
 ## Notes About the Quickstart Code
 - We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
 
-- In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments. We use link:https://www.npmjs.com/package/next-absolute-url[next-absolute-url] for this.
+- In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments. We use [next-absolute-url](https://www.npmjs.com/package/next-absolute-url) for this.
 
 ## Running The Tests
 A suite of integration tests has been included, and can be run by first setting up the database:
