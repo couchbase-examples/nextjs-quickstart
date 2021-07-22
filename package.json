@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "init-db:default": "env-cmd .env.default npx babel-node ./util/initializeCbServer.js",
-    "init-db:local": "env-cmd .env.local npx babel-node ./util/initializeCbServer.js"
+    "init-db:local": "env-cmd .env.local npx babel-node ./util/initializeCbServer.js",
+    "test": "env-cmd .env.default jest"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -27,7 +28,11 @@
     "@babel/plugin-transform-runtime": "^7.13.15",
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-react": "^7.14.5",
-    "env-cmd": "^8.0.2"
+    "env-cmd": "^8.0.2",
+    "jest": "^26.6.3",
+    "next-server": "^9.0.5",
+    "supertest": "^6.1.3",
+    "test-listen": "^1.1.0"
   },
   "license": "MIT"
 }

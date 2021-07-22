@@ -1,0 +1,14 @@
+name: Run Jest Tests
+on:
+  push:
+    branches:
+      - develop
+      - master
+  workflow_dispatch:
+jobs:
+  tests:
+    name: Run Jest Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm test

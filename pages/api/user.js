@@ -4,13 +4,9 @@ import { v4 } from 'uuid'
 
 export default async function handler(req, res) {
   const {cluster, bucket, profileCollection} = await connectToDatabase();
-
   // Parse the body only if it is present
-  // TODO: check if we even need to parse the body? Only if its raw? What form do we want it in
-  console.log(req.body.firstName);
-  console.log("PARSING BODY");
   let body = !!req.body ? JSON.parse(req.body) : null;
-  console.log(body);
+
   if (req.method === 'POST') {
     /**
      *  POST HANDLER
@@ -31,15 +27,12 @@ export default async function handler(req, res) {
       ...body,
       pass: bcrypt.hashSync(body.pass, 10)
     }
-
     await profileCollection.insert(profile.pid, profile)
         .then((result) => {
           console.log("sent");
           res.send(result);
         })
         .catch((e) => {
-          console.log("broke");
-          console.log(e);
           res.status(500).send({
             "message": `Profile Insert Failed: ${e.message}`
           })
@@ -48,7 +41,6 @@ export default async function handler(req, res) {
     /**
      *  PUT HANDLER
      */
-
     try {
       await profileCollection.get(req.query.pid)
           .then(async (result) => {
@@ -82,11 +74,19 @@ export default async function handler(req, res) {
         parameters: {
           SKIP: Number(req.query.skip || 0),
           LIMIT: Number(req.query.limit || 5),
+          // SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
           SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
         }
       }
-
-      const query = `
+// TODO: update readme with new query
+      const query = options.parameters.SEARCH == null ?
+          `
+          SELECT p.*
+      FROM ${process.env.TEST_BUCKET_NAME}._default.profile p
+      LIMIT $LIMIT OFFSET $SKIP;
+      `
+              :
+          `
       SELECT p.*
       FROM ${process.env.TEST_BUCKET_NAME}._default.profile p
       WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
@@ -94,9 +94,12 @@ export default async function handler(req, res) {
     `
       await cluster.query(query, options)
           .then((result) => res.send(result.rows))
-          .catch((error) => res.status(500).send({
+          .catch((error) => {
+            console.log("YO*****************");
+            console.log(error);
+            res.status(500).send({
             "message": `Query failed: ${error.message}`
-          }))
+          })})
     } catch (e) {
       console.error(e)
     }
