@@ -81,13 +81,13 @@ export default async function handler(req, res) {
       const query = options.parameters.SEARCH == null ?
           `
           SELECT p.*
-      FROM ${process.env.TEST_BUCKET_NAME}._default.profile p
+      FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
       LIMIT $LIMIT OFFSET $SKIP;
       `
               :
           `
       SELECT p.*
-      FROM ${process.env.TEST_BUCKET_NAME}._default.profile p
+      FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
       WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
       LIMIT $LIMIT OFFSET $SKIP;
     `

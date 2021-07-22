@@ -3,7 +3,7 @@ const couchbase = require('couchbase');
 const COUCHBASE_USER = process.env.COUCHBASE_USER
 const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
 const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
-let TEST_BUCKET_NAME = process.env.TEST_BUCKET_NAME
+let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
 let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
 if (!COUCHBASE_USER) {
   throw new Error(
@@ -17,8 +17,8 @@ if (!COUCHBASE_PASSWORD) {
   )
 }
 
-if (!TEST_BUCKET_NAME) {
-  TEST_BUCKET_NAME = 'travel-sample'
+if (!COUCHBASE_BUCKET) {
+  COUCHBASE_BUCKET = 'travel-sample'
 }
 
 /**
@@ -47,7 +47,7 @@ async function createCouchbaseCluster() {
 
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
-  const bucket = cluster.bucket(TEST_BUCKET_NAME);
+  const bucket = cluster.bucket(COUCHBASE_BUCKET);
   await ensureIndexes(cluster)
   const collection = bucket.collection('profile');
 
@@ -62,8 +62,8 @@ export async function connectToDatabase() {
 
 const ensureIndexes = async(cluster) => {
   try {
-    const bucketIndex = `CREATE PRIMARY INDEX ON ${TEST_BUCKET_NAME}`
-    const collectionIndex = `CREATE PRIMARY INDEX ON default:${TEST_BUCKET_NAME}._default.profile;`
+    const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
+    const collectionIndex = `CREATE PRIMARY INDEX ON default:${COUCHBASE_BUCKET}._default.profile;`
     await cluster.query(bucketIndex)
     await cluster.query(collectionIndex)
     console.log(`Index Creation: SUCCESS`)

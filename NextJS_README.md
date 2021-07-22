@@ -16,7 +16,7 @@ Once you have access to the environment variables you'll need, deploy the exampl
 _NOTE:_ direct deployment button is currently unavailable. To deploy a NextJS site to Vercel, clone the project and follow the deployment instructions at the bottom of this README
 
 _NOTE:_ Testing this thing below!
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-couchbase&project-name=with-couchbase&repository-name=with-couchbase&env=COUCHBASE_USER,COUCHBASE_PASSWORD,COUCHBASE_ENDPOINT,TEST_BUCKET_NAME,IS_CLOUD_INSTANCE&envDescription=Required%20to%20connect%20the%20app%20with%20Couchbase)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-couchbase&project-name=with-couchbase&repository-name=with-couchbase&env=COUCHBASE_USER,COUCHBASE_PASSWORD,COUCHBASE_ENDPOINT,COUCHBASE_BUCKET,IS_CLOUD_INSTANCE&envDescription=Required%20to%20connect%20the%20app%20with%20Couchbase)
 
 ## How to use
 - Clone this repo and follow configuration steps below
@@ -57,7 +57,7 @@ Set each variable on `.env.local`:
 - `COUCHBASE_USERNAME` - The username of an authorized user on your Couchbase instance
 - `COUCHBASE_PASSWORD` - The corresponding password for the user specified above
 - `COUCHBASE_ENDPOINT` - The endpoint to connect to. Use `localhost` for a local instance of Couchbase, or Wide Area Network address for a cloud instance (formatted like`<xxxxx>.dp.cloud.couchbase.com`) 
-- `TEST_BUCKET_NAME` - The bucket you'd like to connect to for testing. Defaults to `travel-sample`, which works best (but must be imported, see notes on adding [sample buckets](https://docs.couchbase.com/server/current/manage/manage-settings/install-sample-buckets.html))
+- `COUCHBASE_BUCKET` - The bucket you'd like to connect to for testing. Defaults to `travel-sample`, which works best (but must be imported, see notes on adding [sample buckets](https://docs.couchbase.com/server/current/manage/manage-settings/install-sample-buckets.html))
 - `IS_CLOUD_INSTANCE` - `true` if you are trying to connect to an instance of Couchbase Cloud, `false` otherwise.
 
 ### Run Next.js in development mode
@@ -97,7 +97,7 @@ To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [
 
 Alternatively, you can deploy using our template by clicking on the Deploy button below.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-couchbase&project-name=with-couchbase&repository-name=with-couchbase&env=COUCHBASE_USER,COUCHBASE_PASSWORD,COUCHBASE_ENDPOINT,TEST_BUCKET_NAME,IS_CLOUD_INSTANCE&envDescription=Required%20to%20connect%20the%20app%20with%20Couchbase)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-couchbase&project-name=with-couchbase&repository-name=with-couchbase&env=COUCHBASE_USER,COUCHBASE_PASSWORD,COUCHBASE_ENDPOINT,COUCHBASE_BUCKET,IS_CLOUD_INSTANCE&envDescription=Required%20to%20connect%20the%20app%20with%20Couchbase)
 
 
 

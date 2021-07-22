@@ -9,8 +9,6 @@ export default function Home({isConnected, origin, profile}) {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleProfilePost = async (event) => {
-    event.preventDefault();
-
     await fetch(`${origin}/api/user`, {
       method: 'POST',
       body: JSON.stringify({
@@ -33,8 +31,6 @@ export default function Home({isConnected, origin, profile}) {
   }
 
   const handleProfilePut = async (event) => {
-
-
     await fetch(`${origin}/api/user?pid=${event.target.pid.value}`, {
       method: 'PUT',
       body: JSON.stringify({

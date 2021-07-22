@@ -7,14 +7,11 @@ var username = process.env.COUCHBASE_USER
 var password = process.env.COUCHBASE_PASSWORD
 var auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 
-// // TODO: integrate endpoint?
-// const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
-let TEST_BUCKET_NAME = process.env.TEST_BUCKET_NAME
-// let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
+let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
 
 const restCreateBucket = async() => {
   // TODO: fix these bucket names
-  const data = { name: TEST_BUCKET_NAME, ramQuotaMB: 150 }
+  const data = { name: COUCHBASE_BUCKET, ramQuotaMB: 150 }
   await axios({
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
@@ -31,7 +28,7 @@ const restCreateCollection = async() => {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
     data: qs.stringify(data),
-    url: `http://127.0.0.1:8091/pools/default/buckets/${TEST_BUCKET_NAME}/scopes/_default/collections`,
+    url: `http://127.0.0.1:8091/pools/default/buckets/${COUCHBASE_BUCKET}/scopes/_default/collections`,
   })
       .catch(error => console.log(`Collection may already exist: ${error.message}`))
 }

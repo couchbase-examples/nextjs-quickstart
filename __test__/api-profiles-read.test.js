@@ -41,7 +41,12 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json();
-    expect(jsonResponse).toHaveLength(2);
+    expect(jsonResponse).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(profile2),
+          expect.objectContaining(profile1)
+        ])
+    )
     expect(response.status).toBe(200)
     return server.close()
   })
@@ -53,7 +58,12 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json()
-    expect(jsonResponse).toHaveLength(2)
+    expect(jsonResponse).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(profile2),
+          expect.objectContaining(profile1)
+        ])
+    )
     expect(response.status).toBe(200)
     return server.close()
   })
