@@ -12,7 +12,7 @@ import http from "http"
 import listen from "test-listen"
 
 
-describe("DELETE /user/{id}", () => {
+describe("DELETE /user?pid={id}", () => {
   describe("given we pass a pid as request param", () => {
     const id = v4()
 
