@@ -1,4 +1,4 @@
-= Quickstart in Couchbase with Node JS and Express
+= Quickstart for using Couchbase with Next.js
 
 :page-slug: tutorial-nextjs
 :page-title: Using Next.js with Couchbase

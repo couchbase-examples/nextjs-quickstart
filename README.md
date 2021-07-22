@@ -1,27 +1,12 @@
-= Quickstart in Couchbase with Node JS and Express
+# Quickstart for using Couchbase with Next.js
 
-:page-slug: tutorial-nextjs
-:page-title: Using Next.js with Couchbase
-:page-category: tutorials
-:page-desc: Build a basic Next.js front-end and back-end app with Couchbase
-:page-tags: Tutorial, Node.js
-:page-order: 00004
-:page-estimate: 60 min
+[![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs)
 
-[.title]
-{page-title}
-
-image::https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=devPortal[link="https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs", width=150]
-
-[.desc]
-{page-desc}
-
-[abstract]
-In this article, you will learn how to use Next.js to connect to a Couchbase cluster to create, read, update, and delete documents and how to write simple parametrized N1QL queries. You will also build a basic front-end application to interact with your data.
+This is a companion repository for: "[Quickstart for using Couchbase with Next.js](https://developer.couchbase.com/tutorial-quickstart-nodejs/)" at [developer.couchbase.com](https://developer.couchbase.com), which aims to get you up and running with Couchbase on [NextJS](https://nextjs.org/), connect to a Couchbase cluster, create, read, update, and delete documents, and how to write simple parameterized N1QL queries. It also covers creating a basic front-end using Next.js.
 
 We will be using the latest version of Couchbase (version 7) that enables scopes and collections.
 
-== Prerequisites
+## Prerequisites
 
 To run this prebuilt project, you will need:
 
@@ -30,24 +15,7 @@ To run this prebuilt project, you will need:
 - NextJS
 - Code Editor
 
-== What We'll Cover
-Bootstrapping a new Next.js app using the 'with-couchbase' example, building out a simple REST API using the API framework built into Next.js and the, link:https://docs.couchbase.com/nodejs-sdk/current/hello-world/start-using-sdk.html[Node.js SDK for Couchbase], version 3.x with the following endpoints:
-
-- <<post-profile>> – Create a new user profile
-- <<getbykey-profile>> – Get a specific profile
-- <<put-profile>> – Update a profile
-- <<delete-profile>> – Delete a profile
-- <<get-profiles>> – Get all profiles matching First or Last Name
-
-We'll also build out a basic front-end application with Next.js to interact with the endpoints mentioned above.
-
-== Source Code
-The completed source code from this tutorial can be cloned with the following command:
-```sh
-git clone https://github.com/couchbase-examples/tutorial-nextjs
-```
-
-== Set up and Run The Application
+## Set up and Run The Application
 We'll start by bootstrapping a new Next.js project using the 'with-couchbase' example:
 
 ```sh
@@ -100,12 +68,12 @@ If everything is set up properly, you should be able to navigate to localhost:30
 
 Note: Gitpod and testing environments use the .env.default file to automatically set up a Couchbase instance with default credentials.
 
-== Notes About the Quickstart Code
+## Notes About the Quickstart Code
 - We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
 
 - In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments. We use link:https://www.npmjs.com/package/next-absolute-url[next-absolute-url] for this.
 
-== Running The Tests
+## Running The Tests
 A suite of integration tests has been included, and can be run by first setting up the database:
 ```
 npm run init-db:default
