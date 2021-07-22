@@ -20,7 +20,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Setup couchbase
         run: |
-          apt install -y iputils-ping || echo "apt-install failed"
+         sudo apt install -y iputils-ping || echo "apt-install failed"
           ping -c 1 couchbase && (
             apt install -y socat
             socat TCP-LISTEN:8091,fork TCP:couchbase:8091 &
