@@ -62,7 +62,7 @@ jobs:
         run: npm test
     services:
       couchbase:
-        image: couchbase:enterprise-7.0.0-beta
+        image: deniswsrosa/couchbase7-5868-gitpod:latest
         ports:
           - 8091:8091
           - 8092:8092
