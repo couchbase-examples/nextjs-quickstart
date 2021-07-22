@@ -21,7 +21,6 @@ const profile2 = {
 }
 
 
-
 beforeAll(async () => {
   const {cluster, bucket, profileCollection} = await connectToDatabase();
   await profileCollection.insert(profile1.pid, profile1)

@@ -1,95 +1,127 @@
-// import {
-//   request, describe, test, expect, //supertes
-//   bcrypt, v4,                      // utilities
-//   connectToDatabase,      // couchbase
-//   handler                              // REST application
-// } from './imports'
-//
-// import { delay } from '../util/delay'
-// import { NextApiRequest, NextApiResponse } from "next"
-// import { apiResolver } from "next-server/dist/server/api-utils"
-// import http from "http"
-// import listen from "test-listen"
-//
-// const profile1 = {
-//   pid: v4(), firstName: "Joe", lastName: "Schmoe",
-//   email: "joe.schmoe@couchbase.com", pass: bcrypt.hashSync('mypassword1', 10)
-// }
-// const profile2 = {
-//   pid: v4(), firstName: "John", lastName: "Dear",
-//   email: "john.dear@couchbase.com", pass: bcrypt.hashSync('mypassword2', 10)
-// }
-//
-//
-//
-// beforeAll(async () => {
-//   const {cluster, bucket, profileCollection} = await connectToDatabase();
-//   await profileCollection.insert(profile1.pid, profile1)
-//       .then(() => {/* console.log('test profile document inserted', profile) */})
-//       .catch((e) => console.log(`test profile insert failed: ${e.message}`))
-//   await profileCollection.insert(profile2.pid, profile2)
-//       .then(() => {/* console.log('test profile document inserted', profile) */})
-//       .catch((e) => console.log(`test profile insert failed: ${e.message}`))
-// })
-//
-//
-// describe("GET /user", () => {
-//   test("responds 200 to GET all", async () => {
-//     let requestHandler = (req, res) => {
-//       return apiResolver(req, res, undefined, handler)
-//     }
-//     let server = http.createServer(requestHandler)
-//     let url = await listen(server)
-//     let response = await fetch(url)
-//     let jsonResponse = await response.json();
-//     expect(jsonResponse).toHaveLength(2);
-//     expect(response.status).toBe(200)
-//     return server.close()
-//   })
-//   test("responds 200 to GET with search string", async () => {
-//     let requestHandler = (req, res) => {
-//       return apiResolver(req, res, {'search': 'jo'}, handler)
-//     }
-//     let server = http.createServer(requestHandler)
-//     let url = await listen(server)
-//     let response = await fetch(url)
-//     let jsonResponse = await response.json()
-//     expect(jsonResponse).toHaveLength(2)
-//     expect(response.status).toBe(200)
-//     return server.close()
-//   })
-//   // test("responds 200 to authed POST", async () => {
-//   //   // expect.assertions(1)
-//   //   let requestHandler = (req, res) => {
-//   //     // res.user = { username: "scooby" }
-//   //     return apiResolver(req, res, undefined, handler)
-//   //   }
-//   //   let server = http.createServer(requestHandler)
-//   //   let url = await listen(server)
-//   //   let response = await fetch(url, {
-//   //     method: 'POST',
-//   //     body: JSON.stringify({
-//   //       firstName: 'test',
-//   //       lastName: 'scribner',
-//   //       email: 'ejscribner@gmail.com',
-//   //       pass: 'testPass',
-//   //     })
-//   //   })
-//   //   expect(response.status).toBe(200)
-//   //   return server.close()
-//   // })
-// });
-//
-//
-// afterAll(async () => {
-//   const {cluster, bucket, profileCollection} = await connectToDatabase();
-//   await profileCollection.remove(profile1.pid)
-//     .then(() => { /*console.log('test profile document deleted', id)*/ })
-//     .catch((e) => console.log(`test profile remove failed: ${e.message}`))
-//   await profileCollection.remove(profile2.pid)
-//     .then(() => { /*console.log('test profile document deleted', id)*/ })
-//     .catch((e) => console.log(`test profile remove failed: ${e.message}`))
-//   cluster.close()
-// })
-//
+import {
+  request, describe, test, expect, //supertes
+  bcrypt, v4,                      // utilities
+  connectToDatabase,      // couchbase
+  handler                              // REST application
+} from './imports'
 
+import { delay } from '../util/delay'
+import { NextApiRequest, NextApiResponse } from "next"
+import { apiResolver } from "next-server/dist/server/api-utils"
+import http from "http"
+import listen from "test-listen"
+
+
+describe("POST /user", () => {
+  const profile = {
+    firstName: 'Joe', lastName: 'dev',
+    email: 'joe@dev.com', pass: 'p455w3rd'
+  }
+  let pid;
+
+  describe("given a request with user & pass", () => {
+    test('should respond with statusCode 200 and return document persisted', async () => {
+      let requestHandler = (req, res) => {
+        return apiResolver(req, res, undefined, handler)
+      }
+      let server = http.createServer(requestHandler)
+      let url = await listen(server)
+      let response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(profile)
+      })
+      let jsonResponse = await response.json()
+      pid = jsonResponse.pid
+      expect(response.status).toBe(200)
+      await bcrypt.compare(profile.pass, jsonResponse.pass, function (err, result) {
+        expect(result).toBe(true)
+      })
+      expect(pid.length).toBe(36)
+      expect(jsonResponse).toMatchObject({
+        firstName: profile.firstName, lastName: profile.lastName, email: profile.email
+      })
+      return server.close()
+    })
+
+    afterEach(async() => {
+      const {cluster, bucket, profileCollection} = await connectToDatabase();
+      await profileCollection.remove(pid)
+          .then(() => {/*console.log('test profile document deleted', id)*/ })
+          .catch((e) => console.log(`test profile remove failed: ${e.message}`))
+    })
+  })
+
+  describe('given a request is missing email & pass', () => {
+    const expected = { statusCode: 400, message: 'email and pass are required' }
+    test(`should respond with statusCode 400 and message: '${expected.message}'`, async() => {
+      let requestHandler = (req, res) => {
+        return apiResolver(req, res, undefined, handler)
+      }
+      let server = http.createServer(requestHandler)
+      let url = await listen(server)
+      let response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          firstName: profile.firstName,
+          lastName: profile.lastName
+        })
+      })
+      let jsonResponse = await response.json()
+      expect(response.status).toBe(expected.statusCode)
+      expect(jsonResponse.message).toBe(expected.message)
+      return server.close()
+    })
+  })
+
+  describe('given a request is missing email', () => {
+    const expected = { statusCode: 400, message: 'email is required' }
+    test(`should respond with statusCode 400 and message: '${expected.message}'`, async() => {
+      let requestHandler = (req, res) => {
+        return apiResolver(req, res, undefined, handler)
+      }
+      let server = http.createServer(requestHandler)
+      let url = await listen(server)
+      let response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          pass: profile.pass
+        })
+      })
+      let jsonResponse = await response.json()
+      expect(response.status).toBe(expected.statusCode)
+      expect(jsonResponse.message).toBe(expected.message)
+      return server.close()
+    })
+  })
+
+  describe('given a request is missing pass', () => {
+    const expected = { statusCode: 400, message: 'pass is required' }
+    test(`should respond with statusCode 400 and message: '${expected.message}'`, async() => {
+      let requestHandler = (req, res) => {
+        return apiResolver(req, res, undefined, handler)
+      }
+      let server = http.createServer(requestHandler)
+      let url = await listen(server)
+      let response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          email: profile.email
+        })
+      })
+      let jsonResponse = await response.json()
+      expect(response.status).toBe(expected.statusCode)
+      expect(jsonResponse.message).toBe(expected.message)
+      return server.close()
+    })
+  })
+});
+
+
+afterAll(async () => {
+  const {cluster, bucket, profileCollection} = await connectToDatabase();
+  cluster.close()
+})

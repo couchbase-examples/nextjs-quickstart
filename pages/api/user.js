@@ -29,8 +29,7 @@ export default async function handler(req, res) {
     }
     await profileCollection.insert(profile.pid, profile)
         .then((result) => {
-          console.log("sent");
-          res.send(result);
+          res.send({...profile, ...result});
         })
         .catch((e) => {
           res.status(500).send({
@@ -94,12 +93,9 @@ export default async function handler(req, res) {
     `
       await cluster.query(query, options)
           .then((result) => res.send(result.rows))
-          .catch((error) => {
-            console.log("YO*****************");
-            console.log(error);
-            res.status(500).send({
+          .catch((error) => res.status(500).send({
             "message": `Query failed: ${error.message}`
-          })})
+          }))
     } catch (e) {
       console.error(e)
     }
