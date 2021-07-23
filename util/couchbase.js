@@ -68,6 +68,7 @@ const ensureIndexes = async(cluster) => {
     await cluster.query(collectionIndex)
     console.log(`Index Creation: SUCCESS`)
   } catch (err) {
+    console.log(err);
     if (err instanceof couchbase.IndexExistsError) {
       console.info('Index Creation: Indexes Already Exists')
     } else {
