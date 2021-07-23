@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Start Couchbase
         run: |
+          ls -la /opt
           cd /opt/couchbase/ && ./start-cb.sh
       - name: Update repositories
         run: |
