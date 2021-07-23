@@ -13,8 +13,7 @@ jobs:
     steps:
       - name: Start Couchbase
         run: |
-          ls -la /opt
-          cd /opt/couchbase/ && ./start-cb.sh
+          docker exec -d deniswsrosa/couchbase7-5868-gitpod cd /opt/couchbase/ && ./start-cb.sh
       - name: Update repositories
         run: |
           apt update || echo "apt-update failed" # && apt -y upgrade
