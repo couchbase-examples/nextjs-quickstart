@@ -13,8 +13,7 @@ jobs:
     steps:
       - name: Start Couchbase
         run: |
-          /usr/bin/docker ps --all --filter status=running --no-trunc --format "{{.Names}}"
-          sudo docker exec -d `echo /usr/bin/docker ps --all --filter status=running --no-trunc --format "{{.Names}}"` cd /opt/couchbase/ && ./start-cb.sh
+          sudo docker exec -d couchbaseServer cd /opt/couchbase/ && ./start-cb.sh
       - name: Update repositories
         run: |
           apt update || echo "apt-update failed" # && apt -y upgrade
@@ -84,3 +83,4 @@ jobs:
           - 18094:18094
           - 18095:18095
           - 18096:18096
+        options: --name couchbaseServer
