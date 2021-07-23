@@ -62,7 +62,7 @@ jobs:
         run: npm test
     services:
       couchbase:
-        image: couchbase:enterprise-7.0.0-beta
+        image: build-docker.couchbase.com:443/couchbase/server-internal:7.0.0-5295
         ports:
           - 8091:8091
           - 8092:8092

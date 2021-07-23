@@ -78,19 +78,16 @@ export default async function handler(req, res) {
         }
       }
 // TODO: update readme with new query
-      const query = options.parameters.SEARCH == null ?
-          `
-          SELECT p.*
-      FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
-      LIMIT $LIMIT OFFSET $SKIP;
+      const query = options.parameters.SEARCH == null ? `
+        SELECT p.*
+        FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
+        LIMIT $LIMIT OFFSET $SKIP;
+        ` : `
+        SELECT p.*
+        FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
+        WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
+        LIMIT $LIMIT OFFSET $SKIP;
       `
-              :
-          `
-      SELECT p.*
-      FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
-      WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
-      LIMIT $LIMIT OFFSET $SKIP;
-    `
       await cluster.query(query, options)
           .then((result) => res.send(result.rows))
           .catch((error) => res.status(500).send({

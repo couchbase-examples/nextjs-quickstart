@@ -1,12 +1,12 @@
 = Quickstart for using Couchbase with Next.js
 
-:page-slug: tutorial-nextjs
+:page-slug: tutorial-quickstart-nextjs
 :page-title: Using Next.js with Couchbase
 :page-category: tutorials
 :page-desc: Build a basic Next.js front-end and back-end app with Couchbase
 :page-tags: Tutorial, Node.js
 :page-order: 00004
-:page-estimate: 60 min
+:page-estimate: 45 min
 
 [.title]
 {page-title}
@@ -432,7 +432,7 @@ try {
 
 We only need the profile ID from the user to delete using a basic key-value operation.
 
-Now you'll see a 'Delete' button on the user profile we've fetched via a hard-coded id in `getServerSideProps()`. To avoid any errors that may stem from the deletion of this document, let's just comment that logic out. We're going to add a more robust 'GET' route in the next step.
+Now you'll see a 'Delete' button on the user profile we've fetched via a hard-coded id in `getServerSideProps()`. To avoid any errors that may stem from the deletion of this hardcoded document we're fetching, let's just comment that logic out. We're going to add a more robust 'GET' route in the next step.
 ```js
   // let profile = JSON.parse(JSON.stringify(await getProfileByKey(profileCollection, '1cfaaa82-e63e-4207-addf-f023763d0374')));
 
@@ -456,12 +456,16 @@ try {
     }
   }
 
-  const query = `
-  SELECT p.*
-  FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
-  WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
-  LIMIT $LIMIT OFFSET $SKIP;
-`
+  const query = options.parameters.SEARCH == null ? `
+      SELECT p.*
+      FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
+      LIMIT $LIMIT OFFSET $SKIP;
+      ` : `
+      SELECT p.*
+      FROM ${process.env.COUCHBASE_BUCKET}._default.profile p
+      WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
+      LIMIT $LIMIT OFFSET $SKIP;
+    `
   await cluster.query(query, options)
       .then((result) => res.send(result.rows))
       .catch((error) => res.status(500).send({
@@ -476,7 +480,7 @@ This endpoint is different from the others as it makes a N1QL query rather than 
 
 Our `req.body` has three query params: `skip`, `limit`, and `search`.
 
-We also have default values set up in case they are not provided, `0` for skip or `5` for limit.
+We also have default values set up in case they are not provided, `0` for skip or `5` for limit. If the search string is not provided, it will default to null in which case the query string used will fetch all documents within the proflie collection.
 
 Then, we build our N1QL query using the parameters we just created.
 
@@ -516,7 +520,7 @@ We can handle searches with a similar handler function to the POST and PUT/Updat
     })
   }
 ```
-Note that we've also added a state object inside of the `Home()` function to keep track of the search results:
+We'll also need to add a state array inside the `Home()` function to keep track of the search results:
 ```js
 const [searchResults, setSearchResults] = useState([]);
 ```
