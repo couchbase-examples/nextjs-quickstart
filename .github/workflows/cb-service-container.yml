@@ -11,9 +11,6 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - name: Start Couchbase
-        run: |
-          docker exec -d deniswsrosa/couchbase7-5868-gitpod cd /opt/couchbase/ && ./start-cb.sh
       - name: Update repositories
         run: |
           apt update || echo "apt-update failed" # && apt -y upgrade
@@ -65,7 +62,7 @@ jobs:
         run: npm test
     services:
       couchbase:
-        image: deniswsrosa/couchbase7-5868-gitpod
+        image: couchbase:enterprise-7.0.0-beta 
         ports:
           - 8091:8091
           - 8092:8092
@@ -83,3 +80,4 @@ jobs:
           - 18094:18094
           - 18095:18095
           - 18096:18096
+        options: --name couchbaseServer
