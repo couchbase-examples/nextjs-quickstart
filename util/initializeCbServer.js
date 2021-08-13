@@ -44,7 +44,10 @@ const initializeBucketAndCollection = async() => {
   console.log("## initiaize db script end ##")
 }
 
-initializeBucketAndCollection()
+initializeBucketAndCollection().then(() => {
+  console.log("done");
+  process.exit(0)
+})
 
 // module.exports = {
 //   restCreateBucket,
