@@ -11,7 +11,7 @@ let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
 
 const restCreateBucket = async() => {
   // TODO: fix these bucket names
-  const data = { name: COUCHBASE_BUCKET, ramQuotaMB: 150 }
+  const data = { name: COUCHBASE_BUCKET, ramQuotaMB: 150, durabilityMinLevel: "none", replicaNumber: 0, replicaIndex: 0 }
   await axios({
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
