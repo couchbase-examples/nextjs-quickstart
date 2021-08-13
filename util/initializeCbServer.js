@@ -51,9 +51,3 @@ initializeBucketAndCollection().then(() => {
   console.log("Database Initialization Failed: \n\t" + err);
   process.exit(1);
 })
-
-// module.exports = {
-//   restCreateBucket,
-//   restCreateCollection,
-//   delay
-// }
