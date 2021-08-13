@@ -45,8 +45,11 @@ const initializeBucketAndCollection = async() => {
 }
 
 initializeBucketAndCollection().then(() => {
-  console.log("done");
+  console.log("Database Initialization Successful");
   process.exit(0)
+}).catch((err) => {
+  console.log("Database Initialization Failed: \n\t" + err);
+  process.exit(1);
 })
 
 // module.exports = {
