@@ -1,6 +1,6 @@
 import {connectToDatabase} from "./couchbase";
 export const ensureIndexes = async(COUCHBASE_BUCKET) => {
-  let {cluster} = connectToDatabase();
+  let {cluster} = await connectToDatabase();
   try {
     const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
     const collectionIndex = `CREATE PRIMARY INDEX ON default:${COUCHBASE_BUCKET}._default.profile;`
