@@ -8,8 +8,7 @@
     "start": "next start",
     "init-db:default": "env-cmd .env.default npx babel-node ./util/initializeCbServer.js",
     "init-db:local": "env-cmd .env.local npx babel-node ./util/initializeCbServer.js",
-    "test": "env-cmd .env.default jest",
-    "ensure-indexes": "env-cmd .env.default npx babel-node ./util/ensureIndexes.js"
+    "test": "env-cmd .env.default jest"
   },
   "dependencies": {
     "axios": "^0.21.1",
