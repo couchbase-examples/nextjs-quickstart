@@ -2,6 +2,7 @@ import qs from 'qs'
 import axios from 'axios'
 
 import { delay } from './delay.js'
+import {ensureIndexes} from "./couchbase";
 
 var username = process.env.COUCHBASE_USER
 var password = process.env.COUCHBASE_PASSWORD
@@ -38,6 +39,8 @@ const initializeBucketAndCollection = async() => {
   await delay(process.env.DELAY)
   await restCreateCollection()
   await delay(process.env.DELAY)
+  console.log("## checking indexes ##");
+  await ensureIndexes();
   console.log("## initiaize db script end ##")
 }
 

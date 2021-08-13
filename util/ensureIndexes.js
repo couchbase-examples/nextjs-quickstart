@@ -17,3 +17,7 @@ const ensureIndexes = async() => {
     // }
   }
 }
+
+ensureIndexes().then(() => {
+  console.log("Indexes Built!");
+})
