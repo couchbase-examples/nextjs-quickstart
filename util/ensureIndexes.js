@@ -1,5 +1,5 @@
 import {connectToDatabase} from "./couchbase";
-const ensureIndexes = async() => {
+export const ensureIndexes = async() => {
   let {cluster} = connectToDatabase();
   try {
     const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
@@ -17,7 +17,3 @@ const ensureIndexes = async() => {
     // }
   }
 }
-
-ensureIndexes().then(() => {
-  console.log("Indexes Built!");
-})

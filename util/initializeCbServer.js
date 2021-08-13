@@ -2,7 +2,7 @@ import qs from 'qs'
 import axios from 'axios'
 
 import { delay } from './delay.js'
-import {ensureIndexes} from "./couchbase";
+import {ensureIndexes} from "./ensureIndexes";
 
 var username = process.env.COUCHBASE_USER
 var password = process.env.COUCHBASE_PASSWORD
