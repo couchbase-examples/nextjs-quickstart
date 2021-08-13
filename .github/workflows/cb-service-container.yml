@@ -57,7 +57,9 @@ jobs:
       - name: Setup node modules
         run: npm ci
       - name: Setup unit tests
-        run: npm run init-db:default
+        run: |
+          npm run init-db:default
+          npm run ensure-indexes
       - name: Unit Tests
         run: npm test
     services:
