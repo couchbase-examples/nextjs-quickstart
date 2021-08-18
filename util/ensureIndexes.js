@@ -3,13 +3,15 @@ export const ensureIndexes = async(COUCHBASE_BUCKET) => {
   console.log("ensureIdx 1");
   let {cluster} = await connectToDatabase();
   console.log("ensureIdx 2");
-  console.log(cluster);
   try {
     console.log("ensureIdx 3");
     const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
     const collectionIndex = `CREATE PRIMARY INDEX ON default:${COUCHBASE_BUCKET}._default.profile;`
     console.log("ensureIdx 3.5");
-    await cluster.query(bucketIndex)
+    await cluster.query(bucketIndex).then((result) => {
+      console.log("bucket idx query promise then block");
+      console.log(result);
+    })
     console.log("ensureIdx 4");
     await cluster.query(collectionIndex)
     console.log("ensureIdx 5");
