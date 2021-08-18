@@ -41,6 +41,7 @@ const initializeBucketAndCollection = async() => {
   await delay(process.env.DELAY)
   console.log("## checking indexes ##");
   await ensureIndexes(COUCHBASE_BUCKET);
+  await delay(process.env.DELAY)
   console.log("## initiaize db script end ##")
 }
 
