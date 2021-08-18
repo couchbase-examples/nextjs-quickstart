@@ -73,10 +73,10 @@ describe("GET /user", () => {
 afterAll(async () => {
   const {cluster, bucket, profileCollection} = await connectToDatabase();
   await profileCollection.remove(profile1.pid)
-    .then(() => { /*console.log('test profile document deleted', id)*/ })
+    .then(() => { console.log('test profile document deleted', profile1.pid) })
     .catch((e) => console.log(`test profile remove failed: ${e.message}`))
   await profileCollection.remove(profile2.pid)
-    .then(() => { /*console.log('test profile document deleted', id)*/ })
+    .then(() => { console.log('test profile document deleted', profile2.pid) })
     .catch((e) => console.log(`test profile remove failed: ${e.message}`))
   cluster.close()
 })
