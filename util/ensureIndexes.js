@@ -3,7 +3,7 @@ export const ensureIndexes = async(COUCHBASE_BUCKET) => {
   console.log("ensureIdx 1");
   let {cluster} = await connectToDatabase();
   console.log("ensureIdx 2");
-
+  console.log(cluster);
   try {
     console.log("ensureIdx 3");
     const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
