@@ -40,8 +40,9 @@ const initializeBucketAndCollection = async() => {
   await restCreateCollection()
   await delay(process.env.DELAY)
   console.log("## checking indexes ##");
+  await delay(process.env.DELAY) // *
   await ensureIndexes(COUCHBASE_BUCKET);
-  await delay(process.env.DELAY)
+  await delay(process.env.DELAY) // *
   console.log("## initiaize db script end ##")
 }
 
