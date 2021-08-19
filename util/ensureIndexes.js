@@ -8,10 +8,7 @@ export const ensureIndexes = async(COUCHBASE_BUCKET) => {
     const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
     const collectionIndex = `CREATE PRIMARY INDEX ON default:${COUCHBASE_BUCKET}._default.profile;`
     console.log("ensureIdx 3.5");
-    await cluster.query(bucketIndex).catch((e) => {
-      console.log("ERROR IN BUCKET INDEX");
-      console.log(e);
-    })
+    await cluster.query(bucketIndex)
     console.log("ensureIdx 4");
     await cluster.query(collectionIndex)
     console.log("ensureIdx 5");
