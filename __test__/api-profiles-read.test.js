@@ -41,6 +41,7 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json();
+    console.log('******EXPECT ONE');
     expect(jsonResponse).toEqual(
         expect.arrayContaining([
           expect.objectContaining(profile2),
@@ -58,6 +59,7 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json()
+    console.log('******EXPECT TWO');
     expect(jsonResponse).toEqual(
         expect.arrayContaining([
           expect.objectContaining(profile2),
