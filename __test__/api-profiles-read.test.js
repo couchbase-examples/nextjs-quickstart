@@ -21,7 +21,7 @@ const profile2 = {
 }
 
 
-beforeAll(async () => {
+beforeAll(async (done) => {
   const {cluster, bucket, profileCollection} = await connectToDatabase();
   await profileCollection.insert(profile1.pid, profile1)
       .then(() => { console.log('test profile document inserted', profile1) })
@@ -29,6 +29,8 @@ beforeAll(async () => {
   await profileCollection.insert(profile2.pid, profile2)
       .then(() => { console.log('test profile document inserted', profile2) })
       .catch((e) => console.log(`test profile insert failed: ${e.message}`))
+  console.log('calling done');
+  done()
 })
 
 
