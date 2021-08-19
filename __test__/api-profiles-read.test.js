@@ -42,7 +42,6 @@ describe("GET /user", () => {
     let response = await fetch(url)
     let jsonResponse = await response.json();
     console.log('******EXPECT ONE');
-    await delay(10000);
     console.log(jsonResponse);
     expect(jsonResponse).toEqual(
         expect.arrayContaining([
