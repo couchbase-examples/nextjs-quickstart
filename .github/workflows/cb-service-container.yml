@@ -61,7 +61,7 @@ jobs:
       - name: Unit Tests
         uses: nick-invision/retry@v2
         with:
-          timeout_minutes: 1
+          timeout_seconds: 45
           max_attempts: 3
           command: npm test
     services:
