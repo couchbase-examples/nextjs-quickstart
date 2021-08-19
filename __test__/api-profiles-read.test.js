@@ -43,6 +43,7 @@ describe("GET /user", () => {
     let jsonResponse = await response.json();
     console.log('******EXPECT ONE');
     await delay(4000);
+    console.log(jsonResponse);
     expect(jsonResponse).toEqual(
         expect.arrayContaining([
           expect.objectContaining(profile2),
