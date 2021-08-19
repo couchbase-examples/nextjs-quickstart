@@ -59,7 +59,11 @@ jobs:
       - name: Setup unit tests
         run: npm run init-db:default
       - name: Unit Tests
-        run: npm test
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: npm test
     services:
       couchbase:
         image: couchbase:enterprise-7.0.0
