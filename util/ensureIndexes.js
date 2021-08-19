@@ -1,4 +1,6 @@
 import {connectToDatabase} from "./couchbase";
+const couchbase = require("couchbase")
+
 export const ensureIndexes = async(COUCHBASE_BUCKET) => {
   let {cluster} = await connectToDatabase();
   try {

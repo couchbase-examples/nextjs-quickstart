@@ -4,6 +4,8 @@ import axios from 'axios'
 import { delay } from './delay.js'
 import {ensureIndexes} from "./ensureIndexes";
 
+let DELAY_LENGTH = process.env.DELAY || 5000;
+
 var username = process.env.COUCHBASE_USER
 var password = process.env.COUCHBASE_PASSWORD
 var auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
@@ -36,14 +38,14 @@ const restCreateCollection = async() => {
 
 const initializeBucketAndCollection = async() => {
   await restCreateBucket()
-  await delay(process.env.DELAY)
+  await delay(DELAY_LENGTH)
   await restCreateCollection()
-  await delay(process.env.DELAY)
+  await delay(DELAY_LENGTH)
   console.log("## checking indexes ##");
-  await delay(process.env.DELAY) // *
+  await delay(DELAY_LENGTH) // *
   await ensureIndexes(COUCHBASE_BUCKET);
-  await delay(process.env.DELAY) // *
-  console.log("## initiaize db script end ##")
+  await delay(DELAY_LENGTH) // *
+  console.log("## initialize db script end ##")
 }
 
 initializeBucketAndCollection().then(() => {
