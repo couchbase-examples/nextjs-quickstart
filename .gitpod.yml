@@ -13,9 +13,11 @@ tasks:
   command: echo "done install deps"
 - name: Init Db
   init: gp sync-await dependencies
-  command: npm run init-db:default
+  command: >
+    npm run init-db:default
+    gp sync-done db-init
 - name: Start app
-  init: gp sync-await dependencies
+  init: echo "Awaiting Dependencies and Database Initiialization" && gp sync-await dependencies && gp sync-await db-init
   command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; echo "hello"; done && npm run dev:default
 
 #- name: Start app
