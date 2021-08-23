@@ -14,10 +14,9 @@ tasks:
 - name: Init Db
   init: gp sync-await dependencies
   command: npm run init-db:default
-- name: Run Tests
 - name: Start app
   init: gp sync-await dependencies
-  command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; echo "hello; done && npm run dev:default
+  command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; echo "hello"; done && npm run dev:default
 
 #- name: Start app
 #  init: npm install && npm run init-db:default && npm run test
