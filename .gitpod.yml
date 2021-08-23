@@ -7,7 +7,8 @@ tasks:
 - name: Log use
   command: curl -s 'https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=gitpod' > /dev/null
 - name: Start app
-  init: npm install && npm run init-db:default
+  begin: npm run init-db:default
+  init: npm install
   command: while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' -u Administrator:password localhost:8091/pools/default/buckets/user_profile)" != "200" ]]; do sleep 5; echo "hello"; done && npm run dev:default
 
 #- name: Install Dependencies
