@@ -23,7 +23,11 @@ const restCreateBucket = async() => {
         qs.stringify(data),
     url: 'http://127.0.0.1:8091/pools/default/buckets',
   })
-      .catch(error => console.log(`Bucket may already exist: ${error.message}`))
+      // .catch(error => console.log(`Bucket may already exist: ${error.message}`))
+      .catch((error) => {
+        console.log("ERROR!");
+        console.log(error)
+      })
 }
 
 const restCreateCollection = async() => {
@@ -34,7 +38,11 @@ const restCreateCollection = async() => {
     data: qs.stringify(data),
     url: `http://127.0.0.1:8091/pools/default/buckets/${COUCHBASE_BUCKET}/scopes/_default/collections`,
   })
-      .catch(error => console.log(`Collection may already exist: ${error.message}`))
+      // .catch(error => console.log(`Collection may already exist: ${error.message}`))
+      .catch((error) => {
+        console.log("ERROR!");
+        console.log(error)
+      })
 }
 
 const initializeBucketAndCollection = async() => {
