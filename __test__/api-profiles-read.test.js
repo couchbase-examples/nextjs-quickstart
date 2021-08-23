@@ -24,10 +24,10 @@ const profile2 = {
 beforeAll(async () => {
   const {cluster, bucket, profileCollection} = await connectToDatabase();
   await profileCollection.insert(profile1.pid, profile1)
-      .then(() => { console.log('test profile document inserted', profile1) })
+      .then(() => {/* console.log('test profile document inserted', profile1) */})
       .catch((e) => console.log(`test profile insert failed: ${e.message}`))
   await profileCollection.insert(profile2.pid, profile2)
-      .then(() => { console.log('test profile document inserted', profile2) })
+      .then(() => {/* console.log('test profile document inserted', profile2) */})
       .catch((e) => console.log(`test profile insert failed: ${e.message}`))
 })
 
@@ -41,8 +41,6 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json();
-    console.log('******EXPECT ONE');
-    console.log(jsonResponse);
     expect(jsonResponse).toEqual(
         expect.arrayContaining([
           expect.objectContaining(profile2),
@@ -60,8 +58,6 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json()
-    console.log('******EXPECT TWO');
-    console.log(jsonResponse);
     expect(jsonResponse).toEqual(
         expect.arrayContaining([
           expect.objectContaining(profile2),
@@ -77,10 +73,10 @@ describe("GET /user", () => {
 afterAll(async () => {
   const {cluster, bucket, profileCollection} = await connectToDatabase();
   await profileCollection.remove(profile1.pid)
-    .then(() => { console.log('test profile document deleted', profile1.pid) })
+    .then(() => { /*console.log('test profile document deleted', profile1.pid) */})
     .catch((e) => console.log(`test profile remove failed: ${e.message}`))
   await profileCollection.remove(profile2.pid)
-    .then(() => { console.log('test profile document deleted', profile2.pid) })
+    .then(() => { /*console.log('test profile document deleted', profile2.pid) */})
     .catch((e) => console.log(`test profile remove failed: ${e.message}`))
   cluster.close()
 })
