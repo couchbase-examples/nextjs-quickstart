@@ -1,6 +1,5 @@
 # Quickstart for using Couchbase with Next.js
 
-<a href="https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs" target="_blank">Try Now Btn</a>
 
 [![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/tutorial-nextjs)
 
