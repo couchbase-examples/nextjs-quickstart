@@ -48,12 +48,14 @@ async function createCouchbaseCluster() {
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
   const bucket = cluster.bucket(COUCHBASE_BUCKET);
-  const collection = bucket.collection('profile');
+  const collection = bucket.defaultCollection();
+  const profileCollection = bucket.collection('profile');
 
   let dbConnection = {
     cluster,
     bucket,
-    profileCollection: collection
+    collection,
+    profileCollection,
   }
 
   return dbConnection;
