@@ -1,4 +1,6 @@
 import {connectToDatabase} from "./couchbase";
+const couchbase = require("couchbase")
+
 export const ensureIndexes = async(COUCHBASE_BUCKET) => {
   let {cluster} = await connectToDatabase();
   try {
@@ -8,11 +10,9 @@ export const ensureIndexes = async(COUCHBASE_BUCKET) => {
     await cluster.query(collectionIndex)
     console.log(`Index Creation: SUCCESS`)
   } catch (err) {
-    // console.info(err);
     if (err instanceof couchbase.IndexExistsError) {
       console.info('Index Creation: Indexes Already Exists')
     } else {
-      console.log("*****************************");
       console.error(err)
     }
   }
