@@ -73,11 +73,9 @@ export default async function handler(req, res) {
         parameters: {
           SKIP: Number(req.query.skip || 0),
           LIMIT: Number(req.query.limit || 5),
-          // SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
           SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
         }
       }
-// TODO: update readme with new query
       const query = options.parameters.SEARCH == null ? `
         SELECT p.*
         FROM ${process.env.COUCHBASE_BUCKET}._default.profile p

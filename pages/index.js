@@ -109,8 +109,6 @@ export default function Home({isConnected, origin, profile}) {
   )
 }
 
-// TODO: how does getServersideProps link in w/ front-end interaction? This happens before the page loads..?
-// TODO: when does this actually run?
 export async function getServerSideProps(context) {
   const {req} = context;
   const { origin } = absoluteUrl(req);
@@ -139,17 +137,12 @@ export async function getServerSideProps(context) {
   }
 }
 
-
-// TODO: ensure indexes
-
 async function getProfileByKey(collection, key) {
   try {
     let res = await collection.get(key);
     console.log(res.content);
     return res.content;
   } catch (err) {
-    // TODO: better error handling
-    console.log("fetch error2");
     console.log(err);
   }
 }
