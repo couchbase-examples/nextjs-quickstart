@@ -11,7 +11,7 @@ RUN apt-get -qq update && \
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
-RUN apt update && apt upgrade && apt install -y nodejs npm
+RUN apt update && apt upgrade && apt install -y nodejs
 
 RUN addgroup --gid 33333 gitpod && \
      useradd --no-log-init --create-home --home-dir /home/gitpod --shell /bin/bash --uid 33333 --gid 33333 gitpod && \
