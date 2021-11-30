@@ -13,7 +13,7 @@ RUN echo "* soft nproc 20000\n"\
 "* hard nofile 200000\n" >> /etc/security/limits.conf
 
 RUN apt-get -qq update && \
-    apt-get install -yq libz-dev sudo
+    apt-get install npm -yq libz-dev sudo
 
 RUN addgroup --gid 33333 gitpod && \
      useradd --no-log-init --create-home --home-dir /home/gitpod --shell /bin/bash --uid 33333 --gid 33333 gitpod && \
