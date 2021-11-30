@@ -9,6 +9,7 @@ RUN apt-get -qq update && \
     apt-get install -yq libz-dev sudo
 
 
+# Install Node.js LTS
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 RUN sudo apt-get install -y nodejs
 
@@ -19,10 +20,3 @@ RUN addgroup --gid 33333 gitpod && \
 
 COPY startcb.sh /opt/couchbase/bin/startcb.sh
 USER gitpod
-
-#
-#FROM gitpod/workspace-full:latest
-#
-#RUN bash -c ". .nvm/nvm.sh     && nvm install 16     && nvm use 16     && nvm alias default 16"
-#
-#RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
