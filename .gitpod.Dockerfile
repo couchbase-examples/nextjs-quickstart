@@ -6,7 +6,11 @@ RUN echo "* soft nproc 20000\n"\
 "* hard nofile 200000\n" >> /etc/security/limits.conf
 
 RUN apt-get -qq update && \
-    apt-get install -yq nodejs=16.13.0 npm libz-dev sudo
+    apt-get install -yq libz-dev sudo
+
+RUN bash -c ". .nvm/nvm.sh     && nvm install 16.13.0     && nvm use 16.13.0     && nvm alias default 16.13.0"
+
+RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
 
 RUN addgroup --gid 33333 gitpod && \
      useradd --no-log-init --create-home --home-dir /home/gitpod --shell /bin/bash --uid 33333 --gid 33333 gitpod && \
