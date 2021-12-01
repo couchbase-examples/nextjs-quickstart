@@ -12,6 +12,8 @@ var auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 
 let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
 
+// TODO: Fix bucket cteation error, everything else works
+// It works with an empty database, but not when another bucket exists
 const restCreateBucket = async() => {
   const data = { name: COUCHBASE_BUCKET, ramQuotaMB: 150, durabilityMinLevel: "none", replicaNumber: 0, replicaIndex: 0 }
   await axios({
@@ -19,9 +21,16 @@ const restCreateBucket = async() => {
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
     data:
         qs.stringify(data),
-    url: 'http://127.0.0.1:8091/pools/default/buckets',
+        url: 'http://127.0.0.1:8091/pools/default/buckets',
   })
-      .catch(error => console.log(`Bucket may already exist: ${error.message}`))
+      .catch((error) => {
+        if (error.response.data.errors && error.response.data.errors.ramQuota) {
+          console.error("Error Creating Bucket:", error.response.data.errors.ramQuota);
+          console.log("Try deleting other buckets or increasing cluster size. \n");
+        } else {
+          console.log(`Bucket may already exist: ${error.message}`);
+        }
+      })
 }
 
 const restCreateCollection = async() => {
@@ -32,7 +41,13 @@ const restCreateCollection = async() => {
     data: qs.stringify(data),
     url: `http://127.0.0.1:8091/pools/default/buckets/${COUCHBASE_BUCKET}/scopes/_default/collections`,
   })
-      .catch(error => console.log(`Collection may already exist: ${error.message}`))
+      .catch((error) => {
+        if (error.response.status === 404) {
+          console.error(`Error Creating Collection: bucket ${COUCHBASE_BUCKET} not found. \n`)
+        } else {
+          console.log(`Collection may already exist: ${error.message}`)
+        }
+      })
 }
 
 const initializeBucketAndCollection = async() => {
