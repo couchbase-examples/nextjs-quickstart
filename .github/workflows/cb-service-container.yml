@@ -73,9 +73,9 @@ jobs:
         if: always()
         uses: ravsamhq/notify-slack-action@v1
         with:
-          notification_title: '{repo}: tests {status_message}'
-          message_format: '{emoji} {status_message} in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>'
           status: ${{ job.status }}
+          notification_title: '*{repo}*'
+          message_format: '{emoji} *{status_message}* in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>'
           footer: '<{run_url}|View Run on GitHub>'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
