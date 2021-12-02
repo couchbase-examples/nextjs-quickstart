@@ -73,8 +73,10 @@ jobs:
         if: always()
         uses: ravsamhq/notify-slack-action@v1
         with:
-          notification_title: '{workflow} has {status_message}'
+          notification_title: '{repo}: {status_message}'
+          message_format: '{emoji} *{workflow}* in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>'
           status: ${{ job.status }}
+          footer: '<{run_url}|View Run> on GitHub'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
     services:
