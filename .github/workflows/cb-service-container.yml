@@ -69,6 +69,14 @@ jobs:
           timeout_seconds: 45
           max_attempts: 3
           command: npm test
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
     services:
       couchbase:
         image: couchbase:enterprise-7.0.0
@@ -90,12 +98,3 @@ jobs:
           - 18095:18095
           - 18096:18096
         options: --name couchbaseServer
-
-  - name: Report Status
-    if: always()
-    uses: ravsamhq/notify-slack-action@v1
-    with:
-      status: ${{ job.status }}
-      notify_when: 'failure'
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
