@@ -52,7 +52,7 @@ describe("POST /user", () => {
   })
 
   describe('given a request is missing email & pass', () => {
-    const expected = { statusCode: 400, message: 'email and pass are required' }
+    const expected = { statusCode: 200, message: 'email and pass are required' }
     test(`should respond with statusCode 400 and message: '${expected.message}'`, async() => {
       let requestHandler = (req, res) => {
         return apiResolver(req, res, undefined, handler)

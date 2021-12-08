@@ -74,7 +74,7 @@ jobs:
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
-          notify_when: 'failure'
+          notify_when: 'failure,warnings'
           notification_title: '*{repo}*'
           message_format: '{emoji} *{status_message}* in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>'
           footer: '<{run_url}|View Run on GitHub>'
