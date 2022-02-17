@@ -17,7 +17,7 @@
     "next": "latest",
     "next-absolute-url": "^1.2.2",
     "node-fetch": "^3.1.1",
-    "qs": "^6.10.1",
+    "qs": "^6.10.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "set-value": ">=4.0.1",
