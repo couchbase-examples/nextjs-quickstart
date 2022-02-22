@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "dev:default": "env-cmd .env.default next dev",
+    "dev:default": "env-cmd -f .env.default next dev",
     "build": "next build",
     "start": "next start",
-    "init-db:default": "env-cmd .env.default npx babel-node ./util/initializeCbServer.js",
-    "init-db:local": "env-cmd .env.local npx babel-node ./util/initializeCbServer.js",
-    "test": "env-cmd .env.default jest"
+    "init-db:default": "env-cmd -f .env.default npx babel-node ./util/initializeCbServer.js",
+    "init-db:local": "env-cmd -f .env.local npx babel-node ./util/initializeCbServer.js",
+    "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
     "axios": "^0.26.0",
