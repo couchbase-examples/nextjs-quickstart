@@ -30,7 +30,7 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "env-cmd": "^8.0.2",
+    "env-cmd": "^10.1.0",
     "jest": "^27.5.1",
     "next-server": "^9.0.3",
     "supertest": "^6.2.2",
