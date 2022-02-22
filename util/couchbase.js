@@ -37,9 +37,9 @@ async function createCouchbaseCluster() {
     return cached.conn
   }
 
-  cached.conn = new couchbase.Cluster('couchbase://'+ COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), { // ?ssl=no_verify&console_log_level=5
+  cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), {
     username: COUCHBASE_USER,
-    password: COUCHBASE_PASSWORD
+    password: COUCHBASE_PASSWORD,
   })
 
   return cached.conn

@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.26.0",
     "bcryptjs": "^2.4.3",
-    "couchbase": "^3.2.3",
+    "couchbase": "^4.0.0",
     "next": "latest",
     "next-absolute-url": "^1.2.2",
     "node-fetch": "^3.2.0",
