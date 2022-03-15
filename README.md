@@ -58,21 +58,21 @@ Set each variable on `.env.local`:
 
 - `COUCHBASE_USERNAME` - The username of an authorized user on your Couchbase instance
 - `COUCHBASE_PASSWORD` - The corresponding password for the user specified above
-- `COUCHBASE_ENDPOINT` - The endpoint to connect to. Use `localhost` for a local instance of Couchbase, or Wide Area Network address for a cloud instance (formatted like`<xxxxx>.dp.cloud.couchbase.com`)
+- `COUCHBASE_ENDPOINT` - The endpoint to connect to. Use `localhost` for a local instance of Couchbase, or Wide Area Network address for a Capella instance (formatted like`cb.<xxxxx>.cloud.couchbase.com`)
 - `COUCHBASE_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
-- `IS_CLOUD_INSTANCE` - `true` if you are trying to connect to an instance of Couchbase Cloud, `false` otherwise.
+- `IS_CLOUD_INSTANCE` - `true` if you are trying to connect to an instance of Couchbase Capella, `false` otherwise.
 
-In order to interact with your Couchbase instance, you'll need to set up and configure the database.
+In order to interact with your Couchbase cluster, you'll need to set up and configure the database.
 
 
-If everything is set up properly, you should be able to navigate to localhost:3000 to see a message confirming succesful connection to Couchbase. For troubleshooting and additional setup instructions please refer to the `NextJS_README.md` included in the with-couchbase starter.
-
-Note: Gitpod and testing environments use the .env.default file to automatically set up a Couchbase instance with default credentials.
+If everything is set up properly, you should be able to navigate to localhost:3000 to see a message confirming successful connection to Couchbase. For troubleshooting and additional setup instructions please refer to the `NextJS_README.md` included in the with-couchbase starter.
 
 ## Notes About the Quickstart Code
 - We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
 
 - In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments. We use [next-absolute-url](https://www.npmjs.com/package/next-absolute-url) for this.
+
+- **_NOTE FOR CAPELLA CLUSTERS:**_ The database initialization code currently only works with local clusters. If you are using Capella, you'll need to manually create a bucket called `user_profile` and then within that buckets default scope, a collection called `profile`. [See here for more info on managing buckets in Capella.](https://docs.couchbase.com/cloud/clusters/data-service/manage-buckets.html). After bucket and collection creation, running `npm run init-db:local` will still work to create the required indices. The bucket and collection creation steps will fail with `ECONNREFUSED` but it will still be able to create the index on your Capella cluster. If you have issues with **unambiguous timeout**, try downgrading the Couchbase Node SDK version to `3.2.4` for the time being. 
 
 ## Running The Tests
 A suite of integration tests has been included, and can be run by first setting up the database:
