@@ -19,11 +19,11 @@ To run this prebuilt project, you will need:
 ## Update environment variables appropriately
 
 We've included a `.env.local.example` file with blank values for you to copy into a file called `.env.local` and fill in the values.
-- `COUCHBASE_USERNAME` - The username of an authorized user on your Couchbase instance
-- `COUCHBASE_PASSWORD` - The corresponding password for the user specified above
-- `COUCHBASE_ENDPOINT` - The endpoint to connect to. Use `localhost` for a local instance of Couchbase, or Wide Area Network address for a Capella instance (formatted like`cb.<xxxxx>.cloud.couchbase.com`)
+- `COUCHBASE_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
+- `COUCHBASE_PASSWORD` - The password that corresponds to the user specified above
+- `COUCHBASE_ENDPOINT` - The Couchbase endpoint to connect to. Use `localhost` for a local/Docker cluster, or the Wide Area Network address for a Capella instance (formatted like `cb.<xxxxxx>.cloud.couchbase.com`)
 - `COUCHBASE_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
-- `IS_CLOUD_INSTANCE` - `true` if you are trying to connect to an instance of Couchbase Capella, `false` otherwise.
+- `IS_CAPELLA` - `true` if you are trying to connect to an instance of Couchbase Capella, `false` otherwise.
 
 **NOTE on TLS:** The connection logic in this sample app ignores mismatched certificates with the parameter `tls_verify=none`. While this is super helpful in streamlining the connection process for development purposes, it's not very secure and should **not** be used in production. To learn how to secure your connection with proper certificates, see [the Node.js TLS connection tutorial](https://developer.couchbase.com/tutorial-nodejs-tls-connection).
 
