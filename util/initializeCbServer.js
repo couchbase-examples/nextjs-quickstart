@@ -6,14 +6,12 @@ import {ensureIndexes} from "./ensureIndexes";
 
 let DELAY_LENGTH = process.env.DELAY || 5000;
 
-var username = process.env.COUCHBASE_USER
-var password = process.env.COUCHBASE_PASSWORD
-var auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
+const username = process.env.COUCHBASE_USER
+const password = process.env.COUCHBASE_PASSWORD
+const auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 
 let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
 
-// TODO: Fix bucket creation error on cloud
-// It works with an empty database, but not when another bucket exists (memory dependant)
 const restCreateBucket = async() => {
   const data = { name: COUCHBASE_BUCKET, ramQuotaMB: 150, durabilityMinLevel: "none", replicaNumber: 0, replicaIndex: 0 }
   await axios({
@@ -26,6 +24,9 @@ const restCreateBucket = async() => {
   .catch((error) => {
     if (error.response === undefined) {
       console.error("Error Creating Bucket:", error.code);
+      if (error.code === 'ECONNREFUSED') {
+        console.info("\tIf you are using a Capella cluster, you'll have to create a \`user_profile`\ bucket manually. See README for details.\n")
+      }
     } else if (error.response.data.errors && error.response.data.errors.name) {
       console.error("Error Creating Bucket:", error.response.data.errors.name, "\n");
     } else if (error.response.data.errors && error.response.data.errors.ramQuota) {
@@ -35,6 +36,7 @@ const restCreateBucket = async() => {
       console.error("Error Creating Bucket: ");
       console.error(error.response.data.errors, "\n");
     } else {
+      console.log('yo');
       console.error("Error Creating Bucket:", error.message);
     }
   })
@@ -51,6 +53,9 @@ const restCreateCollection = async() => {
   .catch((error) => {
     if (error.response === undefined) {
       console.error("Error Creating Collection:", error.code);
+      if (error.code === 'ECONNREFUSED') {
+        console.info("\tIf you are using a Capella cluster, you'll have to create a \`profile`\ scope on the \`user_profile\` bucket manually. See README for details.\n")
+      }
     } else if (error.response.status === 404) {
       console.error(`Error Creating Collection: bucket \'${COUCHBASE_BUCKET}\' not found. \n`)
     } else {
@@ -66,7 +71,7 @@ const initializeBucketAndCollection = async() => {
   await delay(DELAY_LENGTH)
   console.log("## checking indexes ##");
   await delay(DELAY_LENGTH)
-  await ensureIndexes(COUCHBASE_BUCKET);
+  await ensureIndexes();
   await delay(DELAY_LENGTH)
   console.log("## initialize db script end ##")
 }
