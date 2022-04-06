@@ -84,12 +84,19 @@ export default function Home({isConnected, origin, profile}) {
 
           <h4>Profile Search Results:</h4>
           <div style={{ display: "flex"}}>
-            {searchResults !== null && searchResults.map((userProfile) => {
-              console.log(userProfile);
-              return (
-                  <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName} email={userProfile.email} pid={userProfile.pid} origin={origin}/>
-              )
-            })
+            { searchResults.message ?
+                <p>{searchResults.message}</p>
+                :
+                <>
+              {searchResults.map((userProfile) => {
+                console.log(userProfile);
+                return (
+                    <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName}
+                              email={userProfile.email} pid={userProfile.pid} origin={origin}/>
+                )
+              })
+              }
+                </>
             }
           </div>
         </main>
