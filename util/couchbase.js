@@ -4,7 +4,8 @@ const COUCHBASE_USER = process.env.COUCHBASE_USER
 const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
 const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
 let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
-let IS_CLOUD_INSTANCE = process.env.IS_CLOUD_INSTANCE
+let IS_CAPELLA = process.env.IS_CAPELLA
+
 if (!COUCHBASE_USER) {
   throw new Error(
     'Please define the COUCHBASE_USER environment variable inside .env.local'
@@ -17,8 +18,22 @@ if (!COUCHBASE_PASSWORD) {
   )
 }
 
+if (!COUCHBASE_ENDPOINT) {
+  throw new Error(
+      'Please define the COUCHBASE_ENDPOINT environment variable inside .env.local'
+  )
+}
+
 if (!COUCHBASE_BUCKET) {
-  COUCHBASE_BUCKET = 'travel-sample'
+  throw new Error(
+      'Please define the COUCHBASE_BUCKET environment variable inside .env.local'
+  )
+}
+
+if (!IS_CAPELLA) {
+  throw new Error(
+      'Please define the IS_CAPELLA environment variable inside dev.env. \nSet to \`true\` if you are connecting to a Capella cluster, and \`false\` otherwise.\n'
+  )
 }
 
 /**
@@ -37,10 +52,19 @@ async function createCouchbaseCluster() {
     return cached.conn
   }
 
-  cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT + (IS_CLOUD_INSTANCE === 'true' ? '?ssl=no_verify&console_log_level=5' : ''), {
-    username: COUCHBASE_USER,
-    password: COUCHBASE_PASSWORD,
-  })
+  if (IS_CAPELLA === 'true') {
+    // Capella requires TLS connection string but we'll skip certificate verification with `tls_verify=none`
+    cached.conn = await couchbase.connect('couchbases://' + COUCHBASE_ENDPOINT + '?tls_verify=none', {
+      username: COUCHBASE_USER,
+      password: COUCHBASE_PASSWORD,
+    })
+  } else {
+    // no TLS needed, use traditional connection string
+    cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT, {
+      username: COUCHBASE_USER,
+      password: COUCHBASE_PASSWORD,
+    })
+  }
 
   return cached.conn
 }
