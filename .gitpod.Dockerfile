@@ -1,4 +1,4 @@
-FROM couchbase:latest
+FROM public.ecr.aws/z2f7n8a1/couchbase-da-containers:couchbase-neo
 
 RUN echo "* soft nproc 20000\n"\
 "* hard nproc 20000\n"\
