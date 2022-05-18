@@ -17,7 +17,7 @@
     "couchbase": "^4.0.0",
     "next": "latest",
     "next-absolute-url": "^1.2.2",
-    "node-fetch": "^3.2.3",
+    "node-fetch": "^3.2.4",
     "qs": "^6.10.3",
     "react": "^18.1.0",
     "react-dom": "^18.0.0",
