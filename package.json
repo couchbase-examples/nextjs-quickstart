@@ -33,6 +33,7 @@
     "@babel/preset-react": "^7.17.12",
     "env-cmd": "^10.1.0",
     "jest": "^28.1.0",
+    "next-server": "^9.0.5",
     "supertest": "^6.2.3",
     "test-listen": "^1.1.0"
   },
