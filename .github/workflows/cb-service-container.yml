@@ -60,7 +60,7 @@ jobs:
           curl  -u Administrator:password -v -X GET http://localhost:8091/pools/default | jq '.' | grep hostname
       - uses: actions/checkout@v2
       - name: Setup node modules
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Setup unit tests
         run: npm run init-db:default
       - name: Unit Tests

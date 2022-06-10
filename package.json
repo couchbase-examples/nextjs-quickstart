@@ -15,7 +15,7 @@
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "couchbase": "^4.1.0",
-    "next": "latest",
+    "next": "12.1.6",
     "next-absolute-url": "^1.2.2",
     "node-fetch": "^3.2.4",
     "qs": "^6.10.3",
@@ -33,7 +33,7 @@
     "@babel/preset-react": "^7.17.12",
     "env-cmd": "^10.1.0",
     "jest": "^28.1.0",
-    "next-server": "^9.0.3",
+    "next-server": "^9.0.5",
     "supertest": "^6.2.3",
     "test-listen": "^1.1.0"
   },
