@@ -28,7 +28,7 @@
     "@babel/cli": "^7.17.10",
     "@babel/core": "^7.18.0",
     "@babel/node": "^7.17.10",
-    "@babel/plugin-transform-runtime": "^7.18.0",
+    "@babel/plugin-transform-runtime": "^7.19.1",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.17.12",
     "env-cmd": "^10.1.0",
