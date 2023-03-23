@@ -36,7 +36,6 @@ const restCreateBucket = async() => {
       console.error("Error Creating Bucket: ");
       console.error(error.response.data.errors, "\n");
     } else {
-      console.log('yo');
       console.error("Error Creating Bucket:", error.message);
     }
   })

@@ -41,13 +41,15 @@ describe("GET /user", () => {
     let url = await listen(server)
     let response = await fetch(url)
     let jsonResponse = await response.json();
-    expect(jsonResponse).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining(profile2),
-          expect.objectContaining(profile1)
-        ])
-    )
-    expect(response.status).toBe(200)
+    await delay(2000, () => {
+      expect(jsonResponse).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining(profile2),
+            expect.objectContaining(profile1)
+          ])
+      )
+      expect(response.status).toBe(200)
+    })
     return server.close()
   })
   test("responds 200 to GET with search string", async () => {
