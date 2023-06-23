@@ -7,7 +7,6 @@ import {
 
 import { delay } from '../util/delay'
 import { NextApiRequest, NextApiResponse } from "next"
-import { apiResolver } from "next-server/dist/server/api-utils"
 import http from "http"
 import listen from "test-listen"
 
