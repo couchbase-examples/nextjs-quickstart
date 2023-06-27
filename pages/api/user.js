@@ -72,7 +72,7 @@ export default async function handler(req, res) {
       const options = {
         parameters: {
           SKIP: Number(req.query.skip || 0),
-          LIMIT: Number(req.query.limit || 5),
+          LIMIT: Number(req.query.limit || 25),
           SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
         }
       }

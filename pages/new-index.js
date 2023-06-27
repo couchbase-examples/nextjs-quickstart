@@ -4,23 +4,32 @@ import {UserCard} from '../components/UserCard';
 import React, {useEffect, useState} from 'react';
 import absoluteUrl from 'next-absolute-url'
 import styles from '../styles/Home.module.css'
+import {Sidebar} from '../components/sidebar/Sidebar';
+import Modal from '../components/Modal';
+import {AddUserForm} from '../components/AddUserForm';
 
 
 export default function Home({isConnected, origin, profile}) {
   const [searchResults, setSearchResults] = useState([]);
   
-  const [allProfiles, setAllProfiles] = useState([])
+  const [userProfiles, setUserProfiles] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isProfilesLoading, setIsProfilesLoading] = useState(true)
+
+  const [searchString, setSearchString] = useState(undefined);
   
   useEffect( () => {
     async function fetchAllProfiles() {
-      await fetch(`${origin}/api/user`, {
+      await fetch(`${origin}/api/user${searchString ? `?search=${searchString}&limit=200` : '?limit=200'}`, {
         method: 'GET',
-      }).then(async (data) => {
-        setAllProfiles(await data.json());
+      }).then(response => response.json()).then((data) => {
+          console.log(data);
+          setUserProfiles(data);
+          setIsProfilesLoading(false)
       })
     }
     fetchAllProfiles();
-  }, [])
+  }, [searchString])
 
   const handleProfilePost = async (event) => {
     await fetch(`${origin}/api/user`, {
@@ -56,7 +65,39 @@ export default function Home({isConnected, origin, profile}) {
     })
   }
 
+  const openCreateModal = () => {
+    setIsModalOpen(true)
+  }
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  /**
+   * Send a request to insert a new profile into the collection
+   * @return {Promise<void>}
+   */
+  const handleProfileCreation = async () => {
+    fetch(`${origin}/api/user`, {
+      method: 'POST',
+      body: JSON.stringify({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        pass: password,
+      })
+    }).then(response => response.json()).then((data) => {
+      let newUser = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        pass: data.pass,
+        pid: data.pid
+      }
+      setUserProfiles([newUser, ...userProfiles])
+    })
+  }
 
   return (
       <div className={`bg-red-200`}>
@@ -65,49 +106,22 @@ export default function Home({isConnected, origin, profile}) {
           <link rel="icon" href="/favicon.ico"/>
         </Head>
 
-
         <main className={`bg-blue-200`}>
           <div className="flex">
-            <div className={'bg-green-200 w-1/6'}>
-              {/*Sidebar*/}
-              Hello World
-
-              {/*{ searchResults.message ?*/}
-              {/*    <p>{searchResults.message}</p>*/}
-              {/*    :*/}
-              {/*    <>*/}
-              {/*      {searchResults.map((userProfile) => {*/}
-              {/*        console.log(userProfile);*/}
-              {/*        return (*/}
-              {/*            <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName}*/}
-              {/*                      email={userProfile.email} pid={userProfile.pid} origin={origin}/>*/}
-              {/*        )*/}
-              {/*      })*/}
-              {/*      }*/}
-              {/*    </>*/}
-              {/*}*/}
-
-              {
-                allProfiles.length > 0 ?
-                    <>
-                    {
-                      allProfiles.map((profile, idx) => {
-                        return <div className={`px-4 py-2 border-b-2 border-x-2 border-black ${idx === 0 ? 'border-t-2' : ''}`}>
-                          <h4>{profile.firstName}<strong className='ml-1'>{profile.lastName}</strong></h4>
-                          <p>{profile.email}</p>
-                          <code className={'text-xs'}>{profile.pid}</code>
-                        </div>
-                      })
-                    }
-                    </>
-                    : {}
-              }
-
-            </div>
+            <Sidebar profiles={userProfiles} setProfiles={setUserProfiles} isLoading={isProfilesLoading} setIsLoading={setIsProfilesLoading} searchString={searchString} setSearchString={setSearchString} openCreateModal={openCreateModal}/>
             <div className="bg-orange-300 w-5/6">
               Content
             </div>
           </div>
+
+          <Modal
+            title='Add a User'
+            subheading='Write a new User record to the Database.'
+            bodyNode={<AddUserForm setFirstName={setFirstName} setLastName={setLastName} setEmail={setEmail} setPassword={setPassword} />}
+            open={isModalOpen}
+            setOpen={setIsModalOpen}
+            onConfirm={handleProfileCreation}
+          />
 
 
           <br/>

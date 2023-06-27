@@ -12,6 +12,8 @@
     "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "axios": "^1.3.4",
     "bcryptjs": "^2.4.3",
     "couchbase": "^4.2.2",
