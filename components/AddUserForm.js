@@ -4,7 +4,7 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) 
   // todo: lift state to parents as controlled form component, then use it in the parent to fire the add request
   return (
       <form>
-        <div className="pb-2 mt-6">
+        <div className="pb-2 mt-4">
           <label className="text-sm font-medium leading-6 text-gray-900">
             Personal Details
           </label>

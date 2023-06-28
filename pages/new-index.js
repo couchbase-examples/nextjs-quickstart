@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import {connectToDatabase} from '../util/couchbase'
-import {UserCard} from '../components/UserCard';
 import React, {useEffect, useState} from 'react';
 import absoluteUrl from 'next-absolute-url'
 import styles from '../styles/Home.module.css'
 import {Sidebar} from '../components/sidebar/Sidebar';
 import Modal from '../components/Modal';
 import {AddUserForm} from '../components/AddUserForm';
+import {ContentPanel} from '../components/content-panel/ContentPanel';
 
 
 export default function Home({isConnected, origin, profile}) {
@@ -18,14 +18,17 @@ export default function Home({isConnected, origin, profile}) {
 
   const [searchString, setSearchString] = useState(undefined);
   
+  // todo: see if this works
+  const [selectedProfile, setSelectedProfile] = useState(undefined)
+  
   useEffect( () => {
     async function fetchAllProfiles() {
       await fetch(`${origin}/api/user${searchString ? `?search=${searchString}&limit=200` : '?limit=200'}`, {
         method: 'GET',
       }).then(response => response.json()).then((data) => {
-          console.log(data);
           setUserProfiles(data);
-          setIsProfilesLoading(false)
+          setIsProfilesLoading(false);
+          setSelectedProfile(data[0]);
       })
     }
     fetchAllProfiles();
@@ -99,8 +102,26 @@ export default function Home({isConnected, origin, profile}) {
     })
   }
 
+  const handleProfileDeletion = async (pid) => {
+    fetch(`${origin}/api/user?pid=${pid}`, {method: 'DELETE'})
+        .then((data) => {
+          if (data.status === 200) {
+            // remove the profile from local state too
+            const newArr = userProfiles.filter((p) => {
+              return p.pid !== pid;
+            })
+            setUserProfiles(newArr)
+            setSelectedProfile(userProfiles[0])
+          }
+        })
+  }
+  
+  useEffect(() => {
+    console.log(selectedProfile);
+  }, [selectedProfile])
+
   return (
-      <div className={`bg-red-200`}>
+      <div>
         <Head>
           <title>Couchbase Next.js Starter</title>
           <link rel="icon" href="/favicon.ico"/>
@@ -108,10 +129,18 @@ export default function Home({isConnected, origin, profile}) {
 
         <main className={`bg-blue-200`}>
           <div className="flex">
-            <Sidebar profiles={userProfiles} setProfiles={setUserProfiles} isLoading={isProfilesLoading} setIsLoading={setIsProfilesLoading} searchString={searchString} setSearchString={setSearchString} openCreateModal={openCreateModal}/>
-            <div className="bg-orange-300 w-5/6">
-              Content
-            </div>
+            <Sidebar
+                selectedProfile={selectedProfile}
+                setSelectedProfile={setSelectedProfile}
+                profiles={userProfiles}
+                setProfiles={setUserProfiles}
+                isLoading={isProfilesLoading}
+                setIsLoading={setIsProfilesLoading}
+                searchString={searchString}
+                setSearchString={setSearchString}
+                openCreateModal={openCreateModal}
+            />
+            <ContentPanel profile={selectedProfile} handleProfileDeletion={handleProfileDeletion}/>
           </div>
 
           <Modal
@@ -121,69 +150,12 @@ export default function Home({isConnected, origin, profile}) {
             open={isModalOpen}
             setOpen={setIsModalOpen}
             onConfirm={handleProfileCreation}
+            icon={'user-plus'}
           />
 
-
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-
-
-
-          <form onSubmit={handleProfilePost}>
-            <input type="text" placeholder="First Name" name="firstName"/>
-            <input type="text" placeholder="Last Name" name="lastName"/>
-            <input type="email" placeholder="Email" name="email"/>
-            <input type="password" placeholder="Password" name="password"/>
-            <button type="submit">Post Profile</button>
-          </form>
-          <br/>
-
-          <form onSubmit={handleProfilePut}>
-            <input type="text" placeholder="PID to Update" name="pid"/>
-            <input type="text" placeholder="New First Name" name="firstName"/>
-            <input type="text" placeholder="New Last Name" name="lastName"/>
-            <input type="email" placeholder="New Email" name="email"/>
-            <input type="password" placeholder="New Password" name="password"/>
-            <button type="submit">Update Profile</button>
-          </form>
-          <br/>
-
-          <form onSubmit={handleProfileSearch}>
-            <input type="text" placeholder="Search String" name="searchString"/>
-            <button type="submit">Search</button>
-          </form>
-
-          <h4>Profile Search Results:</h4>
-          <div style={{ display: "flex"}}>
-            { searchResults.message ?
-                <p>{searchResults.message}</p>
-                :
-                <>
-              {searchResults.map((userProfile) => {
-                console.log(userProfile);
-                return (
-                    <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName}
-                              email={userProfile.email} pid={userProfile.pid} origin={origin}/>
-                )
-              })
-              }
-                </>
-            }
-          </div>
         </main>
 
-        <footer className={styles.footer}>
+        <footer className={styles.footer + ' max-h-16'}>
           <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"

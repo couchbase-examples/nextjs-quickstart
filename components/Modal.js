@@ -1,9 +1,9 @@
-import {Fragment, useRef, useState} from 'react'
+import {Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import {UserPlusIcon} from '@heroicons/react/24/outline';
+import {UserPlusIcon, TrashIcon, RocketLaunchIcon} from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 
-export default function Modal({title, subheading, bodyNode, onConfirm, open, setOpen}) {
+export default function Modal({title, subheading, bodyNode, onConfirm, open, setOpen, accentColor, icon}) {
   const cancelButtonRef = useRef(null)
 
   const handleModalConfirm = () => {
@@ -40,8 +40,10 @@ export default function Modal({title, subheading, bodyNode, onConfirm, open, set
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-12 sm:w-full sm:max-w-lg">
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-center mt-2 pb-2">
-                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <UserPlusIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                      <div className={clsx(accentColor === 'red' && 'bg-red-100', "bg-green-100 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10")}>
+                        {icon === 'user-plus' && <UserPlusIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
+                        {icon === 'trash' && <TrashIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
+                        {(icon !== 'user-plus' && icon !== 'trash') && <RocketLaunchIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
                       </div>
                       <div className="sm:ml-4 sm:text-left">
                         <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
@@ -63,7 +65,7 @@ export default function Modal({title, subheading, bodyNode, onConfirm, open, set
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                         type="button"
-                        className="mt-3 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                        className={clsx(accentColor === 'red' && 'bg-red-600 hover:bg-red-500', "bg-green-600 mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto")}
                         onClick={handleModalConfirm}
                     >
                       Confirm

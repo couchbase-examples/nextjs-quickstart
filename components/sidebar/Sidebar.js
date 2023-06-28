@@ -3,13 +3,13 @@ import {UserRow} from '../UserRow';
 import {PlusCircleIcon} from '@heroicons/react/24/outline';
 import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
 
-export const Sidebar = ({profiles, setProfiles, isLoading, setIsLoading, searchString, setSearchString, openCreateModal}) => {
+export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfiles, isLoading, setIsLoading, searchString, setSearchString, openCreateModal}) => {
   const handleSearchFieldChange = (event) => {
     setSearchString(event.target.value);
   }
 
   return (
-      <div className={'bg-green-200 w-1/6'}>
+      <div className={'bg-green-200 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>
         <div className='p-4'>
           <div className="flex place-items-center">
             <h2 className='flex-1 text-2xl text-gray-900 font-bold'>User Directory</h2>
@@ -43,7 +43,7 @@ export const Sidebar = ({profiles, setProfiles, isLoading, setIsLoading, searchS
                       {
                         profiles.map((profile, idx) => {
                           // todo: correct href
-                          return <UserRow profile={profile} index={idx} href={'#'} key={idx}/>
+                          return <UserRow profile={profile} index={idx} href={'#'} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile.pid}/>
                         })
                       }
                     </>
