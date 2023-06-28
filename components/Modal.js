@@ -1,6 +1,6 @@
 import {Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import {UserPlusIcon, TrashIcon, RocketLaunchIcon} from '@heroicons/react/24/outline';
+import {UserPlusIcon, TrashIcon, PencilIcon, RocketLaunchIcon} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
 export default function Modal({title, subheading, bodyNode, onConfirm, open, setOpen, accentColor, icon}) {
@@ -43,7 +43,8 @@ export default function Modal({title, subheading, bodyNode, onConfirm, open, set
                       <div className={clsx(accentColor === 'red' && 'bg-red-100', "bg-green-100 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10")}>
                         {icon === 'user-plus' && <UserPlusIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
                         {icon === 'trash' && <TrashIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
-                        {(icon !== 'user-plus' && icon !== 'trash') && <RocketLaunchIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
+                        {icon === 'pencil' && <PencilIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
+                        {(icon !== 'user-plus' && icon !== 'trash' && icon !== 'pencil') && <RocketLaunchIcon className={clsx(accentColor === 'red' && 'text-red-600', "text-green-600 h-6 w-6")} aria-hidden="true" />}
                       </div>
                       <div className="sm:ml-4 sm:text-left">
                         <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">

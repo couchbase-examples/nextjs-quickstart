@@ -102,6 +102,11 @@ export default function Home({isConnected, origin, profile}) {
     })
   }
 
+  /**
+   * Send a request to delete a profile
+   * @param pid - The profile ID to remove
+   * @return {Promise<void>}
+   */
   const handleProfileDeletion = async (pid) => {
     fetch(`${origin}/api/user?pid=${pid}`, {method: 'DELETE'})
         .then((data) => {
@@ -115,6 +120,17 @@ export default function Home({isConnected, origin, profile}) {
           }
         })
   }
+
+  // const handleProfileEdit = async (pid) => {
+  //   fetch(`${origin}/api/user?pid=${pid}`, {
+  //     method: 'PUT',
+  //     body: JSON.stringify({
+  //       firstName: '',
+  //       lastName: '',
+  //       email: '',
+  //     })
+  //   })
+  // }
   
   useEffect(() => {
     console.log(selectedProfile);
@@ -140,7 +156,7 @@ export default function Home({isConnected, origin, profile}) {
                 setSearchString={setSearchString}
                 openCreateModal={openCreateModal}
             />
-            <ContentPanel profile={selectedProfile} handleProfileDeletion={handleProfileDeletion}/>
+            <ContentPanel profile={selectedProfile} setProfile={setSelectedProfile} handleProfileDeletion={handleProfileDeletion}/>
           </div>
 
           <Modal

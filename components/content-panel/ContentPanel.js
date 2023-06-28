@@ -1,14 +1,43 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Gradient from './gradient/Gradient';
 import {PencilIcon, TrashIcon} from '@heroicons/react/24/outline';
 import Modal from '../Modal';
+import {EditUserForm} from '../EditUserForm';
 
-export const ContentPanel = ({profile, handleProfileDeletion}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export const ContentPanel = ({profile, setProfile, handleProfileDeletion}) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [updatedFirstName, setUpdatedFirstName] = useState(undefined)
+  const [updatedLastName, setUpdatedLastName] = useState(undefined)
+  const [updatedEmail, setUpdatedEmail] = useState(undefined)
+
+  useEffect(() => {
+    if (profile) {
+      setUpdatedFirstName(profile.firstName)
+      setUpdatedLastName(profile.lastName)
+      setUpdatedEmail(profile.email)
+    }
+  }, [profile])
 
   const handleEdit = () => {
-    console.log('edit');
-    // todo: edit functionality
+    fetch(`${origin}/api/user?pid=${profile.pid}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        firstName: updatedFirstName && updatedFirstName,
+        lastName: updatedLastName && updatedLastName,
+        email: updatedEmail && updatedEmail,
+      })
+    }).then(response => response.json()).then((data) => {
+      let updatedUser = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        pass: data.pass,
+        pid: data.pid
+      }
+      setProfile(updatedUser)
+    })
   }
 
   const handleDelete = () => {
@@ -21,11 +50,21 @@ export const ContentPanel = ({profile, handleProfileDeletion}) => {
             title='Are you sure?'
             subheading='This operation cannot be reversed.'
             bodyNode={<div className='mt-4'>The profile for {profile?.firstName} {profile?.lastName} will be permanently deleted.</div>}
-            open={isModalOpen}
-            setOpen={setIsModalOpen}
+            open={isDeleteModalOpen}
+            setOpen={setIsDeleteModalOpen}
             onConfirm={handleDelete}
             accentColor={'red'}
             icon={'trash'}
+        />
+        <Modal
+            title='Edit User Profile'
+            subheading='Update details for this user.'
+            bodyNode={<EditUserForm firstName={updatedFirstName} setFirstName={setUpdatedFirstName} lastName={updatedLastName} setLastName={setUpdatedLastName} email={updatedEmail} setEmail={setUpdatedEmail}/>}
+            open={isEditModalOpen}
+            setOpen={setIsEditModalOpen}
+            onConfirm={handleEdit}
+            accentColor={'green'}
+            icon={'pencil'}
         />
         {profile === undefined ?
             // todo: better loader
@@ -37,12 +76,12 @@ export const ContentPanel = ({profile, handleProfileDeletion}) => {
               </div>
               <div className="p-16 flex flex-col gap-2">
                 <div className="flex gap-2 mb-2">
-                  <button onClick={handleEdit}>
+                  <button onClick={() => setIsEditModalOpen(true)}>
                     <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full hover:bg-green-200 sm:mx-0 sm:h-10 sm:w-10">
                     <PencilIcon className='h-8 w-8'/>
                     </div>
                   </button>
-                  <button onClick={() => setIsModalOpen(true)}>
+                  <button onClick={() => setIsDeleteModalOpen(true)}>
                     <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full hover:bg-red-200 sm:mx-0 sm:h-10 sm:w-10">
                     <TrashIcon className='h-8 w-8'/>
                     </div>

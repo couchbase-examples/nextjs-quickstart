@@ -1,7 +1,6 @@
 import React from 'react';
 
-export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) => {
-  // todo: lift state to parents as controlled form component, then use it in the parent to fire the add request
+export const EditUserForm = ({firstName, setFirstName, lastName, setLastName, email, setEmail}) => {
   return (
       <form>
         <div className="pb-2 mt-4">
@@ -12,11 +11,12 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) 
             <div className="col-span-3">
               <div className="mt-2">
                 <input
+                    defaultValue={firstName}
                     onChange={(e) => {setFirstName(e.target.value)}}
                     placeholder='First Name'
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="first-name-edit"
+                    id="first-name-edit"
                     autoComplete="given-name"
                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -26,11 +26,12 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) 
             <div className="col-span-3">
               <div className="mt-2">
                 <input
+                    defaultValue={lastName}
                     onChange={(e) => {setLastName(e.target.value)}}
                     placeholder='Last Name'
                     type="text"
-                    name="last-name"
-                    id="last-name"
+                    name="last-name-edit"
+                    id="last-name-edit"
                     autoComplete="family-name"
                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -40,25 +41,13 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) 
             <div className="col-span-6">
               <div className="mt-2">
                 <input
+                    defaultValue={email}
                     onChange={(e) => {setEmail(e.target.value)}}
                     placeholder='Email Address'
-                    id="email"
-                    name="email"
+                    id="email-edit"
+                    name="email-edit"
                     type="email"
                     autoComplete="email"
-                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="col-span-6">
-              <div className="mt-2">
-                <input
-                    onChange={(e) => {setPassword(e.target.value)}}
-                    placeholder='Password'
-                    id="password"
-                    name="password"
-                    type="password"
                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
