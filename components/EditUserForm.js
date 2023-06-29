@@ -1,6 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
+import {validateEmail} from '../util/helpers/validateEmail';
 
 export const EditUserForm = ({firstName, setFirstName, lastName, setLastName, email, setEmail}) => {
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const handleEmail = (e) => {
+    const emailAddress = e.target.value;
+    const isValid = validateEmail(emailAddress);
+    setEmail(emailAddress)
+    setIsEmailValid(isValid)
+  }
   return (
       <form>
         <div className="pb-2 mt-4">
@@ -42,7 +51,7 @@ export const EditUserForm = ({firstName, setFirstName, lastName, setLastName, em
               <div className="mt-2">
                 <input
                     defaultValue={email}
-                    onChange={(e) => {setEmail(e.target.value)}}
+                    onChange={handleEmail}
                     placeholder='Email Address'
                     id="email-edit"
                     name="email-edit"

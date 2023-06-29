@@ -1,6 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {validateEmail} from '../util/helpers/validateEmail';
+import clsx from 'clsx';
 
 export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) => {
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const handleEmail = (e) => {
+    const emailAddress = e.target.value;
+    const isValid = validateEmail(emailAddress);
+    setEmail(emailAddress)
+    setIsEmailValid(isValid)
+  }
+
   return (
       <form>
         <div className="pb-2 mt-4">
@@ -39,13 +50,16 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) 
             <div className="col-span-6">
               <div className="mt-2">
                 <input
-                    onChange={(e) => {setEmail(e.target.value)}}
+                    onChange={handleEmail}
                     placeholder='Email Address'
                     id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
-                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={clsx(
+                        !isEmailValid && 'border-2 border-red-600',
+                        isEmailValid ? 'focus:ring-indigo-600' : 'focus:ring-red-600',
+                        "focus:ring-inset block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6")}
                 />
               </div>
             </div>

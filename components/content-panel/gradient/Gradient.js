@@ -38,9 +38,9 @@ const Gradient = ({ firstName, lastName }) => {
 
   const generateColor = (value, alpha) => {
     // Generate random HSL values based on the provided value
-    const hue = (value % 360) || 0;
-    const saturation = 80 + (value % 21); // 80-100
-    const lightness = 50 + (value % 11); // 50-60
+    const hue = (value % 60) * 6; // Hues from 0 to 360 in steps of 6 (avoiding dark/brown shades)
+    const saturation = 50 + (value % 31); // 50-80 for pastel colors
+    const lightness = 70 + (value % 11); // 70-80 for brighter colors
 
     return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
   };

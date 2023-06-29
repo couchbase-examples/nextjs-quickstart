@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     }
     await profileCollection.insert(profile.pid, profile)
         .then((result) => {
-          res.send({...profile, ...result});
+          res.status(201).send({...profile, ...result});
         })
         .catch((e) => {
           res.status(500).send({

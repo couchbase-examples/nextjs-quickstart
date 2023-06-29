@@ -7,6 +7,7 @@ import {Sidebar} from '../components/sidebar/Sidebar';
 import Modal from '../components/Modal';
 import {AddUserForm} from '../components/AddUserForm';
 import {ContentPanel} from '../components/content-panel/ContentPanel';
+import {validateEmail} from '../util/helpers/validateEmail';
 
 
 export default function Home({isConnected, origin}) {
@@ -29,13 +30,15 @@ export default function Home({isConnected, origin}) {
   const [updatedEmail, setUpdatedEmail] = useState(undefined)
 
   useEffect( () => {
-    async function fetchAllProfiles() {
-      await fetch(`${origin}/api/user${searchString ? `?search=${searchString}&limit=200` : '?limit=200'}`, {
+    const fetchAllProfiles = () => {
+      fetch(`${origin}/api/user${searchString ? `?search=${searchString}&limit=200` : '?limit=200'}`, {
         method: 'GET',
       }).then(response => response.json()).then((data) => {
           if (data.message === 'Query failed: planning failure') {
             throw new Error(`Query Failed. Be sure to run \`npm run build-indexes\`!`)
           }
+
+          data.sort((a, b) => a.firstName.localeCompare(b.firstName)) // Sort the profiles alphabetically by name
 
           setUserProfiles(data);
           setIsProfilesLoading(false);
@@ -53,7 +56,12 @@ export default function Home({isConnected, origin}) {
    * Send a request to insert a new profile into the collection, and update local state.
    * @return {Promise<void>}
    */
-  const handleProfileCreation = async () => {
+  const handleProfileCreation = () => {
+    setFirstName(undefined)
+    setLastName(undefined)
+    setEmail(undefined)
+    setPassword(undefined)
+
     fetch(`${origin}/api/user`, {
       method: 'POST',
       body: JSON.stringify({
@@ -62,6 +70,13 @@ export default function Home({isConnected, origin}) {
         email: email,
         pass: password,
       })
+    }).then((response) => {
+      if (response.status !== 201) {
+        response.json().then((data) => {
+          throw new Error(`Error Creating Profile: ${data.message}`)
+        })
+      }
+      return response;
     }).then(response => response.json()).then((data) => {
       let newUser = {
         firstName: data.firstName,
@@ -71,6 +86,8 @@ export default function Home({isConnected, origin}) {
         pid: data.pid
       }
       setUserProfiles([newUser, ...userProfiles])
+    }).catch((e) => {
+      console.log(e);
     })
   }
 
@@ -79,7 +96,7 @@ export default function Home({isConnected, origin}) {
    * @param pid - The profile ID to remove
    * @return {Promise<void>}
    */
-  const handleProfileDeletion = async (pid) => {
+  const handleProfileDeletion = (pid) => {
     fetch(`${origin}/api/user?pid=${pid}`, {method: 'DELETE'})
         .then((data) => {
           if (data.status === 200) {
@@ -88,7 +105,7 @@ export default function Home({isConnected, origin}) {
               return p.pid !== pid;
             })
             setUserProfiles(newArr)
-            setSelectedProfile(userProfiles[0])
+            setSelectedProfile(newArr[0])
           }
         })
   }
@@ -122,6 +139,13 @@ export default function Home({isConnected, origin}) {
     })
   }
 
+  const resetProfileState = () => {
+    setFirstName(undefined)
+    setLastName(undefined)
+    setEmail(undefined)
+    setPassword(undefined)
+  }
+
   return (
       <div>
         <Head>
@@ -129,7 +153,6 @@ export default function Home({isConnected, origin}) {
           <link rel="icon" href="/favicon.ico"/>
         </Head>
 
-        {/*bg-blue-200*/}
         <main className={``}>
           <div className="flex min-h-[calc(100vh-4rem)]">
             <Sidebar
@@ -163,18 +186,24 @@ export default function Home({isConnected, origin}) {
             open={isCreateModalOpen}
             setOpen={setIsCreateModalOpen}
             onConfirm={handleProfileCreation}
+            onCancel={resetProfileState}
+            isConfirmValid={firstName && lastName && email && password && validateEmail(email)}
             icon={'user-plus'}
           />
         </main>
 
-        <footer className={styles.footer + ' max-h-16'}>
+        <footer className={styles.footer + ' max-h-16 bg-zinc-700 text-white'}>
+          <a href="#">
+            <img src="/capella-full.svg" alt="Couchbase Capella Logo" className='h-10 mr-2'/>
+          </a>
+          <div className='border-l-2 border-white h-10 mx-10'></div>
+
           <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"
               rel="noopener noreferrer"
           >
-            Powered by{' '}
-            <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo}/>
+            <img src="/vercel.svg" alt="Vercel Logo" className='h-7'/>
           </a>
         </footer>
 

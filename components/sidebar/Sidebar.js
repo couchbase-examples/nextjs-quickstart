@@ -10,12 +10,12 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
   }
 
   return (
-      <div className={'bg-green-200 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>
-        <div className='p-4 mb-3'>
+      <div className={'bg-slate-100 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>
+        <div className='p-4 mb-2'>
           <div className="flex place-items-center">
             <h2 className='flex-1 text-3xl text-gray-900 font-bold'>User Directory</h2>
             <span className='hover:cursor-pointer' onClick={openCreateModal}>
-              <PlusCircleIcon className='h-8 w-8 text-blue-400 hover:text-blue-600'/>
+              <PlusCircleIcon className='h-10 w-10 text-blue-400 hover:text-blue-600 hover:drop-shadow-md'/>
             </span>
           </div>
           <div className="mt-4">
@@ -41,15 +41,15 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
                 profiles.length > 0 ?
                     <>
                       {
-                        profiles
-                            .sort((a, b) => a.firstName.localeCompare(b.firstName)) // Sort the profiles alphabetically by name
-                            .map((profile, idx) => {
-                          // todo: correct href
-                          return <UserRow profile={profile} index={idx} href={'#'} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile.pid}/>
+                        profiles.map((profile, idx) => {
+                          return <UserRow profile={profile} index={idx} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile.pid}/>
                         })
                       }
                     </>
-                    : <></>
+                    :
+                    <div className='p-4 text-center text-2xl'>
+                      No Results Found
+                    </div>
 
         }
       </div>
