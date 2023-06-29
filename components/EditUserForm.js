@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 export const EditUserForm = ({firstName, setFirstName, lastName, setLastName, email, setEmail}) => {
   return (

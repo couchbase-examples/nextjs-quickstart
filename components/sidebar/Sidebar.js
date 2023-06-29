@@ -1,18 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {UserRow} from '../UserRow';
 import {PlusCircleIcon} from '@heroicons/react/24/outline';
 import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
+import SidebarLoader from '../loaders/SidebarLoader';
 
 export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfiles, isLoading, setIsLoading, searchString, setSearchString, openCreateModal}) => {
   const handleSearchFieldChange = (event) => {
     setSearchString(event.target.value);
   }
-  // todo: sidebar profile doesn't update when edited -> need to reorganize state
+
   return (
       <div className={'bg-green-200 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>
         <div className='p-4 mb-3'>
           <div className="flex place-items-center">
-            <h2 className='flex-1 text-2xl text-gray-900 font-bold'>User Directory</h2>
+            <h2 className='flex-1 text-3xl text-gray-900 font-bold'>User Directory</h2>
             <span className='hover:cursor-pointer' onClick={openCreateModal}>
               <PlusCircleIcon className='h-8 w-8 text-blue-400 hover:text-blue-600'/>
             </span>
@@ -35,13 +36,14 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
         </div>
         {
           isLoading ?
-              //TODO: skeleton loaders
-              <div>Loading...</div>
+              <SidebarLoader numRecords={25}/>
               :
                 profiles.length > 0 ?
                     <>
                       {
-                        profiles.map((profile, idx) => {
+                        profiles
+                            .sort((a, b) => a.firstName.localeCompare(b.firstName)) // Sort the profiles alphabetically by name
+                            .map((profile, idx) => {
                           // todo: correct href
                           return <UserRow profile={profile} index={idx} href={'#'} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile.pid}/>
                         })

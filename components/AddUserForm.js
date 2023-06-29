@@ -1,7 +1,6 @@
 import React from 'react';
 
 export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) => {
-  // todo: lift state to parents as controlled form component, then use it in the parent to fire the add request
   return (
       <form>
         <div className="pb-2 mt-4">

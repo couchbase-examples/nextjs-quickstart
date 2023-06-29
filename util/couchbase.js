@@ -52,18 +52,24 @@ async function createCouchbaseCluster() {
     return cached.conn
   }
 
-  if (IS_CAPELLA === 'true') {
-    // Capella requires TLS connection string but we'll skip certificate verification with `tls_verify=none`
-    cached.conn = await couchbase.connect('couchbases://' + COUCHBASE_ENDPOINT + '?tls_verify=none', {
-      username: COUCHBASE_USER,
-      password: COUCHBASE_PASSWORD,
-    })
-  } else {
-    // no TLS needed, use traditional connection string
-    cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT, {
-      username: COUCHBASE_USER,
-      password: COUCHBASE_PASSWORD,
-    })
+  try {
+    if (IS_CAPELLA === 'true') {
+      // Capella requires TLS connection string but we'll skip certificate verification with `tls_verify=none`
+      cached.conn = await couchbase.connect('couchbases://' + COUCHBASE_ENDPOINT + '?tls_verify=none', {
+        username: COUCHBASE_USER,
+        password: COUCHBASE_PASSWORD,
+      })
+    } else {
+      // no TLS needed, use traditional connection string
+      cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT, {
+        username: COUCHBASE_USER,
+        password: COUCHBASE_PASSWORD,
+      })
+    }
+  } catch (e) {
+      throw new Error(
+          'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
+      );
   }
 
   return cached.conn

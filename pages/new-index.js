@@ -9,23 +9,34 @@ import {AddUserForm} from '../components/AddUserForm';
 import {ContentPanel} from '../components/content-panel/ContentPanel';
 
 
-export default function Home({isConnected, origin, profile}) {
-  const [searchResults, setSearchResults] = useState([]);
-  
+export default function Home({isConnected, origin}) {
+  const [selectedProfile, setSelectedProfile] = useState(undefined)
   const [userProfiles, setUserProfiles] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isProfilesLoading, setIsProfilesLoading] = useState(true)
 
   const [searchString, setSearchString] = useState(undefined);
-  
-  // todo: see if this works
-  const [selectedProfile, setSelectedProfile] = useState(undefined)
-  
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+
+  // State to store new user information
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // State to store updated user information
+  const [updatedFirstName, setUpdatedFirstName] = useState(undefined)
+  const [updatedLastName, setUpdatedLastName] = useState(undefined)
+  const [updatedEmail, setUpdatedEmail] = useState(undefined)
+
   useEffect( () => {
     async function fetchAllProfiles() {
       await fetch(`${origin}/api/user${searchString ? `?search=${searchString}&limit=200` : '?limit=200'}`, {
         method: 'GET',
       }).then(response => response.json()).then((data) => {
+          if (data.message === 'Query failed: planning failure') {
+            throw new Error(`Query Failed. Be sure to run \`npm run build-indexes\`!`)
+          }
+
           setUserProfiles(data);
           setIsProfilesLoading(false);
           setSelectedProfile(data[0]);
@@ -34,51 +45,12 @@ export default function Home({isConnected, origin, profile}) {
     fetchAllProfiles();
   }, [searchString])
 
-  const handleProfilePost = async (event) => {
-    await fetch(`${origin}/api/user`, {
-      method: 'POST',
-      body: JSON.stringify({
-        firstName: event.target.firstName.value,
-        lastName: event.target.lastName.value,
-        email: event.target.email.value,
-        pass: event.target.password.value,
-      })
-    })
-  }
-
-  const handleProfileSearch = async (event) => {
-    event.preventDefault();
-
-    await fetch(`${origin}/api/user?search=${event.target.searchString.value}`, {
-      method: 'GET',
-    }).then(async (data) => {
-      setSearchResults(await data.json());
-    })
-  }
-
-  const handleProfilePut = async (event) => {
-    await fetch(`${origin}/api/user?pid=${event.target.pid.value}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        firstName: event.target.firstName.value,
-        lastName: event.target.lastName.value,
-        email: event.target.email.value,
-        pass: event.target.password.value,
-      })
-    })
-  }
-
   const openCreateModal = () => {
-    setIsModalOpen(true)
+    setIsCreateModalOpen(true)
   }
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   /**
-   * Send a request to insert a new profile into the collection
+   * Send a request to insert a new profile into the collection, and update local state.
    * @return {Promise<void>}
    */
   const handleProfileCreation = async () => {
@@ -103,7 +75,7 @@ export default function Home({isConnected, origin, profile}) {
   }
 
   /**
-   * Send a request to delete a profile
+   * Send a request to delete a profile, and update local state.
    * @param pid - The profile ID to remove
    * @return {Promise<void>}
    */
@@ -121,20 +93,34 @@ export default function Home({isConnected, origin, profile}) {
         })
   }
 
-  // const handleProfileEdit = async (pid) => {
-  //   fetch(`${origin}/api/user?pid=${pid}`, {
-  //     method: 'PUT',
-  //     body: JSON.stringify({
-  //       firstName: '',
-  //       lastName: '',
-  //       email: '',
-  //     })
-  //   })
-  // }
-  
-  useEffect(() => {
-    console.log(selectedProfile);
-  }, [selectedProfile])
+  /**
+   * Send a request to edit a user profile, and update local state.
+   * @param pid
+   */
+  const handleProfileEdit = (pid) => {
+    fetch(`${origin}/api/user?pid=${pid}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        firstName: updatedFirstName && updatedFirstName,
+        lastName: updatedLastName && updatedLastName,
+        email: updatedEmail && updatedEmail,
+      })
+    }).then(response => response.json()).then((data) => {
+      let updatedUser = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        pass: data.pass,
+        pid: data.pid
+      }
+      setSelectedProfile(updatedUser)
+
+      let newProfiles = userProfiles;
+      newProfiles[userProfiles.findIndex(p => p.pid === updatedUser.pid)] = updatedUser;
+
+      setUserProfiles(newProfiles)
+    })
+  }
 
   return (
       <div>
@@ -143,8 +129,9 @@ export default function Home({isConnected, origin, profile}) {
           <link rel="icon" href="/favicon.ico"/>
         </Head>
 
-        <main className={`bg-blue-200`}>
-          <div className="flex">
+        {/*bg-blue-200*/}
+        <main className={``}>
+          <div className="flex min-h-[calc(100vh-4rem)]">
             <Sidebar
                 selectedProfile={selectedProfile}
                 setSelectedProfile={setSelectedProfile}
@@ -156,19 +143,28 @@ export default function Home({isConnected, origin, profile}) {
                 setSearchString={setSearchString}
                 openCreateModal={openCreateModal}
             />
-            <ContentPanel profile={selectedProfile} setProfile={setSelectedProfile} handleProfileDeletion={handleProfileDeletion}/>
+            <ContentPanel
+                profile={selectedProfile}
+                handleProfileDeletion={handleProfileDeletion}
+                handleProfileEdit={handleProfileEdit}
+                updatedFirstName={updatedFirstName}
+                setUpdatedFirstName={setUpdatedFirstName}
+                updatedLastName={updatedLastName}
+                setUpdatedLastName={setUpdatedLastName}
+                updatedEmail={updatedEmail}
+                setUpdatedEmail={setUpdatedEmail}
+            />
           </div>
 
           <Modal
             title='Add a User'
             subheading='Write a new User record to the Database.'
             bodyNode={<AddUserForm setFirstName={setFirstName} setLastName={setLastName} setEmail={setEmail} setPassword={setPassword} />}
-            open={isModalOpen}
-            setOpen={setIsModalOpen}
+            open={isCreateModalOpen}
+            setOpen={setIsCreateModalOpen}
             onConfirm={handleProfileCreation}
             icon={'user-plus'}
           />
-
         </main>
 
         <footer className={styles.footer + ' max-h-16'}>
