@@ -1,4 +1,4 @@
-import { ensureIndexes } from "./ensureIndexes";
+import { ensureIndexes } from "./ensureIndexes.js";
 
 ensureIndexes().then(() => {
   console.log("Finished Building Indexes")

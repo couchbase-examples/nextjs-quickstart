@@ -15,7 +15,7 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
           <div className="flex place-items-center">
             <h2 className='flex-1 text-3xl text-gray-900 font-bold'>User Directory</h2>
             <span className='hover:cursor-pointer' onClick={openCreateModal}>
-              <PlusCircleIcon className='h-10 w-10 text-blue-400 hover:text-blue-600 hover:drop-shadow-md'/>
+              <PlusCircleIcon className='h-10 w-10 text-blue-400 hover:text-blue-700 hover:drop-shadow-md'/>
             </span>
           </div>
           <div className="mt-4">

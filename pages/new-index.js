@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import {connectToDatabase} from '../util/couchbase'
 import React, {useEffect, useState} from 'react';
-import absoluteUrl from 'next-absolute-url'
 import styles from '../styles/Home.module.css'
 import {Sidebar} from '../components/sidebar/Sidebar';
 import Modal from '../components/Modal';
@@ -213,7 +212,10 @@ export default function Home({isConnected, origin}) {
 
 export async function getServerSideProps(context) {
   const {req} = context;
-  const { origin } = absoluteUrl(req);
+
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const origin = req ? `${protocol}://${req.headers.host}` : ''
+
 
   let connection = await connectToDatabase();
 
@@ -238,15 +240,4 @@ export async function getServerSideProps(context) {
     props: {isConnected, origin, /* profile */ },
   }
 }
-
-async function getProfileByKey(collection, key) {
-  try {
-    let res = await collection.get(key);
-    console.log(res.content);
-    return res.content;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 

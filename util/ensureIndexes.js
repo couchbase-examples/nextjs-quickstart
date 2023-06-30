@@ -1,5 +1,5 @@
-import {connectToDatabase} from "./couchbase";
-const couchbase = require("couchbase")
+import {connectToDatabase} from "./couchbase.js";
+import * as couchbase from 'couchbase'
 
 export const ensureIndexes = async() => {
   let { cluster } = await connectToDatabase();

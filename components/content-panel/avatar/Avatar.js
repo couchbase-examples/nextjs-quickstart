@@ -31,7 +31,9 @@ function Avatar({ name }) {
 
   return (
       <div style={avatarStyle} className='rounded-full w-32 h-32 drop-shadow-lg border-2 border-slate-500'>
-        {initials}
+        <span className='drop-shadow-md'>
+          {initials}
+        </span>
       </div>
   );
 }
