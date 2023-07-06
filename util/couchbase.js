@@ -1,32 +1,24 @@
-import * as couchbase from "couchbase"
+import * as couchbase from 'couchbase';
 
-const CB_USERNAME = process.env.CB_USERNAME
-const CB_PASS = process.env.CB_PASS
-const CONNECT_STRING = process.env.CONNECT_STRING
-const CB_BUCKET = process.env.CB_BUCKET
+const CB_USERNAME = process.env.CB_USERNAME;
+const CB_PASS = process.env.CB_PASS;
+const CONNECT_STRING = process.env.CONNECT_STRING;
+const CB_BUCKET = process.env.CB_BUCKET;
 
 if (!CB_USERNAME) {
-  throw new Error(
-    'Please define the CB_USERNAME environment variable'
-  )
+  throw new Error('Please define the CB_USERNAME environment variable');
 }
 
 if (!CB_PASS) {
-  throw new Error(
-    'Please define the CB_PASS environment variable'
-  )
+  throw new Error('Please define the CB_PASS environment variable');
 }
 
 if (!CONNECT_STRING) {
-  throw new Error(
-      'Please define the CONNECT_STRING environment variable'
-  )
+  throw new Error('Please define the CONNECT_STRING environment variable');
 }
 
 if (!CB_BUCKET) {
-  throw new Error(
-      'Please define the CB_BUCKET environment variable inside'
-  )
+  throw new Error('Please define the CB_BUCKET environment variable inside');
 }
 
 /**
@@ -34,15 +26,15 @@ if (!CB_BUCKET) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = global.couchbase
+let cached = global.couchbase;
 
 if (!cached) {
-  cached = global.couchbase = { conn: null }
+  cached = global.couchbase = { conn: null };
 }
 
 async function createCouchbaseCluster() {
   if (cached.conn) {
-    return cached.conn
+    return cached.conn;
   }
 
   try {
@@ -50,18 +42,18 @@ async function createCouchbaseCluster() {
     cached.conn = await couchbase.connect(CONNECT_STRING + '?tls_verify=none', {
       username: CB_USERNAME,
       password: CB_PASS,
-    })
+    });
   } catch (e) {
-      throw new Error(
-          'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
-      );
+    throw new Error(
+      'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
+    );
   }
 
-  return cached.conn
+  return cached.conn;
 }
 
 export async function connectToDatabase() {
-  const cluster = await createCouchbaseCluster()
+  const cluster = await createCouchbaseCluster();
   const bucket = cluster.bucket('user_profile');
   const collection = bucket.defaultCollection();
   const profileCollection = bucket.collection('profile');
@@ -71,10 +63,7 @@ export async function connectToDatabase() {
     bucket,
     collection,
     profileCollection,
-  }
+  };
 
   return dbConnection;
 }
-
-
-

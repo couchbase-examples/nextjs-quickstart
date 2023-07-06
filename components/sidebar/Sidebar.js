@@ -14,7 +14,7 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
     if (profiles.length === 1) {
       setSelectedProfile(profiles[0])
     }
-  }, [profiles])
+  }, [profiles, setSelectedProfile])
 
   return (
       <div className={'bg-slate-100 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>
@@ -49,7 +49,7 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
                     <>
                       {
                         profiles.map((profile, idx) => {
-                          return <UserRow profile={profile} index={idx} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile.pid}/>
+                          return <UserRow profile={profile} index={idx} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile?.pid}/>
                         })
                       }
                     </>
