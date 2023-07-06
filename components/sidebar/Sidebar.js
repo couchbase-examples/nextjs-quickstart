@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {UserRow} from '../UserRow';
 import {PlusCircleIcon} from '@heroicons/react/24/outline';
 import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
@@ -8,6 +8,13 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfi
   const handleSearchFieldChange = (event) => {
     setSearchString(event.target.value);
   }
+
+  useEffect(() => {
+    // if we've just added the first profile, select it
+    if (profiles.length === 1) {
+      setSelectedProfile(profiles[0])
+    }
+  }, [profiles])
 
   return (
       <div className={'bg-slate-100 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>

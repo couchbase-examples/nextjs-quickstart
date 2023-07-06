@@ -3,7 +3,7 @@ import {validateEmail} from '../../util/helpers/validateEmail';
 import clsx from 'clsx';
 
 export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) => {
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
 
   const handleEmail = (e) => {
     const emailAddress = e.target.value;
