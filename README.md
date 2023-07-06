@@ -19,13 +19,12 @@ To run this prebuilt project, you will need:
 ## Update environment variables appropriately
 
 We've included a `.env.local.example` file with blank values for you to copy into a file called `.env.local` and fill in the values. We've also included a `.env.default` file for testing and running in GitPod. In most cases, you can ignore the default config file. 
-- `COUCHBASE_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
-- `COUCHBASE_PASSWORD` - The password that corresponds to the user specified above
-- `COUCHBASE_ENDPOINT` - The Couchbase endpoint to connect to. Use `localhost` for a local/Docker cluster, or the Wide Area Network address for a Capella instance (formatted like `cb.<xxxxxx>.cloud.couchbase.com`)
-- `COUCHBASE_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
-- `IS_CAPELLA` - `true` if you are trying to connect to an instance of Couchbase Capella, `false` otherwise.
+- `CB_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
+- `CB_PASS` - The password that corresponds to the user specified above
+- `CONNECT_STRING` - The Couchbase endpoint to connect to. Use `localhost` for a local/Docker cluster, or the Wide Area Network address for a Capella instance (formatted like `cb.<xxxxxx>.cloud.couchbase.com`)
+- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
 
-**NOTE on TLS:** The connection logic in this sample app ignores mismatched certificates with the parameter `tls_verify=none`. While this is super helpful in streamlining the connection process for development purposes, it's not very secure and should **not** be used in production. To learn how to secure your connection with proper certificates, see [the Node.js TLS connection tutorial](https://developer.couchbase.com/tutorial-nodejs-tls-connection).
+**NOTE on TLS:** The connection logic in this sample app (`util/couchbase.js`) ignores mismatched certificates with the parameter `tls_verify=none`. While this is great for streamlining the connection process for development purposes, it's not very secure and should **not** be used in production. To learn how to secure your connection with proper certificates, see [the Node.js TLS connection tutorial](https://developer.couchbase.com/tutorial-nodejs-tls-connection).
 
 ## Set up and Run The Application
 The [main tutorial](https://developer.couchbase.com/tutorial-quickstart-nextjs/) will walk you through the process of bootstrapping a new Next.js project using our 'with-couchbase' example, but here we'll focus on just cloning and running this example repo.

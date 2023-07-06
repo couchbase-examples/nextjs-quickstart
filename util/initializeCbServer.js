@@ -6,14 +6,14 @@ import {ensureIndexes} from "./ensureIndexes";
 
 let DELAY_LENGTH = process.env.DELAY || 5000;
 
-const username = process.env.COUCHBASE_USER
-const password = process.env.COUCHBASE_PASSWORD
+const username = process.env.CB_USERNAME
+const password = process.env.CB_PASS
 const auth = `Basic ${Buffer.from(username + ':' + password).toString('base64')}`
 
-let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
+let CB_BUCKET = process.env.CB_BUCKET
 
 const restCreateBucket = async() => {
-  const data = { name: COUCHBASE_BUCKET, ramQuotaMB: 150, durabilityMinLevel: "none", replicaNumber: 0, replicaIndex: 0 }
+  const data = { name: CB_BUCKET, ramQuotaMB: 150, durabilityMinLevel: "none", replicaNumber: 0, replicaIndex: 0 }
   await axios({
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
@@ -47,7 +47,7 @@ const restCreateCollection = async() => {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': auth },
     data: qs.stringify(data),
-    url: `http://127.0.0.1:8091/pools/default/buckets/${COUCHBASE_BUCKET}/scopes/_default/collections`,
+    url: `http://127.0.0.1:8091/pools/default/buckets/${CB_BUCKET}/scopes/_default/collections`,
   })
   .catch((error) => {
     if (error.response === undefined) {
@@ -56,7 +56,7 @@ const restCreateCollection = async() => {
         console.info("\tIf you are using a Capella cluster, you'll have to create a \`profile`\ scope on the \`user_profile\` bucket manually. See README for details.\n")
       }
     } else if (error.response.status === 404) {
-      console.error(`Error Creating Collection: bucket \'${COUCHBASE_BUCKET}\' not found. \n`)
+      console.error(`Error Creating Collection: bucket \'${CB_BUCKET}\' not found. \n`)
     } else {
       console.log(`Collection may already exist: ${error.message} \n`)
     }

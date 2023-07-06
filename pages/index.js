@@ -37,6 +37,10 @@ export default function Home({isConnected, origin}) {
             throw new Error(`Query Failed. Be sure to run \`npm run build-indexes\`!`)
           }
 
+          if (data.message) {
+            throw new Error(data.message)
+          }
+
           data.sort((a, b) => a.firstName.localeCompare(b.firstName)) // Sort the profiles alphabetically by name
 
           setUserProfiles(data);

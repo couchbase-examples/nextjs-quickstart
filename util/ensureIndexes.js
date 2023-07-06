@@ -3,10 +3,10 @@ import * as couchbase from 'couchbase'
 
 export const ensureIndexes = async() => {
   let { cluster } = await connectToDatabase();
-  const COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
+  const CB_BUCKET = process.env.CB_BUCKET
 
-  const bucketIndex = `CREATE PRIMARY INDEX ON ${COUCHBASE_BUCKET}`
-  const collectionIndex = `CREATE PRIMARY INDEX ON default:${COUCHBASE_BUCKET}._default.profile;`
+  const bucketIndex = `CREATE PRIMARY INDEX ON ${CB_BUCKET}`
+  const collectionIndex = `CREATE PRIMARY INDEX ON default:${CB_BUCKET}._default.profile;`
 
   try {
     await cluster.query(bucketIndex)

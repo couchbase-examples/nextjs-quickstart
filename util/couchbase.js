@@ -1,38 +1,31 @@
 import * as couchbase from "couchbase"
 
-const COUCHBASE_USER = process.env.COUCHBASE_USER
-const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
-const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
-let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
-let IS_CAPELLA = process.env.IS_CAPELLA
+const CB_USERNAME = process.env.CB_USERNAME
+const CB_PASS = process.env.CB_PASS
+const CONNECT_STRING = process.env.CONNECT_STRING
+const CB_BUCKET = process.env.CB_BUCKET
 
-if (!COUCHBASE_USER) {
+if (!CB_USERNAME) {
   throw new Error(
-    'Please define the COUCHBASE_USER environment variable inside .env.local'
+    'Please define the CB_USERNAME environment variable'
   )
 }
 
-if (!COUCHBASE_PASSWORD) {
+if (!CB_PASS) {
   throw new Error(
-    'Please define the COUCHBASE_PASSWORD environment variable inside .env.local'
+    'Please define the CB_PASS environment variable'
   )
 }
 
-if (!COUCHBASE_ENDPOINT) {
+if (!CONNECT_STRING) {
   throw new Error(
-      'Please define the COUCHBASE_ENDPOINT environment variable inside .env.local'
+      'Please define the CONNECT_STRING environment variable'
   )
 }
 
-if (!COUCHBASE_BUCKET) {
+if (!CB_BUCKET) {
   throw new Error(
-      'Please define the COUCHBASE_BUCKET environment variable inside .env.local'
-  )
-}
-
-if (!IS_CAPELLA) {
-  throw new Error(
-      'Please define the IS_CAPELLA environment variable inside dev.env. \nSet to \`true\` if you are connecting to a Capella cluster, and \`false\` otherwise.\n'
+      'Please define the CB_BUCKET environment variable inside'
   )
 }
 
@@ -53,19 +46,11 @@ async function createCouchbaseCluster() {
   }
 
   try {
-    if (IS_CAPELLA === 'true') {
-      // Capella requires TLS connection string but we'll skip certificate verification with `tls_verify=none`
-      cached.conn = await couchbase.connect('couchbases://' + COUCHBASE_ENDPOINT + '?tls_verify=none', {
-        username: COUCHBASE_USER,
-        password: COUCHBASE_PASSWORD,
-      })
-    } else {
-      // no TLS needed, use traditional connection string
-      cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT, {
-        username: COUCHBASE_USER,
-        password: COUCHBASE_PASSWORD,
-      })
-    }
+    // todo: can we remove the tlsverify none?
+    cached.conn = await couchbase.connect(CONNECT_STRING + '?tls_verify=none', {
+      username: CB_USERNAME,
+      password: CB_PASS,
+    })
   } catch (e) {
       throw new Error(
           'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
@@ -77,7 +62,7 @@ async function createCouchbaseCluster() {
 
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
-  const bucket = cluster.bucket(COUCHBASE_BUCKET);
+  const bucket = cluster.bucket('user_profile');
   const collection = bucket.defaultCollection();
   const profileCollection = bucket.collection('profile');
 
