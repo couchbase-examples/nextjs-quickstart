@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "next build",
+    "build": "npm run strip-cb-sdk && next build",
     "start": "next start",
     "init-db:default": "env-cmd -f .env.default npx babel-node ./util/initializeCbServer.js",
     "init-db:local": "env-cmd -f .env.local npx babel-node ./util/initializeCbServer.js",
     "build-indexes": "env-cmd -f .env.local npx babel-node ./util/buildIndexes.js",
+    "strip-cb-sdk": "strip --strip-debug ./node_modules/couchbase/build/Release/couchbase_impl.node",
     "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {

@@ -1,114 +1,208 @@
 import Head from 'next/head'
 import {connectToDatabase} from '../util/couchbase'
-import {UserCard} from '../components/UserCard';
-import React, {useState} from 'react';
-import absoluteUrl from 'next-absolute-url'
+import React, {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css'
+import {Sidebar} from '../components/sidebar/Sidebar';
+import Modal from '../components/Modal';
+import {AddUserForm} from '../components/AddUserForm';
+import {ContentPanel} from '../components/content-panel/ContentPanel';
+import {validateEmail} from '../util/helpers/validateEmail';
 
 
+export default function Home({isConnected, origin}) {
+  const [selectedProfile, setSelectedProfile] = useState(undefined)
+  const [userProfiles, setUserProfiles] = useState([])
+  const [isProfilesLoading, setIsProfilesLoading] = useState(true)
 
-export default function Home({isConnected, origin, profile}) {
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchString, setSearchString] = useState(undefined);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
-  const handleProfilePost = async (event) => {
-    await fetch(`${origin}/api/user`, {
+  // State to store new user information
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // State to store updated user information
+  const [updatedFirstName, setUpdatedFirstName] = useState(undefined)
+  const [updatedLastName, setUpdatedLastName] = useState(undefined)
+  const [updatedEmail, setUpdatedEmail] = useState(undefined)
+
+  useEffect( () => {
+    const fetchAllProfiles = () => {
+      fetch(`${origin}/api/user${searchString ? `?search=${searchString}&limit=200` : '?limit=200'}`, {
+        method: 'GET',
+      }).then(response => response.json()).then((data) => {
+          if (data.message === 'Query failed: planning failure') {
+            throw new Error(`Query Failed. Be sure to run \`npm run build-indexes\`!`)
+          }
+
+          data.sort((a, b) => a.firstName.localeCompare(b.firstName)) // Sort the profiles alphabetically by name
+
+          setUserProfiles(data);
+          setIsProfilesLoading(false);
+          setSelectedProfile(data[0]);
+      })
+    }
+    fetchAllProfiles();
+  }, [searchString])
+
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true)
+  }
+
+  /**
+   * Send a request to insert a new profile into the collection, and update local state.
+   * @return {Promise<void>}
+   */
+  const handleProfileCreation = () => {
+    setFirstName(undefined)
+    setLastName(undefined)
+    setEmail(undefined)
+    setPassword(undefined)
+
+    fetch(`${origin}/api/user`, {
       method: 'POST',
       body: JSON.stringify({
-        firstName: event.target.firstName.value,
-        lastName: event.target.lastName.value,
-        email: event.target.email.value,
-        pass: event.target.password.value,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        pass: password,
       })
+    }).then((response) => {
+      if (response.status !== 201) {
+        response.json().then((data) => {
+          throw new Error(`Error Creating Profile: ${data.message}`)
+        })
+      }
+      return response;
+    }).then(response => response.json()).then((data) => {
+      let newUser = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        pass: data.pass,
+        pid: data.pid
+      }
+      setUserProfiles([newUser, ...userProfiles])
+    }).catch((e) => {
+      console.log(e);
     })
   }
 
-  const handleProfileSearch = async (event) => {
-    event.preventDefault();
-
-    await fetch(`${origin}/api/user?search=${event.target.searchString.value}`, {
-      method: 'GET',
-    }).then(async (data) => {
-      setSearchResults(await data.json());
-    })
+  /**
+   * Send a request to delete a profile, and update local state.
+   * @param pid - The profile ID to remove
+   * @return {Promise<void>}
+   */
+  const handleProfileDeletion = (pid) => {
+    fetch(`${origin}/api/user?pid=${pid}`, {method: 'DELETE'})
+        .then((data) => {
+          if (data.status === 200) {
+            // remove the profile from local state too
+            const newArr = userProfiles.filter((p) => {
+              return p.pid !== pid;
+            })
+            setUserProfiles(newArr)
+            setSelectedProfile(newArr[0])
+          }
+        })
   }
 
-  const handleProfilePut = async (event) => {
-    await fetch(`${origin}/api/user?pid=${event.target.pid.value}`, {
+  /**
+   * Send a request to edit a user profile, and update local state.
+   * @param pid
+   */
+  const handleProfileEdit = (pid) => {
+    fetch(`${origin}/api/user?pid=${pid}`, {
       method: 'PUT',
       body: JSON.stringify({
-        firstName: event.target.firstName.value,
-        lastName: event.target.lastName.value,
-        email: event.target.email.value,
-        pass: event.target.password.value,
+        firstName: updatedFirstName && updatedFirstName,
+        lastName: updatedLastName && updatedLastName,
+        email: updatedEmail && updatedEmail,
       })
+    }).then(response => response.json()).then((data) => {
+      let updatedUser = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        pass: data.pass,
+        pid: data.pid
+      }
+      setSelectedProfile(updatedUser)
+
+      let newProfiles = userProfiles;
+      newProfiles[userProfiles.findIndex(p => p.pid === updatedUser.pid)] = updatedUser;
+
+      setUserProfiles(newProfiles)
     })
   }
 
-
+  const resetProfileState = () => {
+    setFirstName(undefined)
+    setLastName(undefined)
+    setEmail(undefined)
+    setPassword(undefined)
+  }
 
   return (
-      <div className={styles.container}>
+      <div>
         <Head>
-          <title>Create Next App</title>
+          <title>Couchbase Next.js Starter</title>
           <link rel="icon" href="/favicon.ico"/>
         </Head>
 
-        <main className={styles.main}>
-          {/*<UserCard firstName={profile.firstName} lastName={profile.lastName} email={profile.email} pid={profile.pid} allowDelete={false}/>*/}
-
-          <br/>
-          <br/>
-          <form onSubmit={handleProfilePost}>
-            <input type="text" placeholder="First Name" name="firstName"/>
-            <input type="text" placeholder="Last Name" name="lastName"/>
-            <input type="email" placeholder="Email" name="email"/>
-            <input type="password" placeholder="Password" name="password"/>
-            <button type="submit">Post Profile</button>
-          </form>
-          <br/>
-
-          <form onSubmit={handleProfilePut}>
-            <input type="text" placeholder="PID to Update" name="pid"/>
-            <input type="text" placeholder="New First Name" name="firstName"/>
-            <input type="text" placeholder="New Last Name" name="lastName"/>
-            <input type="email" placeholder="New Email" name="email"/>
-            <input type="password" placeholder="New Password" name="password"/>
-            <button type="submit">Update Profile</button>
-          </form>
-          <br/>
-
-          <form onSubmit={handleProfileSearch}>
-            <input type="text" placeholder="Search String" name="searchString"/>
-            <button type="submit">Search</button>
-          </form>
-
-          <h4>Profile Search Results:</h4>
-          <div style={{ display: "flex"}}>
-            { searchResults.message ?
-                <p>{searchResults.message}</p>
-                :
-                <>
-              {searchResults.map((userProfile) => {
-                console.log(userProfile);
-                return (
-                    <UserCard firstName={userProfile.firstName} lastName={userProfile.lastName}
-                              email={userProfile.email} pid={userProfile.pid} origin={origin}/>
-                )
-              })
-              }
-                </>
-            }
+        <main className={``}>
+          <div className="flex min-h-[calc(100vh-4rem)]">
+            <Sidebar
+                selectedProfile={selectedProfile}
+                setSelectedProfile={setSelectedProfile}
+                profiles={userProfiles}
+                setProfiles={setUserProfiles}
+                isLoading={isProfilesLoading}
+                setIsLoading={setIsProfilesLoading}
+                searchString={searchString}
+                setSearchString={setSearchString}
+                openCreateModal={openCreateModal}
+            />
+            <ContentPanel
+                profile={selectedProfile}
+                handleProfileDeletion={handleProfileDeletion}
+                handleProfileEdit={handleProfileEdit}
+                updatedFirstName={updatedFirstName}
+                setUpdatedFirstName={setUpdatedFirstName}
+                updatedLastName={updatedLastName}
+                setUpdatedLastName={setUpdatedLastName}
+                updatedEmail={updatedEmail}
+                setUpdatedEmail={setUpdatedEmail}
+            />
           </div>
+
+          <Modal
+            title='Add a User'
+            subheading='Write a new User record to the Database.'
+            bodyNode={<AddUserForm setFirstName={setFirstName} setLastName={setLastName} setEmail={setEmail} setPassword={setPassword} />}
+            open={isCreateModalOpen}
+            setOpen={setIsCreateModalOpen}
+            onConfirm={handleProfileCreation}
+            onCancel={resetProfileState}
+            isConfirmValid={firstName && lastName && email && password && validateEmail(email)}
+            icon={'user-plus'}
+          />
         </main>
 
-        <footer className={styles.footer}>
+        <footer className={styles.footer + ' max-h-16 bg-zinc-700 text-white'}>
+          <a href="#">
+            <img src="/capella-full.svg" alt="Couchbase Capella Logo" className='h-10 mr-2'/>
+          </a>
+          <div className='border-l-2 border-white h-10 mx-10'></div>
+
           <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"
               rel="noopener noreferrer"
           >
-            Powered by{' '}
-            <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo}/>
+            <img src="/vercel.svg" alt="Vercel Logo" className='h-7'/>
           </a>
         </footer>
 
@@ -118,7 +212,10 @@ export default function Home({isConnected, origin, profile}) {
 
 export async function getServerSideProps(context) {
   const {req} = context;
-  const { origin } = absoluteUrl(req);
+
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const origin = req ? `${protocol}://${req.headers.host}` : ''
+
 
   let connection = await connectToDatabase();
 
@@ -143,15 +240,4 @@ export async function getServerSideProps(context) {
     props: {isConnected, origin, /* profile */ },
   }
 }
-
-async function getProfileByKey(collection, key) {
-  try {
-    let res = await collection.get(key);
-    console.log(res.content);
-    return res.content;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 
