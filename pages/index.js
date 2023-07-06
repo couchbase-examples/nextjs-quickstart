@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css'
 import {Sidebar} from '../components/sidebar/Sidebar';
 import Modal from '../components/Modal';
-import {AddUserForm} from '../components/AddUserForm';
+import {AddUserForm} from '../components/forms/AddUserForm';
 import {ContentPanel} from '../components/content-panel/ContentPanel';
 import {validateEmail} from '../util/helpers/validateEmail';
 

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Gradient from './gradient/Gradient';
 import {PencilIcon, TrashIcon} from '@heroicons/react/24/outline';
 import Modal from '../Modal';
-import {EditUserForm} from '../EditUserForm';
+import {EditUserForm} from '../forms/EditUserForm';
 import ContentLoader from '../loaders/ContentLoader';
 import Avatar from './avatar/Avatar';
 import {validateEmail} from '../../util/helpers/validateEmail';
