@@ -38,9 +38,13 @@ async function createCouchbaseCluster() {
   }
 
   try {
-    // todo: can we remove the tlsverify none?
-    // if starts with couchbases, add tls verify none
-    cached.conn = await couchbase.connect(CONNECT_STRING, {
+    let connectionString = CONNECT_STRING;
+
+    if (CONNECT_STRING.startsWith('couchbases')) {
+      connectionString = connectionString + '?tls_verify=none';
+    }
+
+    cached.conn = await couchbase.connect(connectionString, {
       username: CB_USERNAME,
       password: CB_PASS,
     });
