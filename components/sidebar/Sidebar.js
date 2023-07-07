@@ -4,7 +4,7 @@ import {PlusCircleIcon} from '@heroicons/react/24/outline';
 import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
 import SidebarLoader from '../loaders/SidebarLoader';
 
-export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, setProfiles, isLoading, setIsLoading, searchString, setSearchString, openCreateModal}) => {
+export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, isLoading, setSearchString, openCreateModal}) => {
   const handleSearchFieldChange = (event) => {
     setSearchString(event.target.value);
   }

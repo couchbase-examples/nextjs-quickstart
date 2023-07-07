@@ -9,7 +9,7 @@ import { ContentPanel } from '../components/content-panel/ContentPanel';
 import { validateEmail } from '../util/helpers/validateEmail';
 import Image from 'next/image';
 
-export default function Home({ isConnected, origin }) {
+export default function Home({ origin }) {
   const [selectedProfile, setSelectedProfile] = useState(undefined);
   const [userProfiles, setUserProfiles] = useState([]);
   const [isProfilesLoading, setIsProfilesLoading] = useState(true);
@@ -179,7 +179,6 @@ export default function Home({ isConnected, origin }) {
             selectedProfile={selectedProfile}
             setSelectedProfile={setSelectedProfile}
             profiles={userProfiles}
-            setProfiles={setUserProfiles}
             isLoading={isProfilesLoading}
             setIsLoading={setIsProfilesLoading}
             searchString={searchString}
@@ -190,11 +189,8 @@ export default function Home({ isConnected, origin }) {
             profile={selectedProfile}
             handleProfileDeletion={handleProfileDeletion}
             handleProfileEdit={handleProfileEdit}
-            updatedFirstName={updatedFirstName}
             setUpdatedFirstName={setUpdatedFirstName}
-            updatedLastName={updatedLastName}
             setUpdatedLastName={setUpdatedLastName}
-            updatedEmail={updatedEmail}
             setUpdatedEmail={setUpdatedEmail}
           />
         </div>
@@ -225,8 +221,7 @@ export default function Home({ isConnected, origin }) {
         <a
           href='https://cloud.couchbase.com/sign-in'
           target='_blank'
-          rel='noopener noreferrer'
-        >
+          rel='noopener noreferrer'>
           <Image
             width='0'
             height='0'
@@ -260,7 +255,7 @@ export async function getServerSideProps(context) {
 
   let connection = await connectToDatabase();
 
-  const { cluster, bucket, collection, profileCollection } = connection;
+  const { profileCollection } = connection;
 
   // Check connection with a KV GET operation for a key that doesnt exist
   let isConnected = false;
@@ -278,6 +273,6 @@ export async function getServerSideProps(context) {
   // let profile = JSON.parse(JSON.stringify(await getProfileByKey(profileCollection, '1cfaaa82-e63e-4207-addf-f023763d0374')));
 
   return {
-    props: { isConnected, origin /* profile */ },
+    props: { isConnected, origin },
   };
 }

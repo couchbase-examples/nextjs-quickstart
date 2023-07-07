@@ -1,25 +1,15 @@
-import {
-  request,
-  describe,
-  test,
-  expect, //supertes
-  bcrypt,
-  v4, // utilities
-  connectToDatabase, // couchbase
-  handler, // REST application
-} from './imports';
-
-import { delay } from '../util/delay';
-import { NextApiRequest, NextApiResponse } from 'next';
-import http from 'http';
-import listen from 'test-listen';
+import { testApiHandler } from 'next-test-api-route-handler';
+import handler from '../pages/api/user';
+import { v4 } from 'uuid';
+import bcrypt from 'bcryptjs';
+import { connectToDatabase } from '../util/couchbase';
 
 describe('DELETE /user?pid={id}', () => {
   describe('given we pass a pid as request param', () => {
     const id = v4();
 
     beforeEach(async () => {
-      const { cluster, bucket, profileCollection } = await connectToDatabase();
+      const { profileCollection } = await connectToDatabase();
       const profile = {
         pid: id,
         firstName: 'Joseph',
@@ -29,28 +19,27 @@ describe('DELETE /user?pid={id}', () => {
       };
       await profileCollection
         .insert(id, profile)
-        .then(() => {
-          /*console.log('test item inserted', profile)*/
-        })
-        .catch((e) => console.log(`Test Profile Insert Failed: ${e.message}`));
+        .catch((e) =>
+          console.error(`Test Profile Insert Failed: ${e.message}`)
+        );
     });
 
     test('should respond with status code 200 to DELETE', async () => {
-      let requestHandler = (req, res) => {
-        return apiResolver(req, res, { pid: id }, handler);
-      };
-      let server = http.createServer(requestHandler);
-      let url = await listen(server);
-      let response = await fetch(url, {
-        method: 'DELETE',
+      await testApiHandler({
+        handler,
+        params: { pid: id },
+        test: async ({ fetch }) => {
+          let response = await fetch({
+            method: 'DELETE',
+          });
+          expect(response.status).toBe(200);
+        },
       });
-      expect(response.status).toBe(200);
-      return server.close();
     });
   });
 });
 
 afterAll(async () => {
-  const { cluster, bucket, profileCollection } = await connectToDatabase();
-  cluster.close();
+  const { cluster } = await connectToDatabase();
+  await cluster.close();
 });

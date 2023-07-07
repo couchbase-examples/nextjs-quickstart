@@ -1,18 +1,8 @@
-import {
-  request,
-  describe,
-  test,
-  expect, //supertes
-  bcrypt,
-  v4, // utilities
-  connectToDatabase, // couchbase
-  handler, // REST application
-} from './imports';
-
-import { delay } from '../util/delay';
-import { NextApiRequest, NextApiResponse } from 'next';
-import http from 'http';
-import listen from 'test-listen';
+import { testApiHandler } from 'next-test-api-route-handler';
+import handler from '../pages/api/user';
+import { v4 } from 'uuid';
+import bcrypt from 'bcryptjs';
+import { connectToDatabase } from '../util/couchbase';
 
 describe('PUT /user?pid={id}', () => {
   describe('given the profile object is updated', () => {
@@ -32,47 +22,45 @@ describe('PUT /user?pid={id}', () => {
     };
 
     beforeEach(async () => {
-      const { cluster, bucket, profileCollection } = await connectToDatabase();
+      const { profileCollection } = await connectToDatabase();
       await profileCollection
         .insert(id, initialProfile)
-        .then(() => {
-          /*console.log('test item inserted', profile)*/
-        })
-        .catch((e) => console.log(`Test Profile Insert Failed: ${e.message}`));
+        .catch((e) =>
+          console.error(`Test Profile Insert Failed: ${e.message}`)
+        );
     });
 
     test('should respond with status code 200 OK and updated values of document returned', async () => {
-      let requestHandler = (req, res) => {
-        return apiResolver(req, res, { pid: id }, handler);
-      };
-      let server = http.createServer(requestHandler);
-      let url = await listen(server);
-      let response = await fetch(url, {
-        method: 'PUT',
-        body: JSON.stringify(updatedProfile),
+      await testApiHandler({
+        handler,
+        params: { pid: id },
+        test: async ({ fetch }) => {
+          let response = await fetch({
+            method: 'PUT',
+            body: JSON.stringify(updatedProfile),
+          });
+          let jsonResponse = await response.json();
+          expect(response.status).toBe(200);
+          expect(jsonResponse.firstName).toBe(updatedProfile.firstName);
+          expect(jsonResponse.lastName).toBe(updatedProfile.lastName);
+          expect(jsonResponse.email).toBe(updatedProfile.email);
+          expect(jsonResponse.pass).not.toBe(updatedProfile.pass);
+        },
       });
-      let jsonResponse = await response.json();
-      expect(response.status).toBe(200);
-      expect(jsonResponse.firstName).toBe(updatedProfile.firstName);
-      expect(jsonResponse.lastName).toBe(updatedProfile.lastName);
-      expect(jsonResponse.email).toBe(updatedProfile.email);
-      expect(jsonResponse.pass).not.toBe(updatedProfile.pass);
-      return server.close();
     });
 
     afterEach(async () => {
-      const { cluster, bucket, profileCollection } = await connectToDatabase();
+      const { profileCollection } = await connectToDatabase();
       await profileCollection
         .remove(id)
-        .then(() => {
-          /*console.log('test profile document deleted', id)*/
-        })
-        .catch((e) => console.log(`test profile remove failed: ${e.message}`));
+        .catch((e) =>
+          console.error(`test profile remove failed: ${e.message}`)
+        );
     });
   });
 });
 
 afterAll(async () => {
-  const { cluster, bucket, profileCollection } = await connectToDatabase();
-  cluster.close();
+  const { cluster } = await connectToDatabase();
+  await cluster.close();
 });

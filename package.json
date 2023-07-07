@@ -11,13 +11,11 @@
     "format:check": "prettier --check ./**/*.js",
     "format:write": "prettier --write ./**/*.js",
     "check": "npm run format:check && npm run lint",
-    "check:ci": "npm run check && npm run test",
     "init-db:default": "env-cmd -f .env.default npx babel-node ./util/initializeCbServer.js",
     "init-db:local": "env-cmd -f .env.local npx babel-node ./util/initializeCbServer.js",
     "build-indexes": "env-cmd -f .env.local npx babel-node ./util/buildIndexes.js",
     "strip-cb-sdk": "strip --strip-debug ./node_modules/couchbase/build/Release/couchbase_impl.node",
-    "test": "env-cmd -f .env.default jest",
-    "test:f": "env-cmd -f .env.default jest __test__/api-profiles-create.test.js"
+    "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
@@ -47,11 +45,12 @@
     "eslint-config-next": "^13.4.9",
     "eslint-config-prettier": "^8.8.0",
     "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.6.1",
+    "next-test-api-route-handler": "^3.1.8",
     "postcss": "^8.4.24",
     "prettier": "^3.0.0",
     "supertest": "^6.3.3",
-    "tailwindcss": "^3.3.2",
-    "test-listen": "^1.1.0"
+    "tailwindcss": "^3.3.2"
   },
   "license": "MIT"
 }

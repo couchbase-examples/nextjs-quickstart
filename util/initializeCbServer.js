@@ -2,7 +2,7 @@ import qs from 'qs';
 import axios from 'axios';
 
 import { delay } from './delay.js';
-import { ensureIndexes } from './ensureIndexes';
+import { ensureIndexes } from './ensureIndexes.js';
 
 let DELAY_LENGTH = process.env.DELAY || 5000;
 

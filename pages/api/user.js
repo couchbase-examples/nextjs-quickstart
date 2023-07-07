@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import { v4 } from 'uuid'
 
 export default async function handler(req, res) {
-  const {cluster, bucket, profileCollection} = await connectToDatabase();
+  const {cluster, profileCollection} = await connectToDatabase();
   // Parse the body only if it is present
   let body = !!req.body ? JSON.parse(req.body) : null;
 
@@ -100,7 +100,7 @@ export default async function handler(req, res) {
      */
     try {
       await profileCollection.remove(req.query.pid)
-          .then((result) => {
+          .then(() => {
             res.status(200).send("Successfully Deleted: " + req.query.pid)
           })
           .catch((error) => res.status(500).send({

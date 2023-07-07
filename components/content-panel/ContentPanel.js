@@ -7,7 +7,7 @@ import ContentLoader from '../loaders/ContentLoader';
 import Avatar from './avatar/Avatar';
 import {validateEmail} from '../../util/helpers/validateEmail';
 
-export const ContentPanel = ({profile, handleProfileEdit, handleProfileDeletion, updatedFirstName, setUpdatedFirstName, updatedLastName, setUpdatedLastName, updatedEmail, setUpdatedEmail}) => {
+export const ContentPanel = ({profile, handleProfileEdit, handleProfileDeletion, setUpdatedFirstName, setUpdatedLastName, setUpdatedEmail}) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isEditModalConfirmable, setIsEditModalConfirmable] = useState(false);
