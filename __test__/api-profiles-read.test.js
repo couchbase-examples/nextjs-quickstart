@@ -1,7 +1,6 @@
 import { testApiHandler } from 'next-test-api-route-handler';
 import handler from '../pages/api/user';
 import { v4 } from 'uuid';
-import bcrypt from 'bcryptjs';
 import { connectToDatabase } from '../util/couchbase';
 
 const profile1 = {
@@ -9,14 +8,12 @@ const profile1 = {
   firstName: 'Joe',
   lastName: 'Schmoe',
   email: 'joe.schmoe@couchbase.com',
-  pass: bcrypt.hashSync('mypassword1', 10),
 };
 const profile2 = {
   pid: v4(),
   firstName: 'John',
   lastName: 'Dear',
   email: 'john.dear@couchbase.com',
-  pass: bcrypt.hashSync('mypassword2', 10),
 };
 
 beforeAll(async () => {

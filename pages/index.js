@@ -21,7 +21,6 @@ export default function Home({ origin }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   // State to store updated user information
   const [updatedFirstName, setUpdatedFirstName] = useState(undefined);
@@ -72,7 +71,6 @@ export default function Home({ origin }) {
     setFirstName(undefined);
     setLastName(undefined);
     setEmail(undefined);
-    setPassword(undefined);
 
     fetch(`${origin}/api/user`, {
       method: 'POST',
@@ -80,7 +78,6 @@ export default function Home({ origin }) {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        pass: password,
       }),
     })
       .then((response) => {
@@ -97,7 +94,6 @@ export default function Home({ origin }) {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          pass: data.pass,
           pid: data.pid,
         };
         setUserProfiles([newUser, ...userProfiles]);
@@ -146,7 +142,6 @@ export default function Home({ origin }) {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          pass: data.pass,
           pid: data.pid,
         };
         setSelectedProfile(updatedUser);
@@ -163,7 +158,6 @@ export default function Home({ origin }) {
     setFirstName(undefined);
     setLastName(undefined);
     setEmail(undefined);
-    setPassword(undefined);
   };
 
   return (
@@ -203,7 +197,6 @@ export default function Home({ origin }) {
               setFirstName={setFirstName}
               setLastName={setLastName}
               setEmail={setEmail}
-              setPassword={setPassword}
             />
           }
           open={isCreateModalOpen}
@@ -211,7 +204,7 @@ export default function Home({ origin }) {
           onConfirm={handleProfileCreation}
           onCancel={resetProfileState}
           isConfirmValid={
-            firstName && lastName && email && password && validateEmail(email)
+            firstName && lastName && email && validateEmail(email)
           }
           icon={'user-plus'}
         />

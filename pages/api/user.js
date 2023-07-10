@@ -1,5 +1,4 @@
 import {connectToDatabase} from "../../util/couchbase";
-import bcrypt from 'bcryptjs'
 import { v4 } from 'uuid'
 
 export default async function handler(req, res) {
@@ -11,13 +10,9 @@ export default async function handler(req, res) {
     /**
      *  POST HANDLER
      */
-    if (!body.email || !body.pass) {
+    if (!body.email) {
       return res.status(400).send({
-        "message": `${!body.email ? 'email ' : ''}${
-            (!body.email && !body.pass)
-                ? 'and pass are required' : (body.email && !body.pass)
-                ? 'pass is required' : 'is required'
-        }`
+        "message": 'email is required'
       })
     }
 
@@ -25,7 +20,6 @@ export default async function handler(req, res) {
     const profile = {
       pid: id,
       ...body,
-      pass: bcrypt.hashSync(body.pass, 10)
     }
     await profileCollection.insert(profile.pid, profile)
         .then((result) => {
@@ -50,7 +44,6 @@ export default async function handler(req, res) {
               firstName: body.firstName ? body.firstName : result.content.firstName,
               lastName: body.lastName ? body.lastName : result.content.lastName,
               email: body.email ? body.email : result.content.email,
-              pass: body.pass ? bcrypt.hashSync(body.pass, 10) : result.content.pass,
             }
 
             /* Persist updates with new doc */

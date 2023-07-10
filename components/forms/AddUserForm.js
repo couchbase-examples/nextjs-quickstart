@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {validateEmail} from '../../util/helpers/validateEmail';
 import clsx from 'clsx';
 
-export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) => {
+export const AddUserForm = ({setFirstName, setLastName, setEmail}) => {
   const [isEmailValid, setIsEmailValid] = useState(true);
 
   const handleEmail = (e) => {
@@ -60,19 +60,6 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail, setPassword}) 
                         !isEmailValid && 'ring-red-600 ring-2',
                         'focus:ring-2 focus:ring-indigo-600',
                         "block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6")}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-6">
-              <div className="mt-2">
-                <input
-                    onChange={(e) => {setPassword(e.target.value)}}
-                    placeholder='Password'
-                    id="password"
-                    name="password"
-                    type="password"
-                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>

@@ -1,7 +1,6 @@
 import { testApiHandler } from 'next-test-api-route-handler';
 import handler from '../pages/api/user';
 import { v4 } from 'uuid';
-import bcrypt from 'bcryptjs';
 import { connectToDatabase } from '../util/couchbase';
 
 describe('PUT /user?pid={id}', () => {
@@ -12,13 +11,11 @@ describe('PUT /user?pid={id}', () => {
       firstName: 'Joseph',
       lastName: 'Developer',
       email: 'joseph.developer@couchbase.com',
-      pass: bcrypt.hashSync('mypassword', 10),
     };
     const updatedProfile = {
       firstName: 'Joe',
       lastName: 'dev',
       email: 'joe@dev.com',
-      pass: 'p455w3rd',
     };
 
     beforeEach(async () => {
@@ -44,7 +41,6 @@ describe('PUT /user?pid={id}', () => {
           expect(jsonResponse.firstName).toBe(updatedProfile.firstName);
           expect(jsonResponse.lastName).toBe(updatedProfile.lastName);
           expect(jsonResponse.email).toBe(updatedProfile.email);
-          expect(jsonResponse.pass).not.toBe(updatedProfile.pass);
         },
       });
     });

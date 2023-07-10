@@ -1,7 +1,6 @@
 import { testApiHandler } from 'next-test-api-route-handler';
 import handler from '../pages/api/user';
 import { v4 } from 'uuid';
-import bcrypt from 'bcryptjs';
 import { connectToDatabase } from '../util/couchbase';
 
 describe('DELETE /user?pid={id}', () => {
@@ -15,7 +14,6 @@ describe('DELETE /user?pid={id}', () => {
         firstName: 'Joseph',
         lastName: 'Developer',
         email: 'joseph.developer@couchbase.com',
-        pass: bcrypt.hashSync('mypassword', 10),
       };
       await profileCollection
         .insert(id, profile)
