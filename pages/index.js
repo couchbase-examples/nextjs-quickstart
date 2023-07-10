@@ -270,8 +270,6 @@ export async function getServerSideProps(context) {
     // if the error message is anything OTHER THAN 'document not found', the connection is broken
   }
 
-  // let profile = JSON.parse(JSON.stringify(await getProfileByKey(profileCollection, '1cfaaa82-e63e-4207-addf-f023763d0374')));
-
   return {
     props: { isConnected, origin },
   };
