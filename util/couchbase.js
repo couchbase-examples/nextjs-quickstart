@@ -1,20 +1,20 @@
 import * as couchbase from 'couchbase';
 
 const CB_USERNAME = process.env.CB_USERNAME;
-const CB_PASS = process.env.CB_PASS;
-const CONNECT_STRING = process.env.CONNECT_STRING;
+const CB_PASSWORD = process.env.CB_PASSWORD;
+const CB_CONNECT_STRING = process.env.CB_CONNECT_STRING;
 const CB_BUCKET = process.env.CB_BUCKET;
 
 if (!CB_USERNAME) {
   throw new Error('Please define the CB_USERNAME environment variable');
 }
 
-if (!CB_PASS) {
-  throw new Error('Please define the CB_PASS environment variable');
+if (!CB_PASSWORD) {
+  throw new Error('Please define the CB_PASSWORD environment variable');
 }
 
-if (!CONNECT_STRING) {
-  throw new Error('Please define the CONNECT_STRING environment variable');
+if (!CB_CONNECT_STRING) {
+  throw new Error('Please define the CB_CONNECT_STRING environment variable');
 }
 
 if (!CB_BUCKET) {
@@ -38,15 +38,15 @@ async function createCouchbaseCluster() {
   }
 
   try {
-    let connectionString = CONNECT_STRING;
+    let connectionString = CB_CONNECT_STRING;
 
-    if (CONNECT_STRING.startsWith('couchbases')) {
+    if (CB_CONNECT_STRING.startsWith('couchbases')) {
       connectionString = connectionString + '?tls_verify=none';
     }
 
     cached.conn = await couchbase.connect(connectionString, {
       username: CB_USERNAME,
-      password: CB_PASS,
+      password: CB_PASSWORD,
     });
   } catch (e) {
     throw new Error(

@@ -20,8 +20,8 @@ To run this prebuilt project, you will need:
 
 We've included a `.env.local.example` file with blank values for you to copy into a file called `.env.local` and fill in the values. We've also included a `.env.default` file for testing and running in GitPod. In most cases, you can ignore the default config file. 
 - `CB_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
-- `CB_PASS` - The password that corresponds to the user specified above
-- `CONNECT_STRING` - The Couchbase endpoint to connect to. Use `localhost` for a local/Docker cluster, or the Wide Area Network address for a Capella instance (formatted like `cb.<xxxxxx>.cloud.couchbase.com`)
+- `CB_PASSWORD` - The password that corresponds to the user specified above
+- `CB_CONNECT_STRING` - The Couchbase connection string. Use `couchbase://localhost` for a local/Docker cluster, connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`)
 - `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
 
 **NOTE on TLS:** The connection logic in this sample app (`util/couchbase.js`) ignores mismatched certificates with the parameter `tls_verify=none`. While this is great for streamlining the connection process for development purposes, it's not very secure and should **not** be used in production. To learn how to secure your connection with proper certificates, see [the Node.js TLS connection tutorial](https://developer.couchbase.com/tutorial-nodejs-tls-connection).

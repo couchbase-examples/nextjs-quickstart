@@ -7,7 +7,7 @@ import { ensureIndexes } from './ensureIndexes.js';
 let DELAY_LENGTH = process.env.DELAY || 5000;
 
 const username = process.env.CB_USERNAME;
-const password = process.env.CB_PASS;
+const password = process.env.CB_PASSWORD;
 const auth = `Basic ${Buffer.from(username + ':' + password).toString(
   'base64'
 )}`;
