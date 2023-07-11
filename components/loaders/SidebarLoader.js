@@ -1,9 +1,9 @@
 import React from 'react';
 
 const SidebarLoader = ({numRecords}) => {
-  let rows = []
+  let rows = [];
   for (let i = 0; i < numRecords; i++) {
-    rows.push(<LoaderRow key={i}/>)
+    rows.push(<LoaderRow key={i}/>);
   }
 
   return (
@@ -26,5 +26,5 @@ const LoaderRow = () => {
           </div>
         </div>
       </div>
-  )
-}
+  );
+};

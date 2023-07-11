@@ -7,14 +7,14 @@ import SidebarLoader from '../loaders/SidebarLoader';
 export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, isLoading, setSearchString, openCreateModal}) => {
   const handleSearchFieldChange = (event) => {
     setSearchString(event.target.value);
-  }
+  };
 
   useEffect(() => {
     // if we've just added the first profile, select it
     if (profiles.length === 1) {
-      setSelectedProfile(profiles[0])
+      setSelectedProfile(profiles[0]);
     }
-  }, [profiles, setSelectedProfile])
+  }, [profiles, setSelectedProfile]);
 
   return (
       <div className={'bg-slate-100 w-1/2 max-w-md max-h-[calc(100vh-4rem)] overflow-auto'}>
@@ -49,7 +49,7 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, isLoadin
                     <>
                       {
                         profiles.map((profile, idx) => {
-                          return <UserRow profile={profile} index={idx} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile?.pid}/>
+                          return (<UserRow profile={profile} index={idx} key={idx} setSelectedProfile={setSelectedProfile} isRowSelected={profile.pid === selectedProfile?.pid}/>);
                         })
                       }
                     </>
@@ -61,4 +61,4 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, isLoadin
         }
       </div>
   );
-}
+};

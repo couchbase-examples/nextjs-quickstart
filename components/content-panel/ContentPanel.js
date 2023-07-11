@@ -13,39 +13,39 @@ export const ContentPanel = ({profile, handleProfileEdit, handleProfileDeletion,
   const [isEditModalConfirmable, setIsEditModalConfirmable] = useState(false);
 
   const handleEdit = () => {
-    handleProfileEdit(profile.pid)
-  }
+    handleProfileEdit(profile.pid);
+  };
 
   const handleDelete = () => {
-    handleProfileDeletion(profile.pid)
-  }
+    handleProfileDeletion(profile.pid);
+  };
 
   const handleSetUpdatedFirstName = (fName) => {
-    setUpdatedFirstName(fName)
+    setUpdatedFirstName(fName);
     if (fName.length === 0) {
       setIsEditModalConfirmable(false);
       return;
     }
-    setIsEditModalConfirmable(true)
-  }
+    setIsEditModalConfirmable(true);
+  };
 
   const handleSetUpdatedLastName = (lName) => {
-    setUpdatedLastName(lName)
+    setUpdatedLastName(lName);
     if (lName.length === 0) {
       setIsEditModalConfirmable(false);
       return;
     }
-    setIsEditModalConfirmable(true)
-  }
+    setIsEditModalConfirmable(true);
+  };
 
   const handleSetUpdatedEmail = (eAddress) => {
-    setUpdatedEmail(eAddress)
+    setUpdatedEmail(eAddress);
     if (eAddress.length === 0 || !validateEmail(eAddress)) {
       setIsEditModalConfirmable(false);
       return;
     }
-    setIsEditModalConfirmable(true)
-  }
+    setIsEditModalConfirmable(true);
+  };
 
   return (
       <div className='w-full'>
@@ -110,5 +110,5 @@ export const ContentPanel = ({profile, handleProfileEdit, handleProfileDeletion,
             </>
         }
       </div>
-  )
-}
+  );
+};

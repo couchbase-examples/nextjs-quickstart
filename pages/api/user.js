@@ -1,5 +1,5 @@
 import {connectToDatabase} from "../../util/couchbase";
-import { v4 } from 'uuid'
+import { v4 } from 'uuid';
 
 export default async function handler(req, res) {
   const {cluster, profileCollection} = await connectToDatabase();
@@ -13,14 +13,14 @@ export default async function handler(req, res) {
     if (!body.email) {
       return res.status(400).send({
         "message": 'email is required'
-      })
+      });
     }
 
     const id = v4();
     const profile = {
       pid: id,
       ...body,
-    }
+    };
     await profileCollection.insert(profile.pid, profile)
         .then((result) => {
           res.status(201).send({...profile, ...result});
@@ -28,8 +28,8 @@ export default async function handler(req, res) {
         .catch((e) => {
           res.status(500).send({
             "message": `Profile Insert Failed: ${e.message}`
-          })
-        })
+          });
+        });
   } else if (req.method === 'PUT') {
     /**
      *  PUT HANDLER
@@ -44,18 +44,18 @@ export default async function handler(req, res) {
               firstName: body.firstName ? body.firstName : result.content.firstName,
               lastName: body.lastName ? body.lastName : result.content.lastName,
               email: body.email ? body.email : result.content.email,
-            }
+            };
 
             /* Persist updates with new doc */
             await profileCollection.upsert(req.query.pid, newDoc)
                 .then((result) => res.send({ ...newDoc, ...result }))
-                .catch((e) => res.status(500).send(e))
+                .catch((e) => res.status(500).send(e));
           })
           .catch((e) => res.status(500).send({
             "message": `Profile Not Found, cannot update: ${e.message}`
-          }))
+          }));
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   } else if (req.method === 'GET') {
     /**
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
           LIMIT: Number(req.query.limit || 25),
           SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
         }
-      }
+      };
       const query = options.parameters.SEARCH == null ? `
         SELECT p.*
         FROM ${process.env.CB_BUCKET}._default.profile p
@@ -78,14 +78,14 @@ export default async function handler(req, res) {
         FROM ${process.env.CB_BUCKET}._default.profile p
         WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
         LIMIT $LIMIT OFFSET $SKIP;
-      `
+      `;
       await cluster.query(query, options)
           .then((result) => res.send(result.rows))
           .catch((error) => res.status(500).send({
             "message": `Query failed: ${error.message}`
-          }))
+          }));
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   } else if (req.method === 'DELETE') {
     /**
@@ -94,13 +94,13 @@ export default async function handler(req, res) {
     try {
       await profileCollection.remove(req.query.pid)
           .then(() => {
-            res.status(200).send("Successfully Deleted: " + req.query.pid)
+            res.status(200).send("Successfully Deleted: " + req.query.pid);
           })
           .catch((error) => res.status(500).send({
             "message": `Profile Not Found, cannot delete: ${error.message}`
-          }))
+          }));
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 

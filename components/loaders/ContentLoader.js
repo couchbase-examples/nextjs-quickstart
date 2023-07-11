@@ -22,8 +22,8 @@ const CoverLoader = () => {
           </div>
         </div>
       </div>
-  )
-}
+  );
+};
 
 const DetailsLoader = () => {
   return (
@@ -40,5 +40,5 @@ const DetailsLoader = () => {
           </div>
         </div>
       </div>
-  )
-}
+  );
+};

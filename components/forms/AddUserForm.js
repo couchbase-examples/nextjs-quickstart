@@ -8,9 +8,9 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail}) => {
   const handleEmail = (e) => {
     const emailAddress = e.target.value;
     const isValid = validateEmail(emailAddress);
-    setEmail(emailAddress)
-    setIsEmailValid(isValid)
-  }
+    setEmail(emailAddress);
+    setIsEmailValid(isValid);
+  };
 
   return (
       <form>
@@ -66,5 +66,5 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail}) => {
           </div>
         </div>
       </form>
-  )
-}
+  );
+};
