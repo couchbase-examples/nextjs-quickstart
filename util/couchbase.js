@@ -1,39 +1,24 @@
-import * as couchbase from "couchbase"
+import * as couchbase from 'couchbase';
 
-const COUCHBASE_USER = process.env.COUCHBASE_USER
-const COUCHBASE_PASSWORD = process.env.COUCHBASE_PASSWORD
-const COUCHBASE_ENDPOINT = process.env.COUCHBASE_ENDPOINT
-let COUCHBASE_BUCKET = process.env.COUCHBASE_BUCKET
-let IS_CAPELLA = process.env.IS_CAPELLA
+const CB_USERNAME = process.env.CB_USERNAME;
+const CB_PASSWORD = process.env.CB_PASSWORD;
+const CB_CONNECT_STRING = process.env.CB_CONNECT_STRING;
+const CB_BUCKET = process.env.CB_BUCKET;
 
-if (!COUCHBASE_USER) {
-  throw new Error(
-    'Please define the COUCHBASE_USER environment variable inside .env.local'
-  )
+if (!CB_USERNAME) {
+  throw new Error('Please define the CB_USERNAME environment variable');
 }
 
-if (!COUCHBASE_PASSWORD) {
-  throw new Error(
-    'Please define the COUCHBASE_PASSWORD environment variable inside .env.local'
-  )
+if (!CB_PASSWORD) {
+  throw new Error('Please define the CB_PASSWORD environment variable');
 }
 
-if (!COUCHBASE_ENDPOINT) {
-  throw new Error(
-      'Please define the COUCHBASE_ENDPOINT environment variable inside .env.local'
-  )
+if (!CB_CONNECT_STRING) {
+  throw new Error('Please define the CB_CONNECT_STRING environment variable');
 }
 
-if (!COUCHBASE_BUCKET) {
-  throw new Error(
-      'Please define the COUCHBASE_BUCKET environment variable inside .env.local'
-  )
-}
-
-if (!IS_CAPELLA) {
-  throw new Error(
-      'Please define the IS_CAPELLA environment variable inside dev.env. \nSet to \`true\` if you are connecting to a Capella cluster, and \`false\` otherwise.\n'
-  )
+if (!CB_BUCKET) {
+  throw new Error('Please define the CB_BUCKET environment variable inside');
 }
 
 /**
@@ -41,37 +26,40 @@ if (!IS_CAPELLA) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = global.couchbase
+let cached = global.couchbase;
 
 if (!cached) {
-  cached = global.couchbase = { conn: null }
+  cached = global.couchbase = { conn: null };
 }
 
 async function createCouchbaseCluster() {
   if (cached.conn) {
-    return cached.conn
+    return cached.conn;
   }
 
-  if (IS_CAPELLA === 'true') {
-    // Capella requires TLS connection string but we'll skip certificate verification with `tls_verify=none`
-    cached.conn = await couchbase.connect('couchbases://' + COUCHBASE_ENDPOINT + '?tls_verify=none', {
-      username: COUCHBASE_USER,
-      password: COUCHBASE_PASSWORD,
-    })
-  } else {
-    // no TLS needed, use traditional connection string
-    cached.conn = await couchbase.connect('couchbase://' + COUCHBASE_ENDPOINT, {
-      username: COUCHBASE_USER,
-      password: COUCHBASE_PASSWORD,
-    })
+  try {
+    let connectionString = CB_CONNECT_STRING;
+
+    if (CB_CONNECT_STRING.startsWith('couchbases')) {
+      connectionString = connectionString + '?tls_verify=none';
+    }
+
+    cached.conn = await couchbase.connect(connectionString, {
+      username: CB_USERNAME,
+      password: CB_PASSWORD,
+    });
+  } catch (e) {
+    throw new Error(
+      'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
+    );
   }
 
-  return cached.conn
+  return cached.conn;
 }
 
 export async function connectToDatabase() {
-  const cluster = await createCouchbaseCluster()
-  const bucket = cluster.bucket(COUCHBASE_BUCKET);
+  const cluster = await createCouchbaseCluster();
+  const bucket = cluster.bucket('user_profile');
   const collection = bucket.defaultCollection();
   const profileCollection = bucket.collection('profile');
 
@@ -80,10 +68,7 @@ export async function connectToDatabase() {
     bucket,
     collection,
     profileCollection,
-  }
+  };
 
   return dbConnection;
 }
-
-
-
