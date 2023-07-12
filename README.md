@@ -24,8 +24,6 @@ We've included a `.env.local.example` file with blank values for you to copy int
 - `CB_CONNECT_STRING` - The Couchbase connection string. Use `couchbase://localhost` for a local/Docker cluster, connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`)
 - `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
 
-**NOTE on TLS:** The connection logic in this sample app (`util/couchbase.js`) ignores mismatched certificates with the parameter `tls_verify=none`. While this is great for streamlining the connection process for development purposes, it's not very secure and should **not** be used in production. To learn how to secure your connection with proper certificates, see [the Node.js TLS connection tutorial](https://developer.couchbase.com/tutorial-nodejs-tls-connection).
-
 ## Set up and Run The Application
 The [main tutorial](https://developer.couchbase.com/tutorial-quickstart-nextjs/) will walk you through the process of bootstrapping a new Next.js project using our 'with-couchbase' example, but here we'll focus on just cloning and running this example repo.
 
