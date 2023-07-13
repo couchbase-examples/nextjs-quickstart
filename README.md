@@ -61,7 +61,8 @@ npm run dev
 If everything is configured properly, you should be able to navigate to localhost:3000 to see the example application. For troubleshooting and additional setup instructions please refer to the `NextJS_README.md` included in the with-couchbase starter.
 
 ## Sample Data
-- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. This file can be [imported into Capella](https://docs.couchbase.com/cloud/clusters/data-service/import-data-documents.html) to pre-populate your database with user records that will work with this sample application. 
+- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. Use `npm run load-sample-data` to insert the documents to your database. Be sure your environment variables are set correctly!
+- This file can also be [imported into Capella manually](https://docs.couchbase.com/cloud/clusters/data-service/import-data-documents.html). 
 - You can also add your own profile data to the database manually by clicking the + icon in the UI.
 
 ## Notes About the Quickstart Code

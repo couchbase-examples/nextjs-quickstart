@@ -14,6 +14,7 @@
     "init-db:default": "env-cmd -f .env.default node ./util/initializeCbServer.js",
     "init-db:local": "env-cmd -f .env.local node ./util/initializeCbServer.js",
     "build-indexes": "env-cmd -f .env.local node ./util/buildIndexes.js",
+    "load-sample-data": "env-cmd -f .env.local node ./util/loadSampleData.js",
     "strip-cb-sdk": "strip --strip-debug ./node_modules/couchbase/build/Release/couchbase_impl.node",
     "test": "env-cmd -f .env.default jest"
   },
