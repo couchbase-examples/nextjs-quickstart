@@ -1,6 +1,11 @@
 # Quickstart for using Couchbase with Next.js
 
 
+## Try it in Your Browser
+#### Deploy to Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&env=CB_USERNAME,CB_PASSWORD,CB_CONNECT_STRING,CB_BUCKET&envDescription=Connection%20Details%20for%20a%20Couchbase%20Capella%20Database&envLink=https%3A%2F%2Fdocs.couchbase.com%2Fnodejs-sdk%2Fcurrent%2Fhowtos%2Fmanaging-connections.html&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&redirect-url=https%3A%2F%2Fcloud.couchbase.com%2Fsign-in&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&production-deploy-hook=capella-vercel-deploy&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT)
+
+#### Run with GitPod
 [![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/nextjs-quickstart)
 
 This is a companion repository to the tutorial: "[Quickstart for using Couchbase with Next.js](https://developer.couchbase.com/tutorial-quickstart-nextjs/)" at [developer.couchbase.com](https://developer.couchbase.com), which aims to get you up and running with Couchbase on [NextJS](https://nextjs.org/), connect to a Couchbase cluster, create, read, update, and delete documents, and how to write simple parameterized N1QL queries. It also covers creating a basic front-end using Next.js.
