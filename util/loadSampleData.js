@@ -15,7 +15,7 @@ const loadSampleData = async () => {
         `Inserted Profile for ${profile.firstName} ${profile.lastName}`
       );
     } catch (err) {
-      console.error(err);
+      throw new Error(err);
     }
   }
 };
