@@ -22,7 +22,7 @@ const loadSampleData = async () => {
 
 loadSampleData()
   .then(() => {
-    console.log('Sample Data Loaded Successfully');
+    console.log('\nSample Data Loaded Successfully');
   })
   .catch((e) => {
     console.error(e);
