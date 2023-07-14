@@ -160,6 +160,13 @@ export default function Home({ origin }) {
     setEmail(undefined);
   };
 
+  // TODO: Remove once https://github.com/vercel/next.js/issues/52216 is resolved.
+  // `next/image` seems to be affected by a default + named export bundling bug.
+  let ResolvedImage = Image;
+  if ('default' in ResolvedImage) {
+    ResolvedImage = ResolvedImage.default;
+  }
+
   return (
     <div>
       <Head>
@@ -215,7 +222,7 @@ export default function Home({ origin }) {
           href='https://cloud.couchbase.com/sign-in'
           target='_blank'
           rel='noopener noreferrer'>
-          <Image
+          <ResolvedImage
             width='0'
             height='0'
             src='/capella-full.svg'
@@ -227,7 +234,7 @@ export default function Home({ origin }) {
         <div className='border-l-2 border-white h-10 mx-10' />
 
         <a href='https://vercel.com/' target='_blank' rel='noopener noreferrer'>
-          <Image
+          <ResolvedImage
             width={0}
             height={0}
             src='/vercel.svg'
