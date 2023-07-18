@@ -11,15 +11,15 @@
 4. Follow the steps when prompted.  
 5. Explore the newly deployed application and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
 
-#### Common Pitfalls and FAQs
-- Deployment Failed
+### Common Pitfalls and FAQs
+- **Deployment Failed**
   - This usually occurs when the environment variables are not set. Inspect the deploy logs for more information, and ensure the environment variables have been set. 
   - When deploying a new trial cluster, you'll need to manually create the correct bucket/collection, update the variables in your Vercel console, and re-deploy to pick up the new values.
   - **Note:** A re-deploy is _required_ after any changes to the environment variables, as this is the only way to apply the changes.
-- Infinite Loading State OR `Query failed: parsing error` OR `Query failed: bucket not found`
+- **Infinite Loading State OR `Query failed: parsing error` OR `Query failed: bucket not found`**
   - No data received from the database. Be sure you are using a bucket named `user_profile`, a `_default` scope, and a collection named `profile`.
   - **Note:** while you can _technically_ change the bucket name (via the environment variables), the scope and collections are hardcoded in `/api/user.js`. If you'd like to modify these, you'll need to adjust the queries used in the API layer.
-- 504 Gateway Timeout after deploying
+- **504 Gateway Timeout after deploying**
   - This error usually occurs when the application cannot reach the database. Ensure that the environment variables are correct, IP addresses are allowed, and the Database User credentials match those in the environment variables. 
 
 
