@@ -4,9 +4,9 @@
 ## Deployment Instructions
 1. Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
 2. Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
-3. Click Deploy.
-  
-  [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT)
+3. Click Deploy:
+
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT" style="margin-left: 30px"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
   
 4. Explore the UI and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
 
