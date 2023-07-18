@@ -27,7 +27,7 @@ export const ensureIndexes = async () => {
     if (err instanceof couchbase.IndexExistsError) {
       console.info('Collection Index Creation: Index Already Exists');
     } else {
-      console.error('Error Building Collection Index: \n')
+      console.error('Error Building Collection Index: \n');
       console.error(err);
     }
   }
