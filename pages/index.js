@@ -39,13 +39,26 @@ export default function Home({ origin }) {
       )
         .then((response) => response.json())
         .then((data) => {
-          if (data.message === 'Query failed: planning failure') {
-            throw new Error(
-              `Query Failed. Be sure to run \`npm run build-indexes\`!`
-            );
-          }
-
           if (data.message) {
+            if (data.message === 'Query failed: planning failure') {
+              throw new Error(
+                `Query Failed. Be sure to run \`npm run build-indexes\`!`
+              );
+            }
+
+            if (
+              data.message === 'Query failed: bucket not found' ||
+              data.message === 'Query failed: parsing failure'
+            ) {
+              throw new Error(
+                data.message +
+                  '\n' +
+                  'Be sure to use a bucket named `user_profile`, a scope named `_default, and a collection named `profile`' +
+                  '\n' +
+                  'See the "Common Pitfalls and FAQ" section of the README for more information.'
+              );
+            }
+
             throw new Error(data.message);
           }
 
