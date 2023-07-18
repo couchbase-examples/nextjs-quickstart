@@ -1,32 +1,25 @@
 # Quickstart for using Couchbase with Next.js
 
-## Try it in Your Browser
-#### Deploy to Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT)
 
-#### Run with GitPod
-[![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/nextjs-quickstart)
+## Deployment Instructions
+1. Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
+2. Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
+3. Click Deploy.
+  
+  [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT)
+  
+4. Explore the UI and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
 
-## Prerequisites
 
+## Run the Code Locally
+### Prerequisites
 To run this project locally, you will need:
-
-- A Couchbase Capella database or Couchbase 7+ cluster running locally
+- A Couchbase Capella database or Couchbase 7+ database running locally
 - Node.js & NPM
 - Next.js
 - Code Editor
 
-## Deployment Instructions
-- Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
-- Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
-- Click Deploy
-  
-  [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT)
-  
-- Explore the UI and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
-
-
-## Running the Code Locally
+### Get Started
 Clone the source code:
 ```sh
 git clone https://github.com/couchbase-examples/nextjs-quickstart.git
@@ -58,7 +51,6 @@ npm run build-indexes
 ```
 This is because the index creation code is contained within the database initialization script, which we don't use for Capella clusters.
 
-
 Now we're ready to run our application:
 ```sh
 npm run dev
@@ -66,21 +58,28 @@ npm run dev
 
 If everything is configured properly, you should be able to navigate to localhost:3000 to see the example application. For troubleshooting and additional setup instructions please refer to the `NextJS_README.md` included in the with-couchbase starter.
 
+
 ## Sample Data
 - We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. Use `npm run load-sample-data` to insert the documents to your database. Be sure your local environment variables are set correctly!
 - This file can also be [imported into Capella manually](https://docs.couchbase.com/cloud/clusters/data-service/import-data-documents.html). 
 - You can also add your own profile data to the database manually by clicking the + icon in the UI.
 
-### Notes About the Quickstart Code
+
+## Notes About the Quickstart Code
 - We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
-
 - In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments.
-
 - _**NOTE FOR CAPELLA CLUSTERS:**_ The database initialization code currently only works with local clusters. If you are using Capella, you'll need to manually create a bucket called `user_profile` and then within that buckets default scope, a collection called `profile`. [See here for more info on managing buckets in Capella.](https://docs.couchbase.com/cloud/clusters/data-service/manage-buckets.html). After bucket and collection creation, you can use the index creation command: `npm run build-indexes`. Running `npm run init-db:local` will also work to create the required indices. The bucket and collection creation steps will fail with `ECONNREFUSED` but it will still be able to create the index on your Capella cluster.
 
-### Running The Tests
+
+## Running The Tests
 A suite of integration tests has been included, and can be run by first setting up the database:
 ```
 npm run init-db:default
 ```
 and then using the `npm test` command.
+
+
+## Try it in Your Browser
+#### Run with GitPod
+[![Try it now!](https://da-demo-images.s3.amazonaws.com/runItNow_outline.png?couchbase-example=nextjs-quickstart-repo&source=github)](https://gitpod.io/#https://github.com/couchbase-examples/nextjs-quickstart)
+
