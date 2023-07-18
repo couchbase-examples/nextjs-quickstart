@@ -21,7 +21,7 @@ async function handler(req, res) {
       pid: id,
       ...body,
     };
-    profileCollection.insert(profile.pid, profile)
+    await profileCollection.insert(profile.pid, profile)
         .then((result) => {
           res.status(201).send({...profile, ...result});
         })
@@ -35,7 +35,7 @@ async function handler(req, res) {
      *  PUT HANDLER
      */
     try {
-      profileCollection.get(req.query.pid)
+      await profileCollection.get(req.query.pid)
           .then(async (result) => {
             /* Create a New Document with new values,
               if they are not passed from request, use existing values */
@@ -47,7 +47,7 @@ async function handler(req, res) {
             };
 
             /* Persist updates with new doc */
-            profileCollection.upsert(req.query.pid, newDoc)
+            await profileCollection.upsert(req.query.pid, newDoc)
                 .then((result) => res.send({ ...newDoc, ...result }))
                 .catch((e) => res.status(500).send(e));
           })
@@ -79,7 +79,7 @@ async function handler(req, res) {
         WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
         LIMIT $LIMIT OFFSET $SKIP;
       `;
-      cluster.query(query, options)
+      await cluster.query(query, options)
           .then((result) => res.send(result.rows))
           .catch((error) => res.status(500).send({
             "message": `Query failed: ${error.message}`
@@ -92,7 +92,7 @@ async function handler(req, res) {
      *  DELETE HANDLER
      */
     try {
-      profileCollection.remove(req.query.pid)
+      await profileCollection.remove(req.query.pid)
           .then(() => {
             res.status(200).send("Successfully Deleted: " + req.query.pid);
           })
