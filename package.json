@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "npm run strip-cb-sdk && next build",
+    "build": "npm run strip-cb-sdk && next build && npm run build-indexes",
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
