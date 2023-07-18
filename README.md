@@ -16,29 +16,18 @@ To run this project locally, you will need:
 - Next.js
 - Code Editor
 
-
 ## Deployment Instructions
-- Create database (or use existing one) on capella
-- Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope)
-- Click deploy button
+- Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
+- Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
+- Click Deploy
+  
+  [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT)
+  
+- Explore the UI and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
 
 
-
-## Run the Code Locally
-
-### Update environment variables appropriately
-
-We've included a `.env.local.example` file with blank values for you to copy into a file called `.env.local` and fill in the values. We've also included a `.env.default` file for testing and running in GitPod. In most cases, you can ignore the default config file. 
-- `CB_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
-- `CB_PASSWORD` - The password that corresponds to the user specified above
-- `CB_CONNECT_STRING` - The Couchbase connection string. Use `couchbase://localhost` for a local/Docker cluster, connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`)
-- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
-
-### Set up and Run The Application
-The [main tutorial](https://developer.couchbase.com/tutorial-quickstart-nextjs/) will walk you through the process of bootstrapping a new Next.js project using our 'with-couchbase' example, but here we'll focus on just cloning and running this example repo.
-
+## Running the Code Locally
 Clone the source code:
-
 ```sh
 git clone https://github.com/couchbase-examples/nextjs-quickstart.git
 ```
@@ -50,7 +39,14 @@ npm install
 
 **If you are using Capella**, you'll have to manually create a bucket named `user_profile` and a collection named `profile`. See the documentation on [managing buckets](https://docs.couchbase.com/cloud/clusters/data-service/manage-buckets.html) and [creating a collection](https://docs.couchbase.com/cloud/clusters/data-service/scopes-collections.html#create-a-collection) for more information. Note that this collection should be created on the `_default` scope.
 
+### Update environment variables appropriately
+We've included a `.env.local.example` file with blank values for you to copy into a file called `.env.local` and fill in the values. We've also included a `.env.default` file for testing and running in GitPod. In most cases, you can ignore the default config file. 
+- `CB_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
+- `CB_PASSWORD` - The password that corresponds to the user specified above
+- `CB_CONNECT_STRING` - The Couchbase connection string. Use `couchbase://localhost` for a local/Docker cluster, connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`)
+- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
 
+### Set up and Run The Application
 If you have Couchbase running locally, we can create the bucket and collection by running the following command:
 ```sh
 npm run init-db:local
@@ -70,8 +66,8 @@ npm run dev
 
 If everything is configured properly, you should be able to navigate to localhost:3000 to see the example application. For troubleshooting and additional setup instructions please refer to the `NextJS_README.md` included in the with-couchbase starter.
 
-### Sample Data
-- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. Use `npm run load-sample-data` to insert the documents to your database. Be sure your environment variables are set correctly!
+## Sample Data
+- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. Use `npm run load-sample-data` to insert the documents to your database. Be sure your local environment variables are set correctly!
 - This file can also be [imported into Capella manually](https://docs.couchbase.com/cloud/clusters/data-service/import-data-documents.html). 
 - You can also add your own profile data to the database manually by clicking the + icon in the UI.
 
