@@ -15,6 +15,7 @@ export const ensureIndexes = async () => {
     if (err instanceof couchbase.IndexExistsError) {
       console.info('Bucket Index Creation: Index Already Exists');
     } else {
+      console.error('Error Building Bucket Index: \n');
       console.error(err);
     }
   }
@@ -26,6 +27,7 @@ export const ensureIndexes = async () => {
     if (err instanceof couchbase.IndexExistsError) {
       console.info('Collection Index Creation: Index Already Exists');
     } else {
+      console.error('Error Building Collection Index: \n');
       console.error(err);
     }
   }
