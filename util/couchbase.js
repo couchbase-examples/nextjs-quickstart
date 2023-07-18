@@ -55,7 +55,7 @@ async function createCouchbaseCluster() {
 
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster();
-  const bucket = cluster.bucket('user_profile');
+  const bucket = cluster.bucket(CB_BUCKET);
   const collection = bucket.defaultCollection();
   const profileCollection = bucket.collection('profile');
 

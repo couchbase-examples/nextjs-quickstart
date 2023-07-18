@@ -1,7 +1,7 @@
 import {connectToDatabase} from "../../util/couchbase";
 import { v4 } from 'uuid';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   const {cluster, profileCollection} = await connectToDatabase();
   // Parse the body only if it is present
   let body = !!req.body ? JSON.parse(req.body) : null;
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       pid: id,
       ...body,
     };
-    await profileCollection.insert(profile.pid, profile)
+    profileCollection.insert(profile.pid, profile)
         .then((result) => {
           res.status(201).send({...profile, ...result});
         })
@@ -35,7 +35,7 @@ export default async function handler(req, res) {
      *  PUT HANDLER
      */
     try {
-      await profileCollection.get(req.query.pid)
+      profileCollection.get(req.query.pid)
           .then(async (result) => {
             /* Create a New Document with new values,
               if they are not passed from request, use existing values */
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
             };
 
             /* Persist updates with new doc */
-            await profileCollection.upsert(req.query.pid, newDoc)
+            profileCollection.upsert(req.query.pid, newDoc)
                 .then((result) => res.send({ ...newDoc, ...result }))
                 .catch((e) => res.status(500).send(e));
           })
@@ -79,7 +79,7 @@ export default async function handler(req, res) {
         WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
         LIMIT $LIMIT OFFSET $SKIP;
       `;
-      await cluster.query(query, options)
+      cluster.query(query, options)
           .then((result) => res.send(result.rows))
           .catch((error) => res.status(500).send({
             "message": `Query failed: ${error.message}`
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
      *  DELETE HANDLER
      */
     try {
-      await profileCollection.remove(req.query.pid)
+      profileCollection.remove(req.query.pid)
           .then(() => {
             res.status(200).send("Successfully Deleted: " + req.query.pid);
           })
@@ -105,4 +105,6 @@ export default async function handler(req, res) {
   }
 
 }
+
+export default handler;
 
