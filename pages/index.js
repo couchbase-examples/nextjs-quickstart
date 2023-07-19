@@ -137,18 +137,20 @@ export default function Home({ origin }) {
           setIsReadonlyNotificationOpen(true);
           throw new Error('Could not edit profile. Database is read-only');
         }
+
+        if (response.status !== 200) {
+          throw new Error(`Error Deleting Profile: ${response.message}`);
+        }
         return response;
       })
       .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 200) {
-          // remove the profile from local state too
-          const newArr = userProfiles.filter((p) => {
-            return p.pid !== pid;
-          });
-          setUserProfiles(newArr);
-          setSelectedProfile(newArr[0]);
-        }
+      .then(() => {
+        // remove the profile from local state too
+        const newArr = userProfiles.filter((p) => {
+          return p.pid !== pid;
+        });
+        setUserProfiles(newArr);
+        setSelectedProfile(newArr[0]);
       })
       .catch((err) => {
         console.error(err);
