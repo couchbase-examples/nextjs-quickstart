@@ -3,15 +3,17 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
 
-const Notification = ({ message, open, setOpen }) => {
+const Notification = ({ message, open, setOpen, timeout }) => {
   const closeNotification = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
   useEffect(() => {
-    setTimeout(() => {
-      closeNotification();
-    }, 15000);
-  }, [open, closeNotification]);
+    if (timeout) {
+      setTimeout(() => {
+        closeNotification();
+      }, timeout);
+    }
+  }, [open, closeNotification, timeout]);
 
   return (
     <Transition.Root show={open} as={Fragment}>

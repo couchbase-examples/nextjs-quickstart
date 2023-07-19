@@ -17,8 +17,13 @@ export default function Home({ origin }) {
 
   const [searchString, setSearchString] = useState(undefined);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   const [isReadonlyNotificationOpen, setIsReadonlyNotificationOpen] =
     useState(false);
+  const [
+    isBucketNotFoundNotificationOpen,
+    setIsBucketNotFoundNotificationOpen,
+  ] = useState(false);
 
   // State to store new user information
   const [firstName, setFirstName] = useState('');
@@ -53,10 +58,11 @@ export default function Home({ origin }) {
               data.message === 'Query failed: bucket not found' ||
               data.message === 'Query failed: parsing failure'
             ) {
+              setIsBucketNotFoundNotificationOpen(true);
               throw new Error(
                 data.message +
                   '\n' +
-                  'Be sure to use a bucket named `user_profile`, a scope named `_default, and a collection named `profile`' +
+                  'Be sure to use a bucket named `user_profile`, a scope named `_default`, and a collection named `profile`' +
                   '\n' +
                   'See the "Common Pitfalls and FAQ" section of the README for more information.'
               );
@@ -266,6 +272,15 @@ export default function Home({ origin }) {
           }
           open={isReadonlyNotificationOpen}
           setOpen={setIsReadonlyNotificationOpen}
+          timeout={15000}
+        />
+
+        <Notification
+          message={
+            'Bucket Not Found. Be sure to use a bucket named `user_profile`, a scope named `_default`, and a collection named `profile`. See the "Common Pitfalls and FAQ" section of the README for more information.'
+          }
+          open={isBucketNotFoundNotificationOpen}
+          setOpen={setIsBucketNotFoundNotificationOpen}
         />
       </main>
 

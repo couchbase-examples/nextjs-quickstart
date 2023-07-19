@@ -13,9 +13,12 @@
 
 ### Common Pitfalls and FAQs
 - **Deployment Failed**
-  - This usually occurs when the environment variables are not set. Inspect the deploy logs for more information, and ensure the environment variables have been set. 
-  - When deploying a new trial cluster, you'll need to manually create the correct bucket/collection, update the variables in your Vercel console, and re-deploy to pick up the new values.
+  - This usually occurs when the environment variables are missing or not yet set (such as when waiting for a new database to be provisioned). Inspect the build logs for more information, and ensure the environment variables have been set. 
+  - When **deploying a new trial database**, you'll need to manually create the correct bucket/collection, update the variables in your Vercel console, and re-deploy to pick up the new values.
   - **Note:** A re-deploy is _required_ after any changes to the environment variables, as this is the only way to apply the changes.
+- **Integrated with a new trial database**
+  - Although the integration supports the creation of new trial databases, this project requires a different bucket/scope/collection than the default trial database. If you've deployed this template with a trial, please be sure to add a bucket named `user_profile`, a `_default` scope, and a collection named `profile`, and update the `CB_BUCKET` to `user_profile`.
+  - This is related to the previous, and issues will manifest as deployment failures.
 - **Infinite Loading State OR `Query failed: parsing error` OR `Query failed: bucket not found`**
   - No data received from the database. Be sure you are using a bucket named `user_profile`, a `_default` scope, and a collection named `profile`.
   - **Note:** while you can _technically_ change the bucket name (via the environment variables), the scope and collections are hardcoded in `/api/user.js`. If you'd like to modify these, you'll need to adjust the queries used in the API layer.
@@ -46,10 +49,10 @@ npm install
 
 ### Update environment variables appropriately
 We've included a `.env.local.example` file with blank values for you to copy into a file called `.env.local` and fill in the values. We've also included a `.env.default` file for testing and running in GitPod. In most cases, you can ignore the default config file. 
-- `CB_USERNAME` - The username of an authorized user on your cluster. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella
-- `CB_PASSWORD` - The password that corresponds to the user specified above
-- `CB_CONNECT_STRING` - The Couchbase connection string. Use `couchbase://localhost` for a local/Docker cluster, connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`)
-- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this tutorial.
+- `CB_USERNAME` - The username of an authorized user on your database. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella.
+- `CB_PASSWORD` - The password that corresponds to the user specified above.
+- `CB_CONNECT_STRING` - The Couchbase connection string. Use the connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`) or `couchbase://localhost` for a local/Docker database.
+- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this template.
 
 ### Set up and Run The Application
 If you have Couchbase running locally, we can create the bucket and collection by running the following command:
@@ -57,11 +60,11 @@ If you have Couchbase running locally, we can create the bucket and collection b
 npm run init-db:local
 ```
 
-**Extra Step for Capella Clusters**: if you've manually set up your bucket and collection, you'll need to create the necessary indices as well. To accomplish this, run:
+**Extra Step for Capella Databases**: if you've manually set up your bucket and collection, you'll need to create the necessary indices as well. To accomplish this, run:
 ```sh
 npm run build-indexes
 ```
-This is because the index creation code is contained within the database initialization script, which we don't use for Capella clusters.
+This is because the index creation code is contained within the database initialization script, which we don't use for Capella databases.
 
 Now we're ready to run our application:
 ```sh
@@ -80,7 +83,7 @@ If everything is configured properly, you should be able to navigate to localhos
 ## Notes About the Quickstart Code
 - We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
 - In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments.
-- _**NOTE FOR CAPELLA CLUSTERS:**_ The database initialization code currently only works with local clusters. If you are using Capella, you'll need to manually create a bucket called `user_profile` and then within that buckets default scope, a collection called `profile`. [See here for more info on managing buckets in Capella.](https://docs.couchbase.com/cloud/clusters/data-service/manage-buckets.html). After bucket and collection creation, you can use the index creation command: `npm run build-indexes`. Running `npm run init-db:local` will also work to create the required indices. The bucket and collection creation steps will fail with `ECONNREFUSED` but it will still be able to create the index on your Capella cluster.
+- _**NOTE FOR CAPELLA DATABASES:**_ The database initialization code currently only works with local databases. If you are using Capella, you'll need to manually create a bucket called `user_profile` and then within that buckets default scope, a collection called `profile`. [See here for more info on managing buckets in Capella.](https://docs.couchbase.com/cloud/clusters/data-service/manage-buckets.html). After bucket and collection creation, you can use the index creation command: `npm run build-indexes`. Running `npm run init-db:local` will also work to create the required indices. The bucket and collection creation steps will fail with `ECONNREFUSED` but it will still be able to create the index on your Capella database.
 
 
 ## Running The Tests
