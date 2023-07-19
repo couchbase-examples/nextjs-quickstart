@@ -1,7 +1,7 @@
 import {connectToDatabase} from "../../util/couchbase";
 import { v4 } from 'uuid';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   const {cluster, profileCollection} = await connectToDatabase();
   // Parse the body only if it is present
   let body = !!req.body ? JSON.parse(req.body) : null;
@@ -71,11 +71,11 @@ export default async function handler(req, res) {
       };
       const query = options.parameters.SEARCH == null ? `
         SELECT p.*
-        FROM ${process.env.CB_BUCKET}._default.profile p
+        FROM \`${process.env.CB_BUCKET}\`._default.profile p
         LIMIT $LIMIT OFFSET $SKIP;
         ` : `
         SELECT p.*
-        FROM ${process.env.CB_BUCKET}._default.profile p
+        FROM \`${process.env.CB_BUCKET}\`._default.profile p
         WHERE lower(p.firstName) LIKE $SEARCH OR lower(p.lastName) LIKE $SEARCH
         LIMIT $LIMIT OFFSET $SKIP;
       `;
@@ -105,4 +105,6 @@ export default async function handler(req, res) {
   }
 
 }
+
+export default handler;
 
