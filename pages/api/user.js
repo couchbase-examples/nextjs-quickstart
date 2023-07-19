@@ -108,7 +108,7 @@ async function handler(req, res) {
     try {
       await profileCollection.remove(req.query.pid)
           .then(() => {
-            res.status(200).send("Successfully Deleted: " + req.query.pid);
+            res.status(200).send({message: "Successfully Deleted: " + req.query.pid});
           })
           .catch((error) => {
             if (error.message === 'authentication failure') {
