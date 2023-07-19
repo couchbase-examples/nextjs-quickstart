@@ -25,9 +25,15 @@ async function handler(req, res) {
         .then((result) => {
           res.status(201).send({...profile, ...result});
         })
-        .catch((e) => {
+        .catch((error) => {
+          if (error.message === 'authentication failure') {
+            return res.status(401).send({
+              "message": error.message,
+            });
+          }
+
           res.status(500).send({
-            "message": `Profile Insert Failed: ${e.message}`
+            "message": `Profile Insert Failed: ${error.message}`
           });
         });
   } else if (req.method === 'PUT') {
@@ -49,7 +55,15 @@ async function handler(req, res) {
             /* Persist updates with new doc */
             await profileCollection.upsert(req.query.pid, newDoc)
                 .then((result) => res.send({ ...newDoc, ...result }))
-                .catch((e) => res.status(500).send(e));
+                .catch((error) => {
+                  if (error.message === 'authentication failure') {
+                    return res.status(401).send({
+                      "message": error.message,
+                    });
+                  }
+
+                  res.status(500).send(error);
+                });
           })
           .catch((e) => res.status(500).send({
             "message": `Profile Not Found, cannot update: ${e.message}`
@@ -96,9 +110,17 @@ async function handler(req, res) {
           .then(() => {
             res.status(200).send("Successfully Deleted: " + req.query.pid);
           })
-          .catch((error) => res.status(500).send({
-            "message": `Profile Not Found, cannot delete: ${error.message}`
-          }));
+          .catch((error) => {
+            if (error.message === 'authentication failure') {
+              return res.status(401).send({
+                "message": error.message,
+              });
+            }
+
+            res.status(500).send({
+              "message": `Profile Not Found, cannot delete: ${error.message}`
+            });
+          });
     } catch (e) {
       console.error(e);
     }
