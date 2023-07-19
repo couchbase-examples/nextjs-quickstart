@@ -8,6 +8,7 @@ import { AddUserForm } from '../components/forms/AddUserForm';
 import { ContentPanel } from '../components/content-panel/ContentPanel';
 import { validateEmail } from '../util/helpers/validateEmail';
 import Image from 'next/image';
+import Notification from '../components/Notification';
 
 export default function Home({ origin }) {
   const [selectedProfile, setSelectedProfile] = useState(undefined);
@@ -16,6 +17,8 @@ export default function Home({ origin }) {
 
   const [searchString, setSearchString] = useState(undefined);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isReadonlyNotificationOpen, setIsReadonlyNotificationOpen] =
+    useState(false);
 
   // State to store new user information
   const [firstName, setFirstName] = useState('');
@@ -94,11 +97,17 @@ export default function Home({ origin }) {
       }),
     })
       .then((response) => {
+        if (response.status === 401) {
+          setIsReadonlyNotificationOpen(true);
+          throw new Error('Could not edit profile. Database is read-only');
+        }
+
         if (response.status !== 201) {
           response.json().then((data) => {
             throw new Error(`Error Creating Profile: ${data.message}`);
           });
         }
+
         return response;
       })
       .then((response) => response.json())
@@ -111,8 +120,8 @@ export default function Home({ origin }) {
         };
         setUserProfiles([newUser, ...userProfiles]);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((err) => {
+        console.error(err);
       });
   };
 
@@ -122,8 +131,16 @@ export default function Home({ origin }) {
    * @return {Promise<void>}
    */
   const handleProfileDeletion = (pid) => {
-    fetch(`${origin}/api/user?pid=${pid}`, { method: 'DELETE' }).then(
-      (data) => {
+    fetch(`${origin}/api/user?pid=${pid}`, { method: 'DELETE' })
+      .then((response) => {
+        if (response.status === 401) {
+          setIsReadonlyNotificationOpen(true);
+          throw new Error('Could not edit profile. Database is read-only');
+        }
+        return response;
+      })
+      .then((response) => response.json())
+      .then((data) => {
         if (data.status === 200) {
           // remove the profile from local state too
           const newArr = userProfiles.filter((p) => {
@@ -132,8 +149,10 @@ export default function Home({ origin }) {
           setUserProfiles(newArr);
           setSelectedProfile(newArr[0]);
         }
-      }
-    );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   /**
@@ -149,6 +168,13 @@ export default function Home({ origin }) {
         email: updatedEmail && updatedEmail,
       }),
     })
+      .then((response) => {
+        if (response.status === 401) {
+          setIsReadonlyNotificationOpen(true);
+          throw new Error('Could not edit profile. Database is read-only');
+        }
+        return response;
+      })
       .then((response) => response.json())
       .then((data) => {
         let updatedUser = {
@@ -164,6 +190,9 @@ export default function Home({ origin }) {
           updatedUser;
 
         setUserProfiles(newProfiles);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 
@@ -227,6 +256,14 @@ export default function Home({ origin }) {
             firstName && lastName && email && validateEmail(email)
           }
           icon={'user-plus'}
+        />
+
+        <Notification
+          message={
+            'This Database is read-only. Adding, Editing, and Deleting users is not supported.'
+          }
+          open={isReadonlyNotificationOpen}
+          setOpen={setIsReadonlyNotificationOpen}
         />
       </main>
 
