@@ -1,5 +1,24 @@
 import { connectToDatabase } from './couchbase.js';
 import { readFile } from 'fs/promises';
+import * as couchbase from 'couchbase';
+
+const createProfileCollection = async () => {
+  let { bucket } = await connectToDatabase();
+
+  const collectionMgr = bucket.collections();
+
+  let newCollectionSpec = new couchbase.CollectionSpec({
+    name: 'profile',
+    scopeName: '_default',
+  });
+
+  try {
+    await collectionMgr.createCollection(newCollectionSpec);
+  } catch (e) {
+    console.log('caught an error');
+    console.log(e);
+  }
+};
 
 const loadSampleData = async () => {
   let { profileCollection } = await connectToDatabase();
@@ -20,11 +39,26 @@ const loadSampleData = async () => {
   }
 };
 
-loadSampleData()
+createProfileCollection()
   .then(() => {
-    console.log('\nSample Data Loaded Successfully');
+    console.log('Profile Collection Created. Loading Sample Data.');
+    loadSampleData()
+      .then(() => {
+        console.log('\nSample Data Loaded Successfully');
+      })
+      .catch((e) => {
+        console.error(e);
+        console.error('\nFailed to Load Sample Data');
+      });
   })
-  .catch((e) => {
-    console.error(e);
-    console.error('\nFailed to Load Sample Data');
+  .catch(() => {
+    console.log('Profile Collection Already Exists. Loading Sample Data.');
+    loadSampleData()
+      .then(() => {
+        console.log('\nSample Data Loaded Successfully');
+      })
+      .catch((e) => {
+        console.error(e);
+        console.error('\nFailed to Load Sample Data');
+      });
   });
