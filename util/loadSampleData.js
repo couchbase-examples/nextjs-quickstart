@@ -15,8 +15,7 @@ export const createProfileCollection = async () => {
   try {
     await collectionMgr.createCollection(newCollectionSpec);
   } catch (e) {
-    console.log('caught an error');
-    console.log(e);
+    throw new Error(e);
   }
 };
 
