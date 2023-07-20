@@ -2,7 +2,7 @@ import { connectToDatabase } from './couchbase.js';
 import { readFile } from 'fs/promises';
 import * as couchbase from 'couchbase';
 
-const createProfileCollection = async () => {
+export const createProfileCollection = async () => {
   let { bucket } = await connectToDatabase();
 
   const collectionMgr = bucket.collections();
