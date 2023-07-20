@@ -46,8 +46,8 @@ createProfileCollection()
         console.log('\nSample Data Loaded Successfully');
       })
       .catch((e) => {
-        console.error(e);
-        console.error('\nFailed to Load Sample Data');
+        console.log(e);
+        console.error('\nFailed to Load Sample Data: ' + e.message);
       });
   })
   .catch(() => {
@@ -57,7 +57,7 @@ createProfileCollection()
         console.log('\nSample Data Loaded Successfully');
       })
       .catch((e) => {
-        console.error(e);
-        console.error('\nFailed to Load Sample Data');
+        console.log(e);
+        console.error('\nFailed to Load Sample Data: ' + e.message);
       });
   });
