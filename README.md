@@ -18,6 +18,7 @@
   - **Note:** A re-deploy is _required_ after any changes to the environment variables, as this is the only way to apply the changes.
 - **Integrated with a new trial database**
   - Although the integration supports the creation of new trial databases, this project requires a different bucket/scope/collection than the default trial database. If you've deployed this template with a trial, please be sure to add a bucket named `user_profile`, a `_default` scope, and a collection named `profile`, and update the `CB_BUCKET` to `user_profile`.
+  - Be sure to re-deploy after updating the environment variables.
   - This is related to the previous, and issues will manifest as deployment failures.
 - **Infinite Loading State OR `Query failed: parsing error` OR `Query failed: bucket not found`**
   - No data received from the database. Be sure you are using a bucket named `user_profile`, a `_default` scope, and a collection named `profile`.
