@@ -9,7 +9,7 @@
 &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT"><img src="https://vercel.com/button" alt="Deploy with Vercel" width="140px"/></a>
 
 4. Follow the steps when prompted.  
-5. Explore the newly deployed application and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
+5. Explore the newly deployed application: create, update, and delete some user profiles. A few sample profiles will be added automatically, and you can load the sample data manually by following [these instructions](#sample-data).
 
 ### Common Pitfalls and FAQs
 - **Deployment Failed**
@@ -76,9 +76,9 @@ If everything is configured properly, you should be able to navigate to localhos
 
 
 ## Sample Data
-- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. Use `npm run load-sample-data` to insert the documents to your database. Be sure your local environment variables are set correctly!
+- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. The `build` step will automatically load the sample data, but you may want to also load it manually for local testing. Use `npm run load-sample-data` to insert the documents to your database. Be sure your local environment variables are set correctly!
 - This file can also be [imported into Capella manually](https://docs.couchbase.com/cloud/clusters/data-service/import-data-documents.html). 
-- You can also add your own profile data to the database manually by clicking the + icon in the UI.
+- You can also add your own profile data to the database manually by clicking the **+** icon in the UI.
 
 
 ## Notes About the Quickstart Code
