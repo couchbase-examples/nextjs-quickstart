@@ -6,7 +6,9 @@ const CB_CONNECT_STRING = process.env.CB_CONNECT_STRING;
 const CB_BUCKET = process.env.CB_BUCKET;
 
 if (!CB_USERNAME) {
-  throw new Error('Please define the CB_USERNAME environment variable');
+  throw new Error(
+    'Please define the CB_USERNAME environment variable. \nIf you are seeing this error after creating a new trial database, please see the instructions in the README for re-deploying your application.'
+  );
 }
 
 if (!CB_PASSWORD) {
