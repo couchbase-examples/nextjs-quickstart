@@ -4,26 +4,28 @@
 ## Deployment Instructions
 1. Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
 2. Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
+   - **Note:** the `build` step will attempt to create the collection within your `CB_BUCKET` on deployment.
 3. Click Deploy:
 
 &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT"><img src="https://vercel.com/button" alt="Deploy with Vercel" width="140px"/></a>
 
-4. Follow the steps when prompted.  
-5. Explore the newly deployed application and add some profiles to populate the database. You can also load the sample data by following [these instructions](#sample-data).
+4. Follow the steps when prompted. The integration step will open the Couchbase Capella UI and allow you to select resources to connect.
+   - If you don't have a Capella account, you can sign up at this point, but you'll have to re-deploy the application a second time once the database has finished provisioning. Read more in #2 of the [Pitfalls and FAQ section](#common-pitfalls-and-faqs) below. 
+5. Explore the newly deployed application: create, update, and delete some user profiles. A few sample profiles will be added automatically, and you can load the sample data manually by following [these instructions](#sample-data).
 
 ### Common Pitfalls and FAQs
-- **Deployment Failed**
+1. **Deployment Failed**
   - This usually occurs when the environment variables are missing or not yet set (such as when waiting for a new database to be provisioned). Inspect the build logs for more information, and ensure the environment variables have been set. 
   - When **deploying a new trial database**, you'll need to manually create the correct bucket/collection, update the variables in your Vercel console, and re-deploy to pick up the new values.
   - **Note:** A re-deploy is _required_ after any changes to the environment variables, as this is the only way to apply the changes.
-- **Integrated with a new trial database**
+2. **Integrated with a new trial database**
   - Although the integration supports the creation of new trial databases, this project requires a different bucket/scope/collection than the default trial database. If you've deployed this template with a trial, please be sure to add a bucket named `user_profile`, a `_default` scope, and a collection named `profile`, and update the `CB_BUCKET` to `user_profile`.
   - Be sure to re-deploy after updating the environment variables.
   - This is related to the previous, and issues will manifest as deployment failures.
-- **Infinite Loading State OR `Query failed: parsing error` OR `Query failed: bucket not found`**
+3. **Infinite Loading State OR `Query failed: parsing error` OR `Query failed: bucket not found`**
   - No data received from the database. Be sure you are using a bucket named `user_profile`, a `_default` scope, and a collection named `profile`.
   - **Note:** while you can _technically_ change the bucket name (via the environment variables), the scope and collections are hardcoded in `/api/user.js`. If you'd like to modify these, you'll need to adjust the queries used in the API layer.
-- **504 Gateway Timeout after deploying**
+4. **504 Gateway Timeout after deploying**
   - This error usually occurs when the application cannot reach the database. Ensure that the environment variables are correct, IP addresses are allowed, and the Database User credentials match those in the environment variables. 
 
 
@@ -61,6 +63,12 @@ If you have Couchbase running locally, we can create the bucket and collection b
 npm run init-db:local
 ```
 
+If you'd like to add the sample data, run:
+```sh
+npm run load-sample-data
+```
+**Note:** this will also attempt to create a `profile` collection.
+
 **Extra Step for Capella Databases**: if you've manually set up your bucket and collection, you'll need to create the necessary indices as well. To accomplish this, run:
 ```sh
 npm run build-indexes
@@ -76,9 +84,9 @@ If everything is configured properly, you should be able to navigate to localhos
 
 
 ## Sample Data
-- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. Use `npm run load-sample-data` to insert the documents to your database. Be sure your local environment variables are set correctly!
+- We've included a `MOCK_DATA.json` file containing 15 documents with various mocked user data. The `build` step will automatically load the sample data, but you may want to also load it manually for local testing. Use `npm run load-sample-data` to insert the documents to your database. Be sure your local environment variables are set correctly!
 - This file can also be [imported into Capella manually](https://docs.couchbase.com/cloud/clusters/data-service/import-data-documents.html). 
-- You can also add your own profile data to the database manually by clicking the + icon in the UI.
+- You can also add your own profile data to the database manually by clicking the **+** icon in the UI.
 
 
 ## Notes About the Quickstart Code
