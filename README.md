@@ -17,7 +17,7 @@
 1. **Deployment Failed**
   - This usually occurs when the environment variables are missing or not yet set (such as when waiting for a new database to be provisioned). Inspect the build logs for more information, and ensure the environment variables have been set. 
   - When **deploying a new trial database**, you'll need to manually create the correct bucket/collection, update the variables in your Vercel console, and re-deploy to pick up the new values.
-  - **Note:** A re-deploy is _required_ after any changes to the environment variables, as this is the only way to apply the changes.
+  - **Note:** A re-deploy is _required_ after any changes to the environment variables, as this is the only way to apply the changes. **This can be done from the "deployments" tab on the project's dashboard (click the three dots on the row for your failed deployment and click "redeploy").**
 2. **Integrated with a new trial database**
   - Although the integration supports the creation of new trial databases, this project requires a different bucket/scope/collection than the default trial database. If you've deployed this template with a trial, please be sure to add a bucket named `user_profile`, a `_default` scope, and a collection named `profile`, and update the `CB_BUCKET` to `user_profile`.
   - Be sure to re-deploy after updating the environment variables.
