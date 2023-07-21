@@ -4,6 +4,7 @@
 ## Deployment Instructions
 1. Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
 2. Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
+   - **Note:** the `build` step will attempt to create the collection within your `CB_BUCKET` on deployment.
 3. Click Deploy:
 
 &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT"><img src="https://vercel.com/button" alt="Deploy with Vercel" width="140px"/></a>
@@ -60,6 +61,12 @@ If you have Couchbase running locally, we can create the bucket and collection b
 ```sh
 npm run init-db:local
 ```
+
+If you'd like to add the sample data, run:
+```sh
+npm run load-sample-data
+```
+**Note:** this will also attempt to create a `profile` collection.
 
 **Extra Step for Capella Databases**: if you've manually set up your bucket and collection, you'll need to create the necessary indices as well. To accomplish this, run:
 ```sh
