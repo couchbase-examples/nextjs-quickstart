@@ -9,7 +9,7 @@ The deployment instructions are specifically for [Vercel](https://vercel.com/). 
 To deploy this project on Vercel, you will need:
 
 - [Vercel Account](https://vercel.com/signup)
-- Access to a Couchbase Database ([Capella](https://cloud.couchbase.com/) recommended) running the [Query Service](https://docs.couchbase.com/server/current/learn/services-and-indexes/services/query-service.html). Alternatively, you have the option to sign up for a free Capella database in the integration flow.
+- Access to a [Couchbase Capella](https://cloud.couchbase.com/) database running the [Query Service](https://docs.couchbase.com/server/current/learn/services-and-indexes/services/query-service.html). Alternatively, you have the option to sign up for a free Capella database in the integration flow.
 
 ### Steps
 
