@@ -21,7 +21,7 @@ To deploy this project on Vercel, you will need:
 &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT"><img src="https://vercel.com/button" alt="Deploy with Vercel" width="140px"/></a>
 
 4. Follow the steps when prompted. The integration step will open the Couchbase Capella UI and allow you to select resources to connect.
-   - If you don't have a Capella account, you can sign up at this point, but you'll have to re-deploy the application a second time once the database has finished provisioning. Read more in #2 of the [Pitfalls and FAQ section](#common-pitfalls-and-faqs) below.
+   - If you sign-up for a new Capella account, you may have to re-deploy the application once the database has finished provisioning. Read more in #2 of the [Pitfalls and FAQ section](#common-pitfalls-and-faqs) below.
 5. Explore the newly deployed application: create, update, and delete some user profiles. A few sample profiles will be added automatically, and you can load the sample data manually by following [these instructions](#sample-data).
 
 ### Common Pitfalls and FAQs
