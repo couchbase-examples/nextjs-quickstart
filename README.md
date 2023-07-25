@@ -10,19 +10,18 @@ To deploy this project on Vercel, you will need:
 
 - [Vercel Account](https://vercel.com/signup)
 - Access to a [Couchbase Capella](https://cloud.couchbase.com/) database running the [Query Service](https://docs.couchbase.com/server/current/learn/services-and-indexes/services/query-service.html). Alternatively, you have the option to sign up for a free Capella database in the integration flow.
+- If you are connecting to an existing Capella account, create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
+  - **Note:** the `build` step will attempt to create the collection and load the sample data within your `CB_BUCKET` on deployment.
 
 ### Steps
 
-1. Create a new Capella database (or use existing one) at [cloud.couchbase.com](https://cloud.couchbase.com/).
-2. Create a bucket called `user_profile`, and a collection called `profile` (within the `_default` scope).
-   - **Note:** the `build` step will attempt to create the collection within your `CB_BUCKET` on deployment.
-3. Click Deploy:
+1. Click Deploy:
 
 &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcouchbase-examples%2Fnextjs-quickstart&project-name=couchbase-nextjs-quickstart&repository-name=couchbase-nextjs-quickstart&developer-id=oac_5eS7l7O4wvTE47rCKEYSFLQT&integration-ids=oac_5eS7l7O4wvTE47rCKEYSFLQT"><img src="https://vercel.com/button" alt="Deploy with Vercel" width="140px"/></a>
 
-4. Follow the steps when prompted. The integration step will open the Couchbase Capella UI and allow you to select resources to connect.
+2. Follow the steps when prompted. The integration step will open the Couchbase Capella UI and allow you to select resources to connect.
    - If you sign-up for a new Capella account, you may have to re-deploy the application once the database has finished provisioning. Read more in #2 of the [Pitfalls and FAQ section](#common-pitfalls-and-faqs) below.
-5. Explore the newly deployed application: create, update, and delete some user profiles. A few sample profiles will be added automatically, and you can load the sample data manually by following [these instructions](#sample-data).
+3. Explore the newly deployed application: create, update, and delete some user profiles. A few sample profiles will be added automatically, and you can load the sample data manually by following [these instructions](#sample-data).
 
 ### Common Pitfalls and FAQs
 
