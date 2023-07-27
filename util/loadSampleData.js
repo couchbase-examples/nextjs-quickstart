@@ -50,8 +50,9 @@ createProfileCollection()
         console.error('\nFailed to Load Sample Data: ' + e.message);
       });
   })
-  .catch(() => {
-    console.log('Profile Collection Already Exists. Loading Sample Data.');
+  .catch((e) => {
+    console.log(e);
+    console.log('Profile Collection Already Exists (or theres another error in createProfileCollection). Attempting to load Sample Data.');
     loadSampleData()
       .then(() => {
         console.log('\nSample Data Loaded Successfully');

@@ -47,6 +47,7 @@ async function createCouchbaseCluster() {
       password: CB_PASSWORD,
     });
   } catch (e) {
+    console.log(e);
     throw new Error(
       'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
     );
