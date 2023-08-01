@@ -1,4 +1,4 @@
-# Quickstart for using Couchbase with Next.js
+# Couchbase Capella Starter with Next.js
 
 ## Deployment Instructions
 
