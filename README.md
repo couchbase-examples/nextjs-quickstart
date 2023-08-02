@@ -1,4 +1,4 @@
-# Quickstart for using Couchbase with Next.js
+# Couchbase Capella Starter with Next.js
 
 ## Deployment Instructions
 
@@ -29,6 +29,17 @@ To deploy this project on Vercel, you will need:
 - **504 Gateway Timeout after deploying**
   - This error usually occurs when the application cannot reach the database. Ensure that the environment variables are correct, IP addresses are allowed, and the Database User credentials match those in the environment variables.
   - Check to ensure your Database wasn't deleted.
+
+### Live Demo
+
+[https://couchbase-nextjs-quickstart.vercel.app/](https://couchbase-nextjs-quickstart.vercel.app/)
+
+### Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Couchbase Capella](https://cloud.couchbase.com/sign-in)
+- [Vercel](https://vercel.com/)
 
 ## Run the Code Locally
 
