@@ -1,5 +1,7 @@
 # lock files
-package-lock.json yarn.lock pnpm-lock.yaml
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # Logs
 logs
