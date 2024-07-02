@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
-    "start": "export NODE_OPTIONS=--openssl-legacy-provider && next start",
+    "build": "next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
+    "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
     "format:write": "prettier --write ./**/*.js",
