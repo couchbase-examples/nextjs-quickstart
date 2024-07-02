@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
+    "build": "npm explore couchbase -- npm run help-prune && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
