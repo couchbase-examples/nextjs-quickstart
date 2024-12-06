@@ -118,6 +118,8 @@ If everything is configured properly, you should be able to navigate to localhos
 ## Notes About the Quickstart Code
 
 - We've included a `.env.default` file which is used for testing and gitpod instances of the project to ensure smooth setup in these environments.
+- The build step is set up to **not set a specific `.env` file** and instead use the variables in the system environment. This is to ensure that the application can be deployed to Vercel properly, but can cause issues when trying to build locally.
+  - If you need to pass in an environment file, you can adjust the build script to use the scripts that are **not** postfixed with `:no-env` in package.json.
 - In the completed quickstart code, fetch URLs use a dynamic `origin` variable instead of hard coding `http://localhost:3000` to ensure requests work when running in other environments.
 - _**NOTE FOR CAPELLA DATABASES:**_ The database initialization code currently only works with local databases. If you are using Capella, you'll need to manually create a bucket called `user_profile` and then within that buckets default scope, a collection called `profile`. [See here for more info on managing buckets in Capella.](https://docs.couchbase.com/cloud/clusters/data-service/manage-buckets.html). After bucket and collection creation, you can use the index creation command: `npm run build-indexes`. Running `npm run init-db:local` will also work to create the required indices. The bucket and collection creation steps will fail with `ECONNREFUSED` but it will still be able to create the index on your Capella database.
 
