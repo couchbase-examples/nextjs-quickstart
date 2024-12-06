@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
+    "build": "npm explore couchbase -- npm run help-prune && npm list --depth=1 | grep couchbase && cd ./node_modules/@couchbase && ls -la && pwd && cd ../../ && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
@@ -20,29 +20,29 @@
     "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.15",
-    "@heroicons/react": "^2.0.18",
-    "axios": "^1.6.1",
-    "clsx": "^2.0.0",
-    "couchbase": "4.4.0",
-    "next": "^13.4.10",
-    "qs": "^6.11.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.0"
+    "@headlessui/react": "^2.1.1",
+    "@heroicons/react": "^2.1.4",
+    "axios": "^1.7.2",
+    "clsx": "^2.1.1",
+    "couchbase": "^4.4.4",
+    "next": "^14.2.4",
+    "qs": "^6.12.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.14",
+    "autoprefixer": "^10.4.19",
     "env-cmd": "^10.1.0",
-    "eslint-config-next": "^13.4.10",
     "eslint": "^8.45.0",
-    "eslint-config-prettier": "^8.8.0",
-    "jest": "^29.6.1",
-    "jest-environment-jsdom": "^29.6.1",
-    "next-test-api-route-handler": "^3.1.8",
-    "postcss": "^8.4.31",
-    "prettier": "^3.0.0",
-    "tailwindcss": "^3.3.3"
+    "eslint-config-next": "^14.2.4",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "next-test-api-route-handler": "^4.0.8",
+    "postcss": "^8.4.39",
+    "prettier": "^3.3.2",
+    "tailwindcss": "^3.4.4"
   },
   "license": "MIT"
 }
