@@ -18,7 +18,7 @@
     "load-sample-data": "env-cmd -f .env.local node ./util/loadSampleData.js",
     "load-sample-data:no-env": "node ./util/loadSampleData.js",
     "test": "env-cmd -f .env.default jest",
-    "vercel-build": "npx @vercel/nft build pages/index.js && npm rebuild couchbase --update-binary && next build"
+    "vercel-build": "npx @vercel/nft build pages/index.js && npm rebuild couchbase --update-binary && NEXT_PRIVATE_STANDALONE=true next build"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
