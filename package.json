@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
+    "build": "npm run strip-cb-sdk && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
@@ -17,6 +17,7 @@
     "build-indexes:no-env": "node ./util/buildIndexes.js",
     "load-sample-data": "env-cmd -f .env.local node ./util/loadSampleData.js",
     "load-sample-data:no-env": "node ./util/loadSampleData.js",
+    "strip-cb-sdk": "strip --strip-debug ./node_modules/couchbase/build/Release/couchbase_impl.node",
     "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
@@ -24,7 +25,7 @@
     "@heroicons/react": "^2.0.18",
     "axios": "^1.7.9",
     "clsx": "^2.0.0",
-    "couchbase": "4.4.0",
+    "couchbase": "4.2.4",
     "next": "^13.4.10",
     "qs": "^6.11.2",
     "react": "^18.2.0",
