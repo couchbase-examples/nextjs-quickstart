@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "npm run strip-cb-sdk && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
+    "build": "next build && npm run load-sample-data:no-env && npm run build-indexes:no-env && npm list --depth=1 | grep couchbase",
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
@@ -17,7 +17,6 @@
     "build-indexes:no-env": "node ./util/buildIndexes.js",
     "load-sample-data": "env-cmd -f .env.local node ./util/loadSampleData.js",
     "load-sample-data:no-env": "node ./util/loadSampleData.js",
-    "strip-cb-sdk": "strip --strip-debug ./node_modules/couchbase/build/Release/couchbase_impl.node",
     "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
@@ -25,7 +24,7 @@
     "@heroicons/react": "^2.0.18",
     "axios": "^1.7.9",
     "clsx": "^2.0.0",
-    "couchbase": "4.2.4",
+    "couchbase": "4.2.7",
     "next": "^13.4.10",
     "qs": "^6.11.2",
     "react": "^18.2.0",
@@ -35,8 +34,8 @@
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "env-cmd": "^10.1.0",
+    "eslint": "^8.57.1",
     "eslint-config-next": "^13.4.10",
-    "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
     "jest": "^29.6.1",
     "jest-environment-jsdom": "^29.6.1",
