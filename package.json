@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:default": "env-cmd -f .env.default next dev",
-    "build": "npm install && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
+    "build": "next build && npm run load-sample-data:no-env && npm run build-indexes:no-env && npm list --depth=1 | grep couchbase",
     "start": "next start",
     "lint": "next lint",
     "format:check": "prettier --check ./**/*.js",
@@ -25,7 +25,6 @@
     "axios": "^1.7.9",
     "clsx": "^2.0.0",
     "couchbase": "4.2.7",
-    "@couchbase/couchbase-linux-x64-openssl3": "4.2.7",
     "next": "^13.4.10",
     "qs": "^6.11.2",
     "react": "^18.2.0",
