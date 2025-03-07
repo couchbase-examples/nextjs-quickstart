@@ -23,9 +23,9 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "clsx": "^2.0.0",
-    "couchbase": "4.2.4",
+    "couchbase": "4.4.5",
     "next": "^13.4.10",
     "qs": "^6.11.2",
     "react": "^18.2.0",
