@@ -42,8 +42,12 @@ async function createCouchbaseCluster() {
   try {
     let connectionString = CB_CONNECT_STRING;
 
+    if (!connectionString.includes('://')) {
+      connectionString = `couchbase://${connectionString}`;
+    }
+
     // temporary fix to ensure testability across all environments
-    if (CB_CONNECT_STRING.startsWith('couchbases')) {
+    if (connectionString.startsWith('couchbases://')) {
       connectionString = connectionString + '?tls_verify=none';
     }
 

@@ -48,7 +48,7 @@ To deploy this project on Vercel, you will need:
 To run this project locally, you will need:
 
 - A Couchbase Capella database or Couchbase 7+ database running locally
-- Node.js & NPM
+- Node.js 16+ and npm
 - Next.js
 - Code Editor
 
@@ -75,7 +75,7 @@ We've included a `.env.local.example` file with blank values for you to copy int
 - `CB_USERNAME` - The username of an authorized user on your database. Follow [these instructions](https://docs.couchbase.com/cloud/clusters/manage-database-users.html#create-database-credentials) to create database credentials on Capella.
 - `CB_PASSWORD` - The password that corresponds to the user specified above.
 - `CB_CONNECT_STRING` - The Couchbase connection string. Use the connection string specified on the 'Connect' tab within Capella (formatted like `couchbases://cb.<xxxxxx>.cloud.couchbase.com`) or `couchbase://localhost` for a local/Docker database.
-- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profiles` for this template.
+- `CB_BUCKET` - The bucket you'd like to connect to. Set this to `user_profile` for this template.
 
 ### Set up and Run The Application
 
@@ -107,7 +107,7 @@ Now we're ready to run our application:
 npm run dev
 ```
 
-If everything is configured properly, you should be able to navigate to localhost:3000 to see the example application. For troubleshooting and additional setup instructions please refer to the `NextJS_README.md` included in the with-couchbase starter.
+If everything is configured properly, you should be able to navigate to localhost:3000 to see the example application. For troubleshooting and additional setup instructions, refer to the notes in this README and the upstream `with-couchbase` starter documentation.
 
 ## Sample Data
 
