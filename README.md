@@ -48,7 +48,7 @@ To deploy this project on Vercel, you will need:
 To run this project locally, you will need:
 
 - A Couchbase Capella database or Couchbase 7+ database running locally
-- Node.js 16+ and npm
+- Node.js 24 LTS and npm
 - Next.js
 - Code Editor
 

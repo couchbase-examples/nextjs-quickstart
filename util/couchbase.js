@@ -48,14 +48,15 @@ async function createCouchbaseCluster() {
 
     // temporary fix to ensure testability across all environments
     if (connectionString.startsWith('couchbases://')) {
-      connectionString = connectionString + '?tls_verify=none';
+      const separator = connectionString.includes('?') ? '&' : '?';
+      connectionString = connectionString + separator + 'tls_verify=none';
     }
 
     cached.conn = await couchbase.connect(connectionString, {
       username: CB_USERNAME,
       password: CB_PASSWORD,
     });
-  } catch (e) {
+  } catch {
     throw new Error(
       'Error Connecting to Couchbase Database. Ensure the correct IPs are allowed and double check your database user credentials.'
     );
