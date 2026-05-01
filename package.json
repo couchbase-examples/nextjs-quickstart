@@ -7,7 +7,7 @@
     "dev:default": "env-cmd -f .env.default next dev",
     "build": "npm run strip-cb-sdk && next build && npm run load-sample-data:no-env && npm run build-indexes:no-env",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .js,.jsx --max-warnings=0",
     "format:check": "prettier --check ./**/*.js",
     "format:write": "prettier --write ./**/*.js",
     "check": "npm run format:check && npm run lint",
@@ -17,33 +17,36 @@
     "build-indexes:no-env": "node ./util/buildIndexes.js",
     "load-sample-data": "env-cmd -f .env.local node ./util/loadSampleData.js",
     "load-sample-data:no-env": "node ./util/loadSampleData.js",
-    "strip-cb-sdk": "strip --strip-debug ./node_modules/couchbase/build/Release/couchbase_impl.node",
+    "strip-cb-sdk": "node ./util/stripCbSdk.js",
     "test": "env-cmd -f .env.default jest"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.15",
-    "@heroicons/react": "^2.0.18",
-    "axios": "^1.7.9",
-    "clsx": "^2.0.0",
-    "couchbase": "4.2.4",
-    "next": "^13.4.10",
-    "qs": "^6.11.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.0"
+    "@headlessui/react": "^1.7.19",
+    "@heroicons/react": "^2.2.0",
+    "axios": "^1.15.2",
+    "clsx": "^2.1.1",
+    "couchbase": "^4.7.0",
+    "next": "^16.2.4",
+    "qs": "^6.15.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.14",
+    "autoprefixer": "^10.5.0",
     "env-cmd": "^10.1.0",
-    "eslint-config-next": "^13.4.10",
-    "eslint": "^8.45.0",
-    "eslint-config-prettier": "^8.8.0",
-    "jest": "^29.6.1",
-    "jest-environment-jsdom": "^29.6.1",
-    "next-test-api-route-handler": "^3.1.8",
-    "postcss": "^8.4.31",
-    "prettier": "^3.0.0",
-    "tailwindcss": "^3.3.3"
+    "eslint": "^9.39.1",
+    "eslint-config-next": "^16.2.4",
+    "eslint-config-prettier": "^8.10.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "next-test-api-route-handler": "^3.2.0",
+    "postcss": "^8.5.12",
+    "prettier": "^3.8.3",
+    "tailwindcss": "^3.4.19"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "24.x"
+  }
 }
