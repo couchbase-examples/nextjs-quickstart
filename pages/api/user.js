@@ -1,10 +1,14 @@
+import { randomUUID } from 'node:crypto';
 import {connectToDatabase} from "../../util/couchbase";
-import { v4 } from 'uuid';
 
 async function handler(req, res) {
   const {cluster, profileCollection} = await connectToDatabase();
-  // Parse the body only if it is present
-  let body = !!req.body ? JSON.parse(req.body) : null;
+  // Pages Router requests may arrive with a parsed object body or a raw string body.
+  const body = !req.body
+    ? null
+    : typeof req.body === 'string'
+      ? JSON.parse(req.body)
+      : req.body;
 
   if (req.method === 'POST') {
     /**
@@ -16,7 +20,7 @@ async function handler(req, res) {
       });
     }
 
-    const id = v4();
+    const id = randomUUID();
     const profile = {
       pid: id,
       ...body,
@@ -77,6 +81,7 @@ async function handler(req, res) {
      */
     try {
       const options = {
+        scanConsistency: 'request_plus',
         parameters: {
           SKIP: Number(req.query.skip || 0),
           LIMIT: Number(req.query.limit || 25),

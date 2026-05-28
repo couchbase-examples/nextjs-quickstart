@@ -1,11 +1,11 @@
 import { testApiHandler } from 'next-test-api-route-handler';
+import { randomUUID } from 'node:crypto';
 import handler from '../pages/api/user';
-import { v4 } from 'uuid';
 import { connectToDatabase } from '../util/couchbase';
 
 describe('PUT /user?pid={id}', () => {
   describe('given the profile object is updated', () => {
-    const id = v4();
+    const id = randomUUID();
     const initialProfile = {
       pid: id,
       firstName: 'Joseph',
@@ -29,7 +29,7 @@ describe('PUT /user?pid={id}', () => {
 
     test('should respond with status code 200 OK and updated values of document returned', async () => {
       await testApiHandler({
-        handler,
+        pagesHandler: handler,
         params: { pid: id },
         test: async ({ fetch }) => {
           let response = await fetch({

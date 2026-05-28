@@ -1,11 +1,11 @@
 import { testApiHandler } from 'next-test-api-route-handler';
+import { randomUUID } from 'node:crypto';
 import handler from '../pages/api/user';
-import { v4 } from 'uuid';
 import { connectToDatabase } from '../util/couchbase';
 
 describe('DELETE /user?pid={id}', () => {
   describe('given we pass a pid as request param', () => {
-    const id = v4();
+    const id = randomUUID();
 
     beforeEach(async () => {
       const { profileCollection } = await connectToDatabase();
@@ -24,7 +24,7 @@ describe('DELETE /user?pid={id}', () => {
 
     test('should respond with status code 200 to DELETE', async () => {
       await testApiHandler({
-        handler,
+        pagesHandler: handler,
         params: { pid: id },
         test: async ({ fetch }) => {
           let response = await fetch({
