@@ -13,7 +13,7 @@ describe('POST /user', () => {
   describe('given a request with firstName, lastName, and email', () => {
     test('should respond with statusCode 200 and return document persisted', async () => {
       await testApiHandler({
-        handler,
+        pagesHandler: handler,
         test: async ({ fetch }) => {
           let response = await fetch({
             method: 'POST',
@@ -46,7 +46,7 @@ describe('POST /user', () => {
     const expected = { statusCode: 400, message: 'email is required' };
     test(`should respond with statusCode 400 and message: '${expected.message}'`, async () => {
       await testApiHandler({
-        handler,
+        pagesHandler: handler,
         test: async ({ fetch }) => {
           let response = await fetch({
             method: 'POST',
