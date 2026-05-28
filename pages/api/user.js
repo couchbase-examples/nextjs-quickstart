@@ -1,14 +1,23 @@
 import { randomUUID } from 'node:crypto';
-import {connectToDatabase} from "../../util/couchbase";
+import { connectToDatabase } from '../../util/couchbase';
 
 async function handler(req, res) {
-  const {cluster, profileCollection} = await connectToDatabase();
-  // Pages Router requests may arrive with a parsed object body or a raw string body.
-  const body = !req.body
-    ? null
-    : typeof req.body === 'string'
-      ? JSON.parse(req.body)
-      : req.body;
+  const { cluster, profileCollection } = await connectToDatabase();
+
+  let body = null;
+  if (req.body) {
+    if (typeof req.body === 'string') {
+      try {
+        body = JSON.parse(req.body);
+      } catch {
+        return res.status(400).send({
+          message: 'Invalid JSON body',
+        });
+      }
+    } else {
+      body = req.body;
+    }
+  }
 
   if (req.method === 'POST') {
     /**
@@ -80,13 +89,16 @@ async function handler(req, res) {
      *  GET HANDLER
      */
     try {
+      const scanConsistency =
+        process.env.COUCHBASE_SCAN_CONSISTENCY ||
+        (process.env.NODE_ENV === 'test' ? 'request_plus' : undefined);
       const options = {
-        scanConsistency: 'request_plus',
+        ...(scanConsistency ? { scanConsistency } : {}),
         parameters: {
           SKIP: Number(req.query.skip || 0),
           LIMIT: Number(req.query.limit || 25),
-          SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null
-        }
+          SEARCH: req.query.search ? `%${req.query.search.toLowerCase()}%` : null,
+        },
       };
       const query = options.parameters.SEARCH == null ? `
         SELECT p.*
