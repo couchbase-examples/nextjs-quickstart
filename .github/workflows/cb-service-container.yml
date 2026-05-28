@@ -73,7 +73,8 @@ jobs:
           command: npm test
       - name: Report Status
         if: always()
-        uses: ravsamhq/notify-slack-action@v1
+        continue-on-error: true
+        uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
           notify_when: 'failure,warnings'
