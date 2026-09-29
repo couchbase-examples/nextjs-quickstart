@@ -26,7 +26,7 @@ export const Sidebar = ({selectedProfile, setSelectedProfile, profiles, isLoadin
             </span>
           </div>
           <div className="mt-4">
-            <div className="relative mt-2 rounded-md shadow-sm">
+            <div className="relative mt-2 rounded-md shadow-xs">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
                 <MagnifyingGlassIcon className='h-5 w-5 text-gray-500'/>
               </div>

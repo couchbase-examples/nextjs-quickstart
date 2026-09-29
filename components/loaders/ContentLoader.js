@@ -18,7 +18,7 @@ const CoverLoader = () => {
       <div className="w-full h-1/3">
         <div className="w-full animate-pulse h-full">
           <div className="space-y-2 block h-full">
-            <div className="h-full border w-full rounded bg-gray-300"/>
+            <div className="h-full border w-full rounded-sm bg-gray-300"/>
           </div>
         </div>
       </div>
@@ -34,9 +34,9 @@ const DetailsLoader = () => {
               <div className="h-16 w-16 rounded-full bg-gray-300"/>
               <div className="h-16 w-16 rounded-full bg-gray-300"/>
             </div>
-            <div className="h-16 w-3/12 rounded bg-gray-300"/>
-            <div className="h-8 w-4/12 rounded bg-gray-300"/>
-            <div className="h-8 w-5/12 rounded bg-gray-300"/>
+            <div className="h-16 w-3/12 rounded-sm bg-gray-300"/>
+            <div className="h-8 w-4/12 rounded-sm bg-gray-300"/>
+            <div className="h-8 w-5/12 rounded-sm bg-gray-300"/>
           </div>
         </div>
       </div>
