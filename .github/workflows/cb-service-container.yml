@@ -9,6 +9,8 @@ on:
       - main
   schedule:
     - cron: "0 11 * * 0"
+permissions:
+  contents: read
 jobs:
   tests:
     runs-on: ubuntu-latest

@@ -10,7 +10,7 @@ import { validateEmail } from '../util/helpers/validateEmail';
 import Image from 'next/image';
 import Notification from '../components/Notification';
 
-export default function Home({ origin }) {
+export default function Home() {
   const [selectedProfile, setSelectedProfile] = useState(undefined);
   const [userProfiles, setUserProfiles] = useState([]);
   const [isProfilesLoading, setIsProfilesLoading] = useState(true);
@@ -38,8 +38,10 @@ export default function Home({ origin }) {
   useEffect(() => {
     const fetchAllProfiles = () => {
       fetch(
-        `${origin}/api/user${
-          searchString ? `?search=${searchString}&limit=200` : '?limit=200'
+        `/api/user${
+          searchString
+            ? `?search=${encodeURIComponent(searchString)}&limit=200`
+            : '?limit=200'
         }`,
         {
           method: 'GET',
@@ -79,7 +81,7 @@ export default function Home({ origin }) {
         });
     };
     fetchAllProfiles();
-  }, [searchString, origin]);
+  }, [searchString]);
 
   const openCreateModal = () => {
     setIsCreateModalOpen(true);
@@ -94,7 +96,7 @@ export default function Home({ origin }) {
     setLastName(undefined);
     setEmail(undefined);
 
-    fetch(`${origin}/api/user`, {
+    fetch(`/api/user`, {
       method: 'POST',
       body: JSON.stringify({
         firstName: firstName,
@@ -137,7 +139,7 @@ export default function Home({ origin }) {
    * @return {Promise<void>}
    */
   const handleProfileDeletion = (pid) => {
-    fetch(`${origin}/api/user?pid=${pid}`, { method: 'DELETE' })
+    fetch(`/api/user?pid=${encodeURIComponent(pid)}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status === 401) {
           setIsReadonlyNotificationOpen(true);
@@ -168,7 +170,7 @@ export default function Home({ origin }) {
    * @param pid
    */
   const handleProfileEdit = (pid) => {
-    fetch(`${origin}/api/user?pid=${pid}`, {
+    fetch(`/api/user?pid=${encodeURIComponent(pid)}`, {
       method: 'PUT',
       body: JSON.stringify({
         firstName: updatedFirstName && updatedFirstName,
@@ -314,12 +316,7 @@ export default function Home({ origin }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-
-  const protocol = req.headers['x-forwarded-proto'] || 'http';
-  const origin = req ? `${protocol}://${req.headers.host}` : '';
-
+export async function getServerSideProps() {
   let connection = await connectToDatabase();
 
   const { profileCollection } = connection;
@@ -338,6 +335,6 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: { isConnected, origin },
+    props: { isConnected },
   };
 }
