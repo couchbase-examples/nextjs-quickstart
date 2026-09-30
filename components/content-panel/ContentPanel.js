@@ -87,18 +87,18 @@ export const ContentPanel = ({profile, handleProfileEdit, handleProfileDeletion,
               <div className="h-1/3 border-b-2 border-slate-500">
                 <Gradient firstName={profile.firstName} lastName={profile.lastName}/>
               </div>
-              <div className='absolute top-[calc(33.33%-22px-4rem)] md:left-[calc(28rem+4rem)]'>
+              <div className='absolute top-[calc(33.33%-22px-4rem)] md:left-128'>
                 <Avatar name={`${profile.firstName} ${profile.lastName}`}/>
               </div>
               <div className="p-16 flex flex-col gap-2 mt-8">
                 <div className="flex gap-2 mb-2">
                   <button onClick={() => setIsEditModalOpen(true)}>
-                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-green-200 hover:bg-green-300 sm:mx-0 sm:h-10 sm:w-10 hover:drop-shadow-md">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-green-200 hover:bg-green-300 sm:mx-0 sm:h-10 sm:w-10 hover:drop-shadow-md">
                       <PencilIcon className='h-8 w-8 text-gray-700'/>
                     </div>
                   </button>
                   <button onClick={() => setIsDeleteModalOpen(true)}>
-                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-red-200 hover:bg-red-300 sm:mx-0 sm:h-10 sm:w-10 hover:drop-shadow-md">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-red-200 hover:bg-red-300 sm:mx-0 sm:h-10 sm:w-10 hover:drop-shadow-md">
                       <TrashIcon className='h-8 w-8 text-gray-700'/>
                     </div>
                   </button>

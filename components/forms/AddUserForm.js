@@ -28,7 +28,7 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail}) => {
                     name="first-name"
                     id="first-name"
                     autoComplete="given-name"
-                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -42,7 +42,7 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail}) => {
                     name="last-name"
                     id="last-name"
                     autoComplete="family-name"
-                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -59,7 +59,7 @@ export const AddUserForm = ({setFirstName, setLastName, setEmail}) => {
                     className={clsx(
                         !isEmailValid && 'ring-red-600 ring-2',
                         'focus:ring-2 focus:ring-indigo-600',
-                        "block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6")}
+                        "block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6")}
                 />
               </div>
             </div>
