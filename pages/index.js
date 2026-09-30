@@ -10,7 +10,7 @@ import { validateEmail } from '../util/helpers/validateEmail';
 import Image from 'next/image';
 import Notification from '../components/Notification';
 
-export default function Home({ origin }) {
+export default function Home() {
   const [selectedProfile, setSelectedProfile] = useState(undefined);
   const [userProfiles, setUserProfiles] = useState([]);
   const [isProfilesLoading, setIsProfilesLoading] = useState(true);
@@ -38,7 +38,7 @@ export default function Home({ origin }) {
   useEffect(() => {
     const fetchAllProfiles = () => {
       fetch(
-        `${origin}/api/user${
+        `/api/user${
           searchString ? `?search=${searchString}&limit=200` : '?limit=200'
         }`,
         {
@@ -79,7 +79,7 @@ export default function Home({ origin }) {
         });
     };
     fetchAllProfiles();
-  }, [searchString, origin]);
+  }, [searchString]);
 
   const openCreateModal = () => {
     setIsCreateModalOpen(true);
@@ -317,9 +317,6 @@ export default function Home({ origin }) {
 export async function getServerSideProps(context) {
   const { req } = context;
 
-  const protocol = req.headers['x-forwarded-proto'] || 'http';
-  const origin = req ? `${protocol}://${req.headers.host}` : '';
-
   let connection = await connectToDatabase();
 
   const { profileCollection } = connection;
@@ -338,6 +335,6 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: { isConnected, origin },
+    props: { isConnected },
   };
 }
